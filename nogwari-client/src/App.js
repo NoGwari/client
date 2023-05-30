@@ -9,7 +9,7 @@ function App() {
     const [board, setBoard] = useState([]);
     useEffect(() => {
         const fetchData = async() => {
-            const res = await fetch(process.env.REACT_APP_API + '/board');
+            const res = await fetch('http://18.224.69.86:3000' + '/board');
             const result = res.json();
             return result;
         }
