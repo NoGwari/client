@@ -7,7 +7,7 @@ function App() {
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <p>
-          노과리 프로젝트 배포 test
+          노과리 프로젝트 배포
         </p>
       </header>
     </div>
