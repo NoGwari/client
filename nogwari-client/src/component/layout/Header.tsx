@@ -9,7 +9,7 @@ export const HeaderContainer = styled.header`
   position: fixed;
   top: 0;
   width: 100%;
-  height: 50px;
+  height: 70px;
   padding: 0 12px;
   background-color: #000;
   z-index: 1052;
@@ -17,7 +17,9 @@ export const HeaderContainer = styled.header`
 
 export const ServiceWrap = styled.div`
   display: flex;
+  width: 100%;
   align-items: center;
+  justify-content: center;
   position: relative;
   color: white;
 `;
@@ -25,13 +27,16 @@ export const ServiceWrap = styled.div`
 export const HeaderLogo = styled.h1`
   display: flex;
   align-items: center;
-  width: 91.6px;
   & a {
     display: block;
   }
   & img {
+    border: 3px solid white;
+    box-shadow:  1px 0px 6px 0;
+    border-radius: 100%;
     display: inline-block;
-    width: 100%;
+    height: 85px;
+    width: 85px;
   }
 `;
 
@@ -41,7 +46,7 @@ const Header: React.FC = () => {
             <ServiceWrap>
                 <HeaderLogo>
                     <Link to={"/a"}>
-                        <img alt="노과리" src="../../assets/image/logo.PNG" />
+                        <img alt="노과리" src="/img/logo.PNG" />
                     </Link>
                 </HeaderLogo>
             </ServiceWrap>
