@@ -7783,6 +7783,13 @@
   "resolved" "https://registry.npmjs.org/node-releases/-/node-releases-2.0.12.tgz"
   "version" "2.0.12"
 
+"node-typescript@^0.1.3":
+  "integrity" "sha512-EK34kMXvdXsVvtzLZVQN3ORdLTQCG0gSnhkQOF8vzrO8beXoXqIUNAGACF9c6N5LDDzEdM8YCXFjbuCE8Mz1Jg=="
+  "resolved" "https://registry.npmjs.org/node-typescript/-/node-typescript-0.1.3.tgz"
+  "version" "0.1.3"
+  dependencies:
+    "typescript" "0.8.3"
+
 "nopt@~4.0.1":
   "version" "4.0.1"
   dependencies:
@@ -11015,6 +11022,11 @@
   "integrity" "sha512-XH627E9vkeqhlZFQuL+UsyAXEnibT0kWR2FWONlr4sTjvxyJYnyefgrkyECLzM5NenmKzRAy2rR/OlYLA1HkZw=="
   "resolved" "https://registry.npmjs.org/typescript/-/typescript-5.1.3.tgz"
   "version" "5.1.3"
+
+"typescript@0.8.3":
+  "integrity" "sha512-42GP2FBgk+/q8Y0MRt0vJoWx6I7ADAKBTnz7gK++gwQtzC3h54Yltqb8z+EFozZ4OHhz6uwLmXFthCn4oDOGxg=="
+  "resolved" "https://registry.npmjs.org/typescript/-/typescript-0.8.3.tgz"
+  "version" "0.8.3"
 
 "uid-number@0.0.6":
   "version" "0.0.6"
