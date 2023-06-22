@@ -7,6 +7,7 @@ import {GoogleLogin} from "@react-oauth/google";
 import {GoogleOAuthProvider} from "@react-oauth/google";
 import jwtDecode from "jwt-decode";
 import Layout from "./component/layout/Layout";
+import Error from "./component/utill/Error";
 
 const GoogleLoginButton = () => {
     const clientId = '998416530637-vkpbjs93khbqj8t968jd0ls07aa2c9rj.apps.googleusercontent.com'
@@ -33,7 +34,7 @@ function App() {
     const [board, setBoard] = useState([]);
     useEffect(() => {
         const fetchData = async() => {
-            const res = await fetch('http://18.224.69.86' + '/board');
+            const res = await fetch('http://ec2-52-15-92-178.us-east-2.compute.amazonaws.com' + '/board');
             const result = res.json();
             return result;
         }
@@ -45,23 +46,23 @@ function App() {
        <BrowserRouter>
             <GlobalStyle />
            <Routes>
-               <Route path="/" />
-               <Route index element={<Layout />} />
+               <Route path="/" element={<Layout />}>
+           </Route>
+               <Route path="*" element={<Error />} />
            </Routes>
-           <header>
-               {board && board.map(x =>
-                   <BoardTest>
-                       {x.content}
-                   </BoardTest>
-               )
-               }
-               <p>
-                   노과리 프로젝트 배포
-                   저는 재현이에요
-               </p>
-               <GoogleLoginButton />
-           </header>
-
+           {/*<header>*/}
+           {/*    {board && board.map(x =>*/}
+           {/*        <BoardTest>*/}
+           {/*            {x.content}*/}
+           {/*        </BoardTest>*/}
+           {/*    )*/}
+           {/*    }*/}
+           {/*    <p>*/}
+           {/*        노과리 프로젝트 배포*/}
+           {/*        저는 재현이에요*/}
+           {/*    </p>*/}
+           {/*    <GoogleLoginButton />*/}
+           {/*</header>*/}
        </BrowserRouter>
     );
 }
