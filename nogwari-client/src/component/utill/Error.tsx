@@ -5,7 +5,6 @@ const ErrorWrap = styled.div`
   display: flex;
   justify-content: center;
   > div {
-    height: 100vh;
     align-items: center;
     margin-top: 200px;
     p {
