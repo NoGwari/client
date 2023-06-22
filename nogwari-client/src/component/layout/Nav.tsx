@@ -8,11 +8,25 @@ const NavContainer = styled.div`
   display: flex;
   width: 100%;
   height: 100px;
-  background-color: tomato;
+  background-color: whitesmoke;
 `
 const GirdBpx = styled.div`
-display: grid;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 1fr 2fr);
 `
+const LinkContainer = styled.div`
+border: 1px solid black;
+`
+
+const LinkBox: React.FC = () => {
+    return (
+        <LinkContainer>
+            <Link to={"/bc"}>
+                카테고리1
+            </Link>
+        </LinkContainer>
+    )
+}
 const Nav: React.FC = () => {
     return (
         <NavContainer>
@@ -20,13 +34,6 @@ const Nav: React.FC = () => {
                     <Link to={"/bc"}>
                         카테고리1
                     </Link>
-                    <Link to={"/bc"}>
-                        카테고리1
-                    </Link>
-                    <Link to={"/bc"}>
-                        카테고리1
-                    </Link>
-
                 </GirdBpx>
         </NavContainer>
     );
