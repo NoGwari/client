@@ -8,7 +8,7 @@ import {GoogleOAuthProvider} from "@react-oauth/google";
 import jwtDecode from "jwt-decode";
 import Layout from "./component/layout/Layout";
 import Error from "./component/utill/Error";
-import My from "./compoenet/utill/My";
+import My from "./component/utill/My";
 
 const GoogleLoginButton = () => {
     const clientId = '998416530637-vkpbjs93khbqj8t968jd0ls07aa2c9rj.apps.googleusercontent.com'
