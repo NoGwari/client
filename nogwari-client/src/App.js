@@ -9,6 +9,7 @@ import jwtDecode from "jwt-decode";
 import Layout from "./component/layout/Layout";
 import Error from "./component/utill/Error";
 import My from "./component/utill/My";
+import Board from "./pages/board/Board";
 
 const GoogleLoginButton = () => {
     const clientId = '998416530637-vkpbjs93khbqj8t968jd0ls07aa2c9rj.apps.googleusercontent.com'
@@ -35,7 +36,7 @@ function App() {
     const [board, setBoard] = useState([]);
     useEffect(() => {
         const fetchData = async() => {
-            const res = await fetch('http://ec2-52-15-92-178.us-east-2.compute.amazonaws.com' + '/board');
+            const res = await fetch('http://ec2-13-209-73-184.ap-northeast-2.compute.amazonaws.com' + '/board');
             const result = res.json();
             return result;
         }
@@ -49,8 +50,9 @@ function App() {
            <Routes>
                <Route path="/" element={<Layout />}>
            </Route>
-               <Route path="*" element={<Error />} />
+               <Route path="board" element={<Board />} />
                <Route path="my" element={<My />} />
+               <Route path="*" element={<Error />} />
            </Routes>
            {/*<header>*/}
            {/*    {board && board.map(x =>*/}

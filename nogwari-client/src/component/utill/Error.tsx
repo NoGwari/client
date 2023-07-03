@@ -26,7 +26,7 @@ const ErrorWrap = styled.div`
   }
 `;
 
-const 사공사 = styled.div`
+const Sagongsa = styled.div`
   display: flex;
   font-size: 100px;
   font-weight: 600;
@@ -43,9 +43,9 @@ function Error(): JSX.Element {
     return (
         <ErrorWrap>
             <div>
-                    <사공사>
+                    <Sagongsa>
                         404
-                    </사공사>
+                    </Sagongsa>
                     <p>
                         없는 페이지입니다. 하단의 버튼을 눌러 이동할 수 있어요!
                     </p>

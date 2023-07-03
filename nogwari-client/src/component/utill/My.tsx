@@ -1,5 +1,3 @@
-import styled from "styled-components";
-import {useNavigate} from "react-router";
 import Layout from "../layout/Layout";
 
 function My(): JSX.Element {

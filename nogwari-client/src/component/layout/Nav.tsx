@@ -1,6 +1,5 @@
 import React from "react";
 import {Link} from "react-router-dom";
-import {HeaderContainer, HeaderLogo, ServiceWrap} from "./Header";
 import styled from "styled-components";
 
 const NavContainer = styled.div`
