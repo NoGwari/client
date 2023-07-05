@@ -10,11 +10,9 @@ function Board(): JSX.Element {
         apiGBoard("");
     }, []);
     return (
-        <>
-                <BoardContainer>
-                  <p>보드</p>
-                </BoardContainer>
-        </>
+        <BoardContainer>
+            <p>보드</p>
+        </BoardContainer>
     );
 }
 

@@ -26,6 +26,7 @@ const LinkBox: React.FC = () => {
         </LinkContainer>
     )
 }
+
 const Nav: React.FC = () => {
     return (
         <NavContainer>

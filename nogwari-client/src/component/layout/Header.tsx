@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import {Link} from "react-router-dom";
 
+
 export const HeaderContainer = styled.header`
   display: flex;
   align-items: center;
@@ -45,7 +46,7 @@ const Header: React.FC = () => {
         <HeaderContainer>
             <ServiceWrap>
                 <HeaderLogo>
-                    <Link to={"/a"}>
+                    <Link to={"/nogwari"}>
                         <img alt="노과리" src="/img/logo.PNG" />
                     </Link>
                 </HeaderLogo>

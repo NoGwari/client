@@ -1,4 +1,4 @@
-import {useEffect, useState} from "react";
+import React, { lazy, Suspense, useState } from "react";
 import styled from "styled-components";
 import { GlobalStyle } from "./styles/globalStyles.ts";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
@@ -9,7 +9,8 @@ import jwtDecode from "jwt-decode";
 import Layout from "./component/layout/Layout";
 import Error from "./component/utill/Error";
 import My from "./component/utill/My";
-import Board from "./pages/board/Board";
+
+const BoardPages = lazy(() => import("./pages/board"));
 
 const GoogleLoginButton = () => {
     const clientId = '998416530637-vkpbjs93khbqj8t968jd0ls07aa2c9rj.apps.googleusercontent.com'
@@ -34,24 +35,28 @@ const BoardTest = styled.div`
 `;
 function App() {
     const [board, setBoard] = useState([]);
-    useEffect(() => {
-        const fetchData = async() => {
-            const res = await fetch('http://ec2-13-209-73-184.ap-northeast-2.compute.amazonaws.com' + '/board');
-            const result = res.json();
-            return result;
-        }
-        fetchData().then(res => setBoard(res));
-
-    }, []);
+    // useEffect(() => {
+    //     const fetchData = async() => {
+    //         const res = await fetch('http://ec2-13-209-73-184.ap-northeast-2.compute.amazonaws.com' + '/board');
+    //         const result = res.json();
+    //         return result;
+    //     }
+    //     fetchData().then(res => setBoard(res));
+    //
+    // }, []);
 
     return (
        <BrowserRouter>
             <GlobalStyle />
            <Routes>
-               <Route path="/" element={<Layout />}>
-           </Route>
-               <Route path="board" element={<Board />} />
-               <Route path="my" element={<My />} />
+               <Route path="/nogwari" element={<Layout />}>
+                   <Route path="my" element={<My />} />
+               </Route>
+               <Route path="board/*" element={
+                   <Suspense fallback={<> 로딩중입니다. </>}>
+                       <BoardPages />
+                   </Suspense>
+               } />
                <Route path="*" element={<Error />} />
            </Routes>
            {/*<header>*/}
