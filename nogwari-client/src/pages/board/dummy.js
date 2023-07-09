@@ -72,3 +72,4 @@ const boardDummy = [
         "categoryName": "category1"
     }
 ]
+export default boardDummy;
