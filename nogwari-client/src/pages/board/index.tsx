@@ -1,13 +1,14 @@
 import {styled} from "../../styles/theme";
 import {useEffect} from "react";
 import {apiGBoard} from "../../store/modules/auth/authR";
+import Layout from "component/layout/Layout";
 import boardDummy from "./dummy";
 
 const defaultImageSrc = '../../img/boardlist.png'
 
 //카테고리 이름
 const List = styled.div`
-  margin-top: 120px;
+  margin-top: 50px;
   font-size: 17px;
   margin-left:20px;
   font-weight:bold;
@@ -82,6 +83,7 @@ function Board(): JSX.Element {
     }, []);
     return (
       <>
+        <Layout></Layout>
         <List>전체게시글</List>
         <BoardListContainer>
         {boardDummy.map(item => (
