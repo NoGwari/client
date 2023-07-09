@@ -34,7 +34,7 @@ const BoardItemContainer = styled.div`
 const CategoryTitle = styled.button`
   border : 1px solid black;
   border-radius:10px;
-  padding : 2px;
+  padding : 3px;
   background-color : #bebebe;
   margin-left : 2px;
   margin-right : 2px;
@@ -93,7 +93,7 @@ function Board(): JSX.Element {
                   <BoardTitle>{item.title}</BoardTitle>
               </BoardTitleContainer>
               <BoardContent>
-                 {item.userNickname}  {item.createdAt}  
+                {item.userId} &middot; {item.createdAt? item.createdAt : "0000-00-00T00:00:00:000Z"} &middot; {item.views} &middot; {item.hits}
               </BoardContent>
             </BoardContainer>
           </BoardItemContainer>
