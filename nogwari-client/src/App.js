@@ -37,7 +37,7 @@ function App() {
     const [board, setBoard] = useState([]);
     useEffect(() => {
         const fetchData = async() => {
-            const res = await fetch('http://ec2-13-209-73-184.ap-northeast-2.compute.amazonaws.com' + '/board');
+            const res = await fetch('http://ec2-15-164-55-240.ap-northeast-2.compute.amazonaws.com/board');
             const result = res.json();
             return result;
         }
