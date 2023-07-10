@@ -3,6 +3,9 @@ import {useEffect} from "react";
 import {apiGBoard} from "../../store/modules/auth/authR";
 import Layout from "component/layout/Layout";
 import boardDummy from "./dummy";
+import {FiThumbsUp} from 'react-icons/fi';
+import {FiThumbsDown} from 'react-icons/fi';
+import {AiOutlineEye} from 'react-icons/ai';
 
 const defaultImageSrc = '../../img/boardlist.png'
 
@@ -29,6 +32,8 @@ const BoardItemContainer = styled.div`
   border-radius: 8px;
   display: flex;
   flex-direction: row;
+  border : 1px solid #323232 ;
+
 `;
 
 
@@ -96,12 +101,15 @@ function Board(): JSX.Element {
                   <BoardTitle>{item.title}</BoardTitle>
               </BoardTitleContainer>
               <BoardContent>
-                {item.userId} &middot; {item.createdAt? item.createdAt : "0000-00-00T00:00:00:000Z"} &middot; {item.views} &middot; {item.hits}
+                {item.userId} &middot; {item.createdAt? item.createdAt : "0000-00-00T00:00:00:000Z"}
+                &nbsp; <AiOutlineEye />{item.views} &middot;&nbsp; <FiThumbsUp />{item.hits} &middot;&nbsp; <FiThumbsDown />{item.dislikes}
+                
               </BoardContent>
             </BoardContainer>
           </BoardItemContainer>
         ))}
       </BoardListContainer>
+      
       </>
     );
   }
