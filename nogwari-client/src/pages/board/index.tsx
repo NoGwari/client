@@ -25,7 +25,7 @@ const BoardItemContainer = styled.div`
   width: 100%;
   margin: 3px;
   padding: 16px;
-  background-color: #f0f0f0;
+  background-color: #f9f9f9;
   border-radius: 8px;
   display: flex;
   flex-direction: row;
@@ -34,12 +34,13 @@ const BoardItemContainer = styled.div`
 
 const CategoryTitle = styled.button`
   border : 1px solid black;
-  border-radius:10px;
+  border-radius:2px;
   padding : 3px;
-  background-color : #bebebe;
+  background-color : #e2e2e2;
   margin-left : 2px;
   margin-right : 2px;
   font-size:13px;
+  font-weight : bold;
 `;
 
 const BoardTitle = styled.h4`
