@@ -34,11 +34,11 @@ const Sagongsa = styled.div`
   justify-content: center;
 `;
 function Error(): JSX.Element {
-    const navigate = useNavigate();
+    // const navigate = useNavigate();
 
-    const movePrevPage = () => {
-            navigate(-1);
-    };
+    // const movePrevPage = () => {
+    //         navigate(-1);
+    // };
 
     return (
         <ErrorWrap>
@@ -50,7 +50,7 @@ function Error(): JSX.Element {
                         없는 페이지입니다. 하단의 버튼을 눌러 이동할 수 있어요!
                     </p>
                     <button
-                        onClick={movePrevPage}
+                        onClick={() => console.log(1)}
                     >돌아가기</button>
             </div>
         </ErrorWrap>

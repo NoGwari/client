@@ -1,7 +1,7 @@
 import React, { useEffect, lazy, Suspense, useState } from "react";
 import styled from "styled-components";
 import { GlobalStyle } from "./styles/globalStyles.ts";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import {BrowserRouter, Link, Route, Routes} from "react-router-dom";
 
 import {GoogleLogin} from "@react-oauth/google";
 import {GoogleOAuthProvider} from "@react-oauth/google";
@@ -59,6 +59,7 @@ function App() {
                } />
                <Route path="*" element={<Error />} />
            </Routes>
+           <Link to='http://ec2-13-209-73-184.ap-northeast-2.compute.amazonaws.com/auth/google'>구글 호출</Link>
            {/*<header>*/}
            {/*    {board && board.map(x =>*/}
            {/*        <BoardTest>*/}
