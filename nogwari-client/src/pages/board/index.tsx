@@ -88,7 +88,7 @@ function Board(): JSX.Element {
         <BoardListContainer>
         {boardDummy.map(item => (
           <BoardItemContainer key={item.id}>
-            <BoardImage src={item.userImg ? item.userImg : defaultImageSrc}></BoardImage>
+            <BoardImage src={item.userImg ? item.userImg : defaultImageSrc  }></BoardImage>
             <BoardContainer>
               <BoardTitleContainer>
                   <CategoryTitle>{item.categoryName}</CategoryTitle>

@@ -13,7 +13,7 @@ export interface IAuth {
 
 export const apiGBoard = createAppThunk<string, any>(`${name}`, async (params: "", thunkAPI) => {
     const res = await axios.get<IRes<any>>    (
-        `http://ec2-13-209-73-184.ap-northeast-2.compute.amazonaws.com/board`,
+        `http://ec2-54-180-29-14.ap-northeast-2.compute.amazonaws.com/`,
         { params }
     );
     return res.data;
