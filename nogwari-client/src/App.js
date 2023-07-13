@@ -1,5 +1,4 @@
 import React, { useEffect, lazy, Suspense, useState } from "react";
-import styled from "styled-components";
 import { GlobalStyle } from "./styles/globalStyles.ts";
 import {BrowserRouter, Link, Route, Routes} from "react-router-dom";
 
@@ -9,6 +8,7 @@ import jwtDecode from "jwt-decode";
 import Layout from "./component/layout/Layout";
 import Error from "./component/utill/Error";
 import My from "./component/utill/My";
+import {Http} from "./common";
 
 const BoardPages = lazy(() => import("./pages/board"));
 
@@ -32,15 +32,15 @@ const GoogleLoginButton = () => {
 
 function App() {
     const [board, setBoard] = useState([]);
-    // useEffect(() => {
-    //     const fetchData = async() => {
-    //         const res = await fetch('http://ec2-15-164-55-240.ap-northeast-2.compute.amazonaws.com' + '/board');
-    //         const result = res.json();
-    //         return result;
-    //     }
-    //     fetchData().then(res => setBoard(res));
-    //
-    // }, []);
+    useEffect(() => {
+        const fetchData = async() => {
+            const res = await fetch(Http + '/board');
+            const result = res.json();
+            return result;
+        }
+        fetchData().then(res => setBoard(res));
+
+    }, []);
 
     return (
        <BrowserRouter>
