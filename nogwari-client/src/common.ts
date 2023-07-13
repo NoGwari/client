@@ -5,8 +5,7 @@ import {
 } from "@reduxjs/toolkit";
 import { useSelector } from "react-redux";
 import { shallowEqual } from "react-redux";
-import { useDispatch } from "react-redux";
-import axios, { AxiosInstance } from "axios";
+import axios, {AxiosInstance, CreateAxiosDefaults} from "axios";
 
 export type ExtraArg<T> = { store: () => T };
 export type AsyncThunkConfig<RootState, T = unknown> = {
@@ -25,8 +24,6 @@ export interface IConfig {
 
 export interface IURL {
     BACKEND_URL?: string;
-    BACKEND_R_URL?: string;
-    BACKEND_LOGIN_URL?: string;
 }
 
 export const config: IConfig = {
@@ -37,7 +34,6 @@ export const config: IConfig = {
     },
     Url: {
         BACKEND_URL: process.env.REACT_APP_BACKEND_URL,
-        BACKEND_R_URL: process.env.REACT_APP_BACKEND_R_URL,
     },
 };
 
@@ -45,7 +41,7 @@ export const config: IConfig = {
 /**
  * axios 생성
  */
-const Http: AxiosInstance = axios.create({
+export const Http: AxiosInstance = axios.create({
     baseURL: config.Url.BACKEND_URL,
     headers: {
         // enctype: "multipart/form-data",
@@ -57,7 +53,7 @@ const Http: AxiosInstance = axios.create({
         encode: encodeURIComponent,
         indexes: null,
     },
-});
+} as  CreateAxiosDefaults);
 
 /**
  *
@@ -146,20 +142,19 @@ export function returnRes<T = undefined, K = undefined>(data?: T, page?: K) {
         content: data,
         data: data,
         page: page,
-    } as IRes<T, K>;
+    } as IRes<T>;
 }
 
 
 /**
 * 서버에서 반환되는 JSON 값 설정
 */
-export interface IRes<T, P = undefined> {
+export interface IRes<T> {
     apiLink?: string;
     code: number;
     content?: T;
     data?: T;
     list?: Array<T>;
-    page?: P;
     success?: boolean;
 
     message: string;

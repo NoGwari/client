@@ -1,19 +1,20 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import {createAppThunk} from "../common";
-import {IRes } from "../../../common";
-import axios from "axios";
+import {Http, IRes} from "../../../common";
+import {IBoard, IReqBoard} from "./authVo";
 
 // 이름 설정
-const name = "auth";
+const name = "board";
 
-export interface IAuth {
-    name: string;
-    token: string;
+export const API_BOARD = "board";
+
+export interface Board {
+    board: Array<IBoard>
 }
 
-export const apiGBoard = createAppThunk<string, any>(`${name}`, async (params: "", thunkAPI) => {
-    const res = await axios.get<IRes<any>>    (
-        `http://ec2-13-209-73-184.ap-northeast-2.compute.amazonaws.com/board`,
+export const apiGBoard = createAppThunk<Array<IBoard>, IReqBoard>(`${name}`, async (params: IReqBoard, thunkAPI) => {
+    const res = await Http.get<IRes<Array<IBoard>>>(
+        `${API_BOARD}`,
         { params }
     );
     return res.data;
@@ -23,14 +24,16 @@ export const apiGBoard = createAppThunk<string, any>(`${name}`, async (params: "
 const loginSlice = createSlice({
     name,
     initialState: {
-        name: "",
-    } as IAuth,
+        board: []
+    } as Board,
     reducers: {
-        rdxName(state: IAuth, action: PayloadAction<string>) {
-            state.name = action.payload;
+        rdxBoard(
+            state,
+            action: PayloadAction<IBoard[]>
+        ) {
+            state.board = action.payload;
         },
     },
 });
-export const { rdxName } = loginSlice.actions;
-// data 를 관리하는 reducer 기본 반환 설정
+export const { rdxBoard } = loginSlice.actions;
 export default loginSlice.reducer;

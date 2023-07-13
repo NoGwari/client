@@ -1,17 +1,12 @@
 import { AnyAction, ReducersMapObject } from "@reduxjs/toolkit";
 import { combineReducers } from "redux";
-import auth from "./auth/authR";
-
-interface IAuth {
-    name: string;
-    token: string;
-}
+import board, { Board } from "./auth/authR";
 
 /**
  * state interface 설정
  */
 export interface State {
-    auth: IAuth;
+    board: Board;
 }
 
 /**
@@ -26,7 +21,7 @@ const rootReducer = (state: State | undefined, action: AnyAction) => {
     switch (action.type) {
         default:
             return combineReducers({
-                auth,
+                board,
             } as ReducersMapObject)(state, action);
     }
 };
