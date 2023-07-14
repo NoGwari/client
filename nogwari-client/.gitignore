@@ -24,3 +24,4 @@ yarn-error.log*
 
 .env
 clinet-key.pem
+nogwari_client.pem
