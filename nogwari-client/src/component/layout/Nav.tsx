@@ -20,7 +20,7 @@ border: 1px solid black;
 const LinkBox: React.FC = () => {
     return (
         <LinkContainer>
-            <Link to={"/bc"}>
+            <Link to={"/board"}>
                 카테고리1
             </Link>
         </LinkContainer>
@@ -31,7 +31,7 @@ const Nav: React.FC = () => {
     return (
         <NavContainer>
                 <GirdBpx>
-                    <Link to={"/bc"}>
+                    <Link to={"/board"}>
                         카테고리1
                     </Link>
                 </GirdBpx>
