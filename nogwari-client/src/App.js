@@ -1,7 +1,6 @@
 import React, { useEffect, lazy, Suspense, useState } from "react";
 import { GlobalStyle } from "./styles/globalStyles.ts";
 import {BrowserRouter, Link, Route, Routes} from "react-router-dom";
-
 import {GoogleLogin} from "@react-oauth/google";
 import {GoogleOAuthProvider} from "@react-oauth/google";
 import jwtDecode from "jwt-decode";
