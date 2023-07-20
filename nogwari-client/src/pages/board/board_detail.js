@@ -4,6 +4,7 @@ import {useEffect, useState} from "react";
 import {Http} from "common";
 import Layout from "component/layout/Layout";
 import styled from "styled-components";
+import DeleteBoard from "./DeleteBoard/DeleteBoard"
 
 import {FiThumbsUp} from "react-icons/fi";
 import {FiThumbsDown} from "react-icons/fi";
@@ -64,6 +65,7 @@ function BoardDetailPage() {
                 {item.hits} &middot;&nbsp; <FiThumbsDown />
                 {item.dislikes}
             </BoardContent>
+            <DeleteBoard/>
         </>
     );
 }
