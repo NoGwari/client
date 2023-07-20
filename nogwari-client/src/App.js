@@ -8,7 +8,8 @@ import Layout from "./component/layout/Layout";
 import Error from "./component/utill/Error";
 import My from "./component/utill/My";
 import {Http} from "./common";
-
+import CreateBoard from "pages/board/CreateBoard/CreateBoard.js";
+import LoginPage from "./pages/auth/LoginPage.js"
 const BoardPages = lazy(() => import("./pages/board"));
 
 const GoogleLoginButton = () => {
@@ -53,6 +54,8 @@ function App() {
                        <BoardPages />
                    </Suspense>
                } />
+               <Route path="/createBoard" element={<CreateBoard/>}></Route>
+               <Route path="/login" element={<LoginPage/>}></Route>
                <Route path="*" element={<Error />} />
            </Routes>
            <Link to='http://ec2-13-209-73-184.ap-northeast-2.compute.amazonaws.com/auth/google'>구글 호출</Link>
