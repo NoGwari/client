@@ -1,14 +1,14 @@
-import {styled} from "../../styles/theme";
-import Layout from "component/layout/Layout";
-import {FiThumbsUp} from "react-icons/fi";
-import {FiThumbsDown} from "react-icons/fi";
-import {AiOutlineEye} from "react-icons/ai";
-import {Link} from "react-router-dom";
-import React, {useEffect, lazy, Suspense, useState} from "react";
-import {useParams} from "react-router-dom";
-import {Http} from "../../common";
+import { styled } from '../../styles/theme';
+import Layout from 'component/layout/Layout';
+import { FiThumbsUp } from 'react-icons/fi';
+import { FiThumbsDown } from 'react-icons/fi';
+import { AiOutlineEye } from 'react-icons/ai';
+import { Link } from 'react-router-dom';
+import React, { useEffect, lazy, Suspense, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import { Http } from '../../common';
 
-const defaultImageSrc = "../../img/boardlist.png";
+const defaultImageSrc = '../../img/boardlist.png';
 
 const List = styled.div`
     margin-top: 50px;
@@ -102,7 +102,7 @@ function CreateTime(timestamp) {
     const day = past.getDate();
 
     if (!timestamp) {
-        return "알수없음";
+        return '알수없음';
     }
 
     if (days >= 1 && days <= 7) {
@@ -114,14 +114,14 @@ function CreateTime(timestamp) {
     } else if (days > 7) {
         return `${month}.${day}`;
     }
-    return "방금 전";
+    return '방금 전';
 }
 
 function Board() {
     const [board, setBoard] = useState([]);
     useEffect(() => {
         const fetchData = async () => {
-            const res = await fetch(Http + "/board");
+            const res = await fetch(Http + '/board');
             const result = await res.json();
             setBoard(result);
         };
@@ -154,11 +154,12 @@ function Board() {
                 ))}
             </BoardListContainer>
             <WriteContainer>
-                <Write>글쓰기</Write>
+                <Write>
+                    <Link to={`/createBoard`}>글쓰기</Link>
+                </Write>
             </WriteContainer>
         </>
     );
 }
 
 export default Board;
-//pull test
