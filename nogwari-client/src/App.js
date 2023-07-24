@@ -53,6 +53,7 @@ function App() {
                 <Route path="/updateBoard/:itemId" element={<UpdateBoard />} />
                 <Route path="/createBoard" element={<CreateBoard />}></Route>
                 <Route path="/login" element={<LoginPage />}></Route>
+                <Route path="/" element={<Board/>}></Route>
                 <Route path="*" element={<Error />} />
             </Routes>
             <Link to="http://ec2-13-209-73-184.ap-northeast-2.compute.amazonaws.com/auth/google">구글 호출</Link>
