@@ -103,17 +103,18 @@ function CreateTime(timestamp) {
     const hours = Math.floor(minutes / 60);
     const days = Math.floor(hours / 24);
 
-    if (days >= 1 && days <= 7) {
+    if (days >= 7) {
+        const Month = past.getMonth() + 1;
+        const Day = past.getDate();
+        return `${Month}월 ${Day}일`;
+    } else if (days >= 1) {
         return `${days}일 전`;
     } else if (hours >= 1) {
         return `${hours}시간 전`;
     } else if (minutes >= 1) {
         return `${minutes}분 전`;
-    } else if (days > 7) {
-        const Month = past.getMonth() + 1;
-        const Day = past.getDate();
-        return `${Month}월 ${Day}일`;
     }
+
     return '방금 전';
 }
 
