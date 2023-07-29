@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Http } from "../../../common";
 import { useParams } from "react-router-dom";
 
-function CreateBoard() {
+function DeleteBoard() {
   const params = useParams().itemId;
   console.log(params);
   const deletePost = async () => {
@@ -19,11 +19,9 @@ function CreateBoard() {
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }
-
-      const data = await response.json();
-      return data;
+      return;
     } catch (error) {
-      console.error('Error creating new posting:', error.message);
+      console.error('Error Deleting posting:', error.message);
       throw error;
     }
   };
@@ -42,4 +40,4 @@ function CreateBoard() {
   );
 }
 
-export default CreateBoard;
+export default DeleteBoard;
