@@ -91,6 +91,10 @@ const Write = styled.button`
     border-radius: 4px;
 `;
 function CreateTime(timestamp) {
+    if (!timestamp) {
+        return '알수없음';
+    }
+
     const now = new Date();
     const past = new Date(timestamp);
     const timeDiff = now.getTime() - past.getTime();
@@ -98,12 +102,6 @@ function CreateTime(timestamp) {
     const minutes = Math.floor(seconds / 60);
     const hours = Math.floor(minutes / 60);
     const days = Math.floor(hours / 24);
-    const month = past.getMonth() + 1;
-    const day = past.getDate();
-
-    if (!timestamp) {
-        return '알수없음';
-    }
 
     if (days >= 1 && days <= 7) {
         return `${days}일 전`;
@@ -112,7 +110,9 @@ function CreateTime(timestamp) {
     } else if (minutes >= 1) {
         return `${minutes}분 전`;
     } else if (days > 7) {
-        return `${month}.${day}`;
+        const Month = past.getMonth() + 1;
+        const Day = past.getDate();
+        return `${Month}월 ${Day}일`;
     }
     return '방금 전';
 }

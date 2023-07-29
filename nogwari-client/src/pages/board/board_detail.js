@@ -60,11 +60,15 @@ function BoardDetailPage() {
                 <BoardTitle>{item.title}</BoardTitle>
             </BoardTitleContainer>
             <BoardContent>
+                {item.userImg}
                 {item.userNickname} &middot; &nbsp; <AiOutlineEye />
                 {item.views} &middot;&nbsp; <FiThumbsUp />
                 {item.hits} &middot;&nbsp; <FiThumbsDown />
                 {item.dislikes}
             </BoardContent>
+            <hr/>
+            {item.content}
+            <hr/>
             <DeleteBoard/>
         </>
     );
