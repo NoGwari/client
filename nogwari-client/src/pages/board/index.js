@@ -162,6 +162,4 @@ function Board() {
         </>
     );
 }
-//컴퓨터 이동 확인
-
 export default Board;
