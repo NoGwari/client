@@ -2,8 +2,8 @@ import React, { useState, useRef } from 'react';
 import { Http } from '../../../common';
 import styled from 'styled-components';
 import { useParams } from 'react-router';
-import {useNavigate} from 'react-router-dom';
-
+import { useNavigate } from 'react-router-dom';
+import Layout from 'component/layout/Layout';
 const Title = styled.div``;
 const Content = styled.textarea``;
 
@@ -78,6 +78,7 @@ function CreateBoard() {
 
     return (
         <form onSubmit={handleSubmit}>
+            <Layout></Layout>
             <Title>
                 <input value={title} onChange={onChangeTitle} type="text" placeholder="제목" maxLength={20} />
             </Title>
