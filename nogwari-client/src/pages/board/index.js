@@ -1,7 +1,6 @@
 import { styled } from '../../styles/theme';
 import Layout from 'component/layout/Layout';
 import { FiThumbsUp } from 'react-icons/fi';
-import { FiThumbsDown } from 'react-icons/fi';
 import { AiOutlineEye } from 'react-icons/ai';
 import { Link } from 'react-router-dom';
 import React, { useEffect, lazy, Suspense, useState } from 'react';
@@ -146,8 +145,7 @@ function Board() {
                                     {item.userNickname} &middot; {CreateTime(item.createdAt)}
                                     &nbsp; <AiOutlineEye />
                                     {item.views} &middot;&nbsp; <FiThumbsUp />
-                                    {item.hits} &middot;&nbsp; <FiThumbsDown />
-                                    {item.dislikes}
+                                    {item.hits}
                                 </BoardContent>
                             </BoardContainer>
                         </BoardItemContainer>
