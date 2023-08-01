@@ -1,7 +1,6 @@
 import { styled } from '../../styles/theme';
 import Layout from 'component/layout/Layout';
 import { FiThumbsUp } from 'react-icons/fi';
-import { FiThumbsDown } from 'react-icons/fi';
 import { AiOutlineEye } from 'react-icons/ai';
 import { Link } from 'react-router-dom';
 import React, { useEffect, lazy, Suspense, useState } from 'react';
@@ -91,6 +90,10 @@ const Write = styled.button`
     border-radius: 4px;
 `;
 function CreateTime(timestamp) {
+    if (!timestamp) {
+        return '알수없음';
+    }
+
     const now = new Date();
     const past = new Date(timestamp);
     const timeDiff = now.getTime() - past.getTime();
@@ -98,22 +101,19 @@ function CreateTime(timestamp) {
     const minutes = Math.floor(seconds / 60);
     const hours = Math.floor(minutes / 60);
     const days = Math.floor(hours / 24);
-    const month = past.getMonth() + 1;
-    const day = past.getDate();
 
-    if (!timestamp) {
-        return '알수없음';
-    }
-
-    if (days >= 1 && days <= 7) {
+    if (days >= 7) {
+        const Month = past.getMonth() + 1;
+        const Day = past.getDate();
+        return `${Month}월 ${Day}일`;
+    } else if (days >= 1) {
         return `${days}일 전`;
     } else if (hours >= 1) {
         return `${hours}시간 전`;
     } else if (minutes >= 1) {
         return `${minutes}분 전`;
-    } else if (days > 7) {
-        return `${month}.${day}`;
     }
+
     return '방금 전';
 }
 
@@ -145,8 +145,7 @@ function Board() {
                                     {item.userNickname} &middot; {CreateTime(item.createdAt)}
                                     &nbsp; <AiOutlineEye />
                                     {item.views} &middot;&nbsp; <FiThumbsUp />
-                                    {item.hits} &middot;&nbsp; <FiThumbsDown />
-                                    {item.dislikes}
+                                    {item.hits}
                                 </BoardContent>
                             </BoardContainer>
                         </BoardItemContainer>
@@ -161,5 +160,4 @@ function Board() {
         </>
     );
 }
-
 export default Board;
