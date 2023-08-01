@@ -23,7 +23,7 @@ function CreateBoard() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ realid: id, password }), // 로그인 요청 데이터 전송
+        body: JSON.stringify({ email: id, password }), // 로그인 요청 데이터 전송
       });
 
       if (!response.ok) {

@@ -40,6 +40,21 @@ export const HeaderLogo = styled.h1`
     width: 85px;
   }
 `;
+export const Navbar = styled.li`
+  display: flex;
+  width: 100px;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  color: white;
+`;
+export const NavbarWrap = styled.ul`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+  color: white;
+`;
 
 const Header: React.FC = () => {
     return (
@@ -51,6 +66,14 @@ const Header: React.FC = () => {
                     </Link>
                 </HeaderLogo>
             </ServiceWrap>
+        <NavbarWrap>
+          <Navbar>
+          <Link to="/signin">회원가입</Link>
+          </Navbar>
+          <Navbar>
+          <Link to="/login">로그인</Link>
+          </Navbar>
+        </NavbarWrap>
         </HeaderContainer>
     );
 };

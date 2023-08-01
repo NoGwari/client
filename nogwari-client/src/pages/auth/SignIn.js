@@ -28,6 +28,7 @@ function SignIn() {
 
 const signIn = async(e) =>{
     e.preventDefault();
+    console.log("ehlsi?");
     try {
         const response = await fetch(Http + '/auth/signup', {
         method: 'POST',
@@ -49,22 +50,36 @@ const signIn = async(e) =>{
 
 const emailVarify = async (e) => {
     e.preventDefault();
+    try {
+      const response = await fetch(Http + '/auth/mailsubmit', {
+      method: 'POST',
+      headers: {
+          'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ email: email}), // 이메일 보내기
+      });
+      console.log("인증번호 보내는증");
+
+      if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.message);
+      }
+
+  } catch (error) {
+      console.error('Error during login:', error.message);
+  }    
 
   };
 
   return (
     <>
-    <form onSubmit={signIn}>
-        <div onSubmit={emailVarify }>
         <input
             value={email}
             onChange={onChangeEmail}
             type="text"
             placeholder="이메일"
-            maxLength={20}
         />
-        <button type="submit">인증</button>
-        </div>
+        <button type="submit" onClick={emailVarify}>인증</button>
       <input
         value={password}
         onChange={onChangePassword}
@@ -85,8 +100,7 @@ const emailVarify = async (e) => {
         {!checkPasswordMatch() && (
           <p style={{ color: "red" }}>비밀번호가 일치하지 않습니다.</p>
         )}
-        <button type="submit">로그인</button>
-      </form>
+        <button type="submit" onClick={signIn}>로그인</button>
       </>   
   );
 }

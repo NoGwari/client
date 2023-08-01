@@ -1,6 +1,7 @@
 import React from "react";
 import {Link} from "react-router-dom";
 import styled from "styled-components";
+import Navbar from "pages/Navbar";
 
 const NavContainer = styled.div`
   margin-top: 70px;
@@ -19,16 +20,19 @@ border: 1px solid black;
 
 const LinkBox: React.FC = () => {
     return (
+        <>
         <LinkContainer>
             <Link to={"/bc"}>
                 카테고리1
             </Link>
         </LinkContainer>
+        </>
     )
 }
 
 const Nav: React.FC = () => {
     return (
+        <>
         <NavContainer>
                 <GirdBpx>
                     <Link to={"/bc"}>
@@ -36,6 +40,7 @@ const Nav: React.FC = () => {
                     </Link>
                 </GirdBpx>
         </NavContainer>
+        </>
     );
 };
 
