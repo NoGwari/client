@@ -69,12 +69,12 @@ function App() {
             {/*    }*/}
             {/*    <p>*/}
             {/*        노과리 프로젝트 배포*/}
-            {/*        git pull*/}
+            {/*        저는 재현이에요*/}
             {/*    </p>*/}
             {/*    <GoogleLoginButton />*/}
             {/*</header>*/}
         </BrowserRouter>
     );
 }
-//git pull
+
 export default App;
