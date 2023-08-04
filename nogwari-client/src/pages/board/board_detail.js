@@ -99,7 +99,7 @@ function BoardDetailPage() {
                 {item.userImg}
                 {item.userNickname} &middot; &nbsp; <AiOutlineEye />
                 {item.views} &middot;&nbsp; <FiThumbsUp onClick={handleLikeClick} style={{ cursor: 'pointer' }} />
-                {likes} {item.hits}
+                {likes}
             </BoardContent>
             <hr />
             {item.content}
