@@ -14,6 +14,7 @@ import Board from './pages/board/index.js';
 import SignIn from 'pages/auth/SignIn.js';
 import BoardDetailPage from '../src/pages/board/board_detail.js';
 import UpdateBoard from './pages/board/UpdateBoard/UpdateBoard.js';
+import Mypage from 'pages/auth/mypage.js';
 const BoardPages = lazy(() => import('./pages/board'));
 
 const GoogleLoginButton = () => {
@@ -39,9 +40,7 @@ function App() {
         <BrowserRouter>
             <GlobalStyle />
             <Routes>
-                <Route path="/nogwari" element={<Layout />}>
-                    <Route path="my" element={<My />} />
-                </Route>
+                <Route path="/nogwari" element={<Layout />}></Route>
                 <Route
                     path="board/*"
                     element={
@@ -50,6 +49,7 @@ function App() {
                         </Suspense>
                     }
                 />
+                <Route path="/mypage" element={<Mypage />} />
                 <Route path="/board/:itemId" element={<BoardDetailPage />} />
                 <Route path="/updateBoard/:itemId" element={<UpdateBoard />} />
                 <Route path="/createBoard" element={<CreateBoard />}></Route>
