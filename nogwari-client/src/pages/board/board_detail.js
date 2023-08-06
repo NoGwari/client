@@ -34,7 +34,6 @@ const BoardContent = styled.p`
 
 function BoardDetailPage() {
     const [board, setBoard] = useState([]);
-    const [likes, setLikes] = useState(0);
     useEffect(() => {
         const fetchData = async () => {
             const res = await fetch(Http + '/board');
@@ -48,45 +47,30 @@ function BoardDetailPage() {
     const id = Number(itemId);
     const item = board.find((item) => item.id === Number(id));
 
-    const postLike = async (boardId) => {
-        const apiUrl = `http://ec2-15-164-55-240.ap-northeast-2.compute.amazonaws.com/board/hits/${boardId}`;
-
+    const hitUrl = async () => {
         try {
-            const response = await fetch(apiUrl, {
-                method: 'POST', // 이 예제에서는 POST 요청을 보내도록 가정합니다.
+            const response = await fetch(Http + `/board/hits/${itemId}`, {
+                method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
                 },
             });
-
             if (!response.ok) {
                 throw new Error('Network response was not ok');
             }
 
             const data = await response.json();
-            return data;
+            setBoard((prevBoard) =>
+                prevBoard.map((item) => (item.id === data.id ? { ...item, hits: data.hits } : item))
+            );
         } catch (error) {
-            console.error('Error posting like:', error.message);
-            throw error;
+            console.error('Error posting like:', error);
         }
     };
 
     if (!item) {
         return <div></div>;
     }
-
-    const handleLikeClick = () => {
-        setLikes((prevLikes) => prevLikes + 1);
-
-        // API 호출
-        postLike(item.id)
-            .then((responseData) => {
-                console.log('좋아요가 성공적으로 저장되었습니다:', responseData);
-            })
-            .catch((error) => {
-                console.error('좋아요 저장 실패:', error.message);
-            });
-    };
 
     return (
         <>
@@ -98,8 +82,8 @@ function BoardDetailPage() {
             <BoardContent>
                 {item.userImg}
                 {item.userNickname} &middot; &nbsp; <AiOutlineEye />
-                {item.views} &middot;&nbsp; <FiThumbsUp onClick={handleLikeClick} style={{ cursor: 'pointer' }} />
-                {likes}
+                {item.views} &middot;&nbsp; <FiThumbsUp onClick={hitUrl} style={{ cursor: 'pointer' }} />
+                {item.hits}
             </BoardContent>
             <hr />
             {item.content}
