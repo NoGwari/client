@@ -49,10 +49,13 @@ function BoardDetailPage() {
 
     const hitUrl = async () => {
         try {
+            const token =
+                'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Mywia…wNjV9.wAlw9qxMphIksaVLmmaO_sgfIajr9hU1Hg3pioADuBw';
             const response = await fetch(Http + `/board/hits/${itemId}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
+                    Authorization: `Bearer ${token}`,
                 },
             });
             if (!response.ok) {
