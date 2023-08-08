@@ -15,3 +15,4 @@ function Mypage() {
 }
 
 export default Mypage;
+//git pull
