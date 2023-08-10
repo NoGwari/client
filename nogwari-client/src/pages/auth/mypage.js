@@ -1,5 +1,5 @@
 import React from 'react';
-import { useAuth } from './LoginInfo';
+import { useAuth } from './AuthContext';
 import Layout from 'component/layout/Layout';
 import styled from 'styled-components';
 
