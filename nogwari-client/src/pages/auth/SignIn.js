@@ -1,13 +1,11 @@
 import React, { useState } from 'react';
 import { Http } from '../../common';
-import { useAuth } from './AuthContext';
 
 function SignIn() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [passwordCheck, setPasswordCheck] = useState('');
     const [nickname, setNickname] = useState('');
-    const { setLoggedInUser } = useAuth();
 
     const onChangeEmail = (e) => {
         const { value } = e.target;
@@ -64,8 +62,6 @@ function SignIn() {
 
             if (!response.ok) {
                 const errorData = await response.json();
-                const data = await response.json();
-                setLoggedInUser(data);
                 throw new Error(errorData.message);
             }
         } catch (error) {
