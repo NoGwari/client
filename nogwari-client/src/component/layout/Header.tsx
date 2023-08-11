@@ -57,6 +57,9 @@ export const NavbarWrap = styled.ul`
 `;
 
 const Header: React.FC = () => {
+  const isNotLogin = () => {
+    return localStorage.getItem("token") === null;
+  };
     return (
         <HeaderContainer>
             <ServiceWrap>
@@ -67,12 +70,19 @@ const Header: React.FC = () => {
                 </HeaderLogo>
             </ServiceWrap>
         <NavbarWrap>
-          <Navbar>
-          <Link to="/signin">회원가입</Link>
-          </Navbar>
-          <Navbar>
-          <Link to="/login">로그인</Link>
-          </Navbar>
+  {  isNotLogin() ? ( 
+          <>
+            <Navbar>
+              <Link to="/signin">회원가입</Link>
+            </Navbar>
+            <Navbar>
+              <Link to="/login">로그인</Link>
+            </Navbar>
+          </>
+        ) : 
+        <Navbar>
+        <Link to="/mypage">마이페이지</Link>
+      </Navbar>}
         </NavbarWrap>
         </HeaderContainer>
     );
