@@ -59,6 +59,14 @@ function CreateBoard() {
         }
     };
 
+    const handleImageDelete = (index) => {
+        setImageFiles((prevImages) => {
+            const newImages = [...prevImages];
+            newImages.splice(index, 1); // 해당 인덱스의 이미지 제거
+            return newImages;
+        });
+    };
+
     const handleSubmit = (e) => {
         e.preventDefault();
 
@@ -85,13 +93,13 @@ function CreateBoard() {
             body: formData,
         })
             .then((response) => {
+                console.log(response);
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
                 }
                 return response.json();
             })
             .then((data) => {
-                console.log(data);
                 if (data) {
                     alert('성공');
                 } else {
@@ -130,6 +138,7 @@ function CreateBoard() {
                             </div>
                             <div>
                                 <p>이미지 이름: {image.file.name}</p>
+                                <button onClick={() => handleImageDelete(index)}>X</button>
                             </div>
                         </div>
                     ))}
