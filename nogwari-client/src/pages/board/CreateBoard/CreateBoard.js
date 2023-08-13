@@ -1,45 +1,40 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Http } from '../../../common';
 import styled from 'styled-components';
-import { useParams } from 'react-router';
-import { useNavigate } from 'react-router-dom';
 import Layout from 'component/layout/Layout';
+
 const Title = styled.div``;
 const Content = styled.textarea``;
 
 function CreateBoard() {
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
-    const categoryId = 1; // 이거 드롭다운으로 바꾸기
-    const navigate = useNavigate();
+    const [categories, setCategories] = useState([]);
+    const [categoryId, setCategoryId] = useState('');
+
+    useEffect(() => {
+        const fetchCategories = async () => {
+            try {
+                const response = await fetch('http://ec2-15-164-55-240.ap-northeast-2.compute.amazonaws.com/category');
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                const data = await response.json();
+                setCategories(data);
+            } catch (error) {
+                console.log('에러', error.message);
+            }
+        };
+        fetchCategories();
+    }, []);
+
+    const onChangeCategoryId = (e) => {
+        const selectedCategoryId = e.target.value;
+        setCategoryId(selectedCategoryId);
+    };
 
     const fileInputRef = useRef(null);
     const [imageFiles, setImageFiles] = useState([]);
-
-    const createNewPosting = async (title, content, categoryId) => {
-        const url = Http + '/board'; // 백엔드 서버의 엔드포인트 주소
-
-        try {
-            const response = await fetch(url, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    Authorization: `Bearer ${localStorage.getItem('token')}`,
-                },
-                body: JSON.stringify({ title, content, categoryId }),
-            });
-
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-
-            const data = await response.json();
-            return data;
-        } catch (error) {
-            console.error('Error creating new posting:', error.message);
-            throw error;
-        }
-    };
 
     const onChangeTitle = (e) => {
         const { value } = e.target;
@@ -49,18 +44,6 @@ function CreateBoard() {
     const onChangeContent = (e) => {
         const { value } = e.target;
         setContent(value);
-    };
-
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        createNewPosting(title, content, categoryId)
-            .then((newPosts) => {
-                console.log('New posting created:', newPosts);
-                navigate('/board');
-            })
-            .catch((error) => {
-                console.error('Error creating new posting:', error.message);
-            });
     };
 
     const handleFileChange = (e) => {
@@ -76,6 +59,50 @@ function CreateBoard() {
         }
     };
 
+    const handleSubmit = (e) => {
+        e.preventDefault();
+
+        const formData = new FormData();
+
+        imageFiles.forEach((image, index) => {
+            formData.append(`imageFile${index}`, image.file);
+        });
+
+        let jsonData = JSON.stringify({
+            title: title,
+            content: content,
+            categoryId: categoryId,
+        });
+        formData.append('jsonData', jsonData);
+
+        const url = Http + '/board';
+
+        fetch(url, {
+            method: 'POST',
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem('token')}`,
+            },
+            body: formData,
+        })
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then((data) => {
+                console.log(data);
+                if (data) {
+                    alert('성공');
+                } else {
+                    alert('실패');
+                }
+            })
+            .catch((error) => {
+                alert('에러: ' + error.message);
+            });
+    };
+
     return (
         <form onSubmit={handleSubmit}>
             <Layout></Layout>
@@ -83,6 +110,13 @@ function CreateBoard() {
                 <input value={title} onChange={onChangeTitle} type="text" placeholder="제목" maxLength={20} />
             </Title>
             <br />
+            <select value={categoryId} onChange={onChangeCategoryId}>
+                {categories.map((item) => (
+                    <option key={item.id} value={item.id}>
+                        {item.name}
+                    </option>
+                ))}
+            </select>
             {imageFiles.length > 0 && (
                 <div>
                     {imageFiles.map((image, index) => (
