@@ -79,7 +79,7 @@ function CreateBoard() {
         let jsonData = JSON.stringify({
             title: title,
             content: content,
-            categoryId: categoryId,
+            categoryId: 1,
         });
         formData.append('jsonData', jsonData);
 
