@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { Http } from '../../../common';
 import styled from 'styled-components';
 import Layout from 'component/layout/Layout';
@@ -15,7 +15,7 @@ function CreateBoard() {
     useEffect(() => {
         const fetchCategories = async () => {
             try {
-                const response = await fetch('http://ec2-15-164-55-240.ap-northeast-2.compute.amazonaws.com/category');
+                const response = await fetch(Http + '/category');
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
                 }
@@ -67,9 +67,23 @@ function CreateBoard() {
         });
     };
 
+    const handleDrop = useCallback((e) => {
+        e.preventDefault();
+        const fileList = e.dataTransfer.files;
+
+        if (fileList && fileList.length > 0) {
+            const newImages = Array.from(fileList).map((file) => ({
+                file: file,
+                thumbnail: URL.createObjectURL(file),
+                type: file.type.slice(0, 5),
+            }));
+
+            setImageFiles((prevImages) => [...prevImages, ...newImages]);
+        }
+    }, []);
+
     const handleSubmit = (e) => {
         e.preventDefault();
-
         const formData = new FormData();
 
         imageFiles.forEach((image, index) => {
@@ -79,7 +93,7 @@ function CreateBoard() {
         let jsonData = JSON.stringify({
             title: title,
             content: content,
-            categoryId: 1,
+            categoryId: Number(categoryId),
         });
         formData.append('jsonData', jsonData);
 
@@ -112,7 +126,7 @@ function CreateBoard() {
     };
 
     return (
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} onDragOver={(e) => e.preventDefault()}>
             <Layout></Layout>
             <Title>
                 <input value={title} onChange={onChangeTitle} type="text" placeholder="제목" maxLength={20} />
@@ -153,6 +167,14 @@ function CreateBoard() {
                 maxLength={50}
             />
             <br />
+            <div
+                onDrop={handleDrop}
+                onDragOver={(e) => e.preventDefault(e)}
+                style={{ border: '2px dashed gray', padding: '20px', margin: '20px 0', width: '400px' }}
+            >
+                <p>이미지를 드래그 앤 드롭하세요.</p>
+                <p>또는 아래 버튼을 클릭하여 이미지를 선택하세요.</p>
+            </div>
             <input type="file" ref={fileInputRef} onChange={handleFileChange} style={{ display: 'none' }} multiple />
             <button type="button" onClick={() => fileInputRef.current?.click()}>
                 이미지 선택
