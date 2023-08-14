@@ -2,8 +2,10 @@ import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { Http } from '../../../common';
 import styled from 'styled-components';
 import Layout from 'component/layout/Layout';
-import ReactQuill from 'react-quill';
+import ReactQuill, { Quill } from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
+import ImageResize from 'quill-image-resize';
+Quill.register('modules/ImageResize', ImageResize);
 
 const Title = styled.div``;
 const Content = styled.textarea``;
@@ -128,6 +130,9 @@ function CreateBoard() {
                 ['clean'],
             ],
         },
+        imageResize: {
+            displaySize: true,
+        },
     };
 
     const handleDrop = useCallback((e) => {
@@ -245,7 +250,7 @@ function CreateBoard() {
             </button>
             <button type="submit">게시물 생성</button> */}
             <div>
-                <ReactQuill onChange={onChangeContents} modules={modules} />
+                <ReactQuill onChange={onChangeContents} modules={modules} theme="snow" />
                 <div dangerouslySetInnerHTML={{ __html: content }} />
             </div>
             <button type="submit">게시물 생성</button>
