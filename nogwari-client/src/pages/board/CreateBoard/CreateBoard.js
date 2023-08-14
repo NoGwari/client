@@ -2,10 +2,8 @@ import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { Http } from '../../../common';
 import styled from 'styled-components';
 import Layout from 'component/layout/Layout';
-import ReactQuill, { Quill } from 'react-quill';
+import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
-import ImageResize from 'quill-image-resize';
-Quill.register('modules/ImageResize', ImageResize);
 
 const Title = styled.div``;
 const Content = styled.textarea``;
@@ -45,10 +43,10 @@ function CreateBoard() {
         setTitle(value);
     };
 
-    const onChangeContent = (e) => {
-        const { value } = e.target;
-        setContent(value);
-    };
+    // const onChangeContent = (e) => {
+    //     const { value } = e.target;
+    //     setContent(value);
+    // };
 
     const handleFileChange = (e) => {
         const fileList = e.target.files;
@@ -71,8 +69,8 @@ function CreateBoard() {
         });
     };
 
-    const onChangeContents = (content) => {
-        console.log(content);
+    const onChangeContents = (newContent) => {
+        setContent(newContent);
     };
 
     const modules = {
@@ -129,9 +127,10 @@ function CreateBoard() {
                 ['image', 'video'],
                 ['clean'],
             ],
-        },
-        imageResize: {
-            displaySize: true,
+            clipboard: {
+                matchVisual: false,
+            },
+            imageDrop: true,
         },
     };
 
@@ -147,6 +146,12 @@ function CreateBoard() {
             }));
 
             setImageFiles((prevImages) => [...prevImages, ...newImages]);
+
+            const imageTags = newImages.map((image) => {
+                return `<img src="${image.thumbnail}" alt="${image.file.name}"/>`;
+            });
+            const newContent = content + '\n' + imageTags.join('\n');
+            setContent(newContent);
         }
     }, []);
 
@@ -228,32 +233,10 @@ function CreateBoard() {
                 </div>
             )}
             <br />
-            {/* <Content
-                value={content}
-                onChange={onChangeContent}
-                placeholder="내용"
-                style={{ width: '400px', height: '400px' }}
-                maxLength={50}
-            />
-            <br />
-            <div
-                onDrop={handleDrop}
-                onDragOver={(e) => e.preventDefault(e)}
-                style={{ border: '2px dashed gray', padding: '20px', margin: '20px 0', width: '400px' }}
-            >
-                <p>이미지를 드래그 앤 드롭하세요.</p>
-                <p>또는 아래 버튼을 클릭하여 이미지를 선택하세요.</p>
+            <div onDrop={handleDrop} onDragOver={(e) => e.preventDefault()}>
+                <ReactQuill value={content} onChange={onChangeContents} modules={modules} theme="snow" />
+                <button type="submit">게시물 생성</button>
             </div>
-            <input type="file" ref={fileInputRef} onChange={handleFileChange} style={{ display: 'none' }} multiple />
-            <button type="button" onClick={() => fileInputRef.current?.click()}>
-                이미지 선택
-            </button>
-            <button type="submit">게시물 생성</button> */}
-            <div>
-                <ReactQuill onChange={onChangeContents} modules={modules} theme="snow" />
-                <div dangerouslySetInnerHTML={{ __html: content }} />
-            </div>
-            <button type="submit">게시물 생성</button>
         </form>
     );
 }
