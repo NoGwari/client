@@ -2,6 +2,8 @@ import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { Http } from '../../../common';
 import styled from 'styled-components';
 import Layout from 'component/layout/Layout';
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
 
 const Title = styled.div``;
 const Content = styled.textarea``;
@@ -65,6 +67,67 @@ function CreateBoard() {
             newImages.splice(index, 1); // 해당 인덱스의 이미지 제거
             return newImages;
         });
+    };
+
+    const onChangeContents = (content) => {
+        console.log(content);
+    };
+
+    const modules = {
+        toolbar: {
+            container: [
+                [{ header: [1, 2, 3, 4, 5, 6, false] }],
+                [{ font: [] }],
+                [{ align: [] }],
+                ['bold', 'italic', 'underline', 'strike', 'blockquote'],
+                [{ list: 'ordered' }, { list: 'bullet' }, 'link'],
+                [
+                    {
+                        color: [
+                            '#000000',
+                            '#e60000',
+                            '#ff9900',
+                            '#ffff00',
+                            '#008a00',
+                            '#0066cc',
+                            '#9933ff',
+                            '#ffffff',
+                            '#facccc',
+                            '#ffebcc',
+                            '#ffffcc',
+                            '#cce8cc',
+                            '#cce0f5',
+                            '#ebd6ff',
+                            '#bbbbbb',
+                            '#f06666',
+                            '#ffc266',
+                            '#ffff66',
+                            '#66b966',
+                            '#66a3e0',
+                            '#c285ff',
+                            '#888888',
+                            '#a10000',
+                            '#b26b00',
+                            '#b2b200',
+                            '#006100',
+                            '#0047b2',
+                            '#6b24b2',
+                            '#444444',
+                            '#5c0000',
+                            '#663d00',
+                            '#666600',
+                            '#003700',
+                            '#002966',
+                            '#3d1466',
+                            'custom-color',
+                        ],
+                    },
+                    { background: [] },
+                ],
+                ['image', 'video'],
+                ['clean'],
+            ],
+        },
     };
 
     const handleDrop = useCallback((e) => {
@@ -139,6 +202,7 @@ function CreateBoard() {
                     </option>
                 ))}
             </select>
+            <br />
             {imageFiles.length > 0 && (
                 <div>
                     {imageFiles.map((image, index) => (
@@ -159,7 +223,7 @@ function CreateBoard() {
                 </div>
             )}
             <br />
-            <Content
+            {/* <Content
                 value={content}
                 onChange={onChangeContent}
                 placeholder="내용"
@@ -179,6 +243,11 @@ function CreateBoard() {
             <button type="button" onClick={() => fileInputRef.current?.click()}>
                 이미지 선택
             </button>
+            <button type="submit">게시물 생성</button> */}
+            <div>
+                <ReactQuill onChange={onChangeContents} modules={modules} />
+                <div dangerouslySetInnerHTML={{ __html: content }} />
+            </div>
             <button type="submit">게시물 생성</button>
         </form>
     );
