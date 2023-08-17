@@ -13,6 +13,9 @@ function CreateBoard() {
     const [content, setContent] = useState('');
     const [categories, setCategories] = useState([]);
     const [categoryId, setCategoryId] = useState('');
+    const [editorHtml, setEditorHtml] = useState('');
+    const [imageFiles, setImageFiles] = useState([]);
+    const editorRef = useRef(null);
 
     useEffect(() => {
         const fetchCategories = async () => {
@@ -35,43 +38,39 @@ function CreateBoard() {
         setCategoryId(selectedCategoryId);
     };
 
-    const fileInputRef = useRef(null);
-    const [imageFiles, setImageFiles] = useState([]);
+    // const fileInputRef = useRef(null);
+    // const [imageFiles, setImageFiles] = useState([]);
 
     const onChangeTitle = (e) => {
         const { value } = e.target;
         setTitle(value);
     };
 
-    const onChangeContent = (e) => {
-        const { value } = e.target;
-        setContent(value);
-    };
+    // const onChangeContent = (e) => {
+    //     const { value } = e.target;
+    //     setContent(value);
+    // };
 
-    const handleFileChange = (e) => {
-        const fileList = e.target.files;
-        if (fileList && fileList.length > 0) {
-            const newImages = Array.from(fileList).map((file) => ({
-                file: file,
-                thumbnail: URL.createObjectURL(file),
-                type: file.type.slice(0, 5),
-            }));
+    // const handleFileChange = (e) => {
+    //     const fileList = e.target.files;
+    //     if (fileList && fileList.length > 0) {
+    //         const newImages = Array.from(fileList).map((file) => ({
+    //             file: file,
+    //             thumbnail: URL.createObjectURL(file),
+    //             type: file.type.slice(0, 5),
+    //         }));
 
-            setImageFiles((prevImages) => [...prevImages, ...newImages]);
-        }
-    };
+    //         setImageFiles((prevImages) => [...prevImages, ...newImages]);
+    //     }
+    // };
 
-    const handleImageDelete = (index) => {
-        setImageFiles((prevImages) => {
-            const newImages = [...prevImages];
-            newImages.splice(index, 1); // 해당 인덱스의 이미지 제거
-            return newImages;
-        });
-    };
-
-    const onChangeContents = (content) => {
-        console.log(content);
-    };
+    // const handleImageDelete = (index) => {
+    //     setImageFiles((prevImages) => {
+    //         const newImages = [...prevImages];
+    //         newImages.splice(index, 1); // 해당 인덱스의 이미지 제거
+    //         return newImages;
+    //     });
+    // };
 
     const modules = {
         toolbar: {
@@ -130,7 +129,38 @@ function CreateBoard() {
         },
     };
 
-    const handleDrop = useCallback((e) => {
+    const handleEditorChange = (html) => {
+        setEditorHtml(html);
+    };
+    const handleImageUpload = (file) => {
+        console.log('이미지이미지이미지이ㅣ지');
+        const formData = new FormData();
+        formData.append('image', file);
+
+        const url = Http + '/board/upload';
+
+        fetch(url, {
+            method: 'POST',
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem('token')}`,
+            },
+            body: formData,
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                const imageUrl = data.imageUrl;
+
+                const range = editorRef.getEditor().getSelection();
+                editorRef.getEditor().insertEmbed(range.index, 'image', imageUrl);
+
+                setImageFiles((prevImageFiles) => [...prevImageFiles, file]);
+            })
+            .catch((error) => {
+                console.error('이미지 업로드 에러:', error);
+            });
+    };
+
+    const handleDrop = (e) => {
         e.preventDefault();
         const fileList = e.dataTransfer.files;
 
@@ -143,7 +173,7 @@ function CreateBoard() {
 
             setImageFiles((prevImages) => [...prevImages, ...newImages]);
         }
-    }, []);
+    };
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -153,14 +183,11 @@ function CreateBoard() {
             formData.append(`imageFile${index}`, image.file);
         });
 
-        let jsonData = JSON.stringify({
-            title: title,
-            content: content,
-            categoryId: Number(categoryId),
-        });
-        formData.append('jsonData', jsonData);
+        formData.append('title', title);
+        formData.append('content', editorHtml);
+        formData.append('categoryId', categoryId);
 
-        const url = Http + '/board';
+        const url = Http + '/board/upload';
 
         fetch(url, {
             method: 'POST',
@@ -189,7 +216,7 @@ function CreateBoard() {
     };
 
     return (
-        <form onSubmit={handleSubmit} onDragOver={(e) => e.preventDefault()}>
+        <div>
             <Layout></Layout>
             <Title>
                 <input value={title} onChange={onChangeTitle} type="text" placeholder="제목" maxLength={20} />
@@ -202,54 +229,16 @@ function CreateBoard() {
                     </option>
                 ))}
             </select>
-            <br />
-            {imageFiles.length > 0 && (
-                <div>
-                    {imageFiles.map((image, index) => (
-                        <div key={index} style={{ display: 'flex', alignItems: 'center' }}>
-                            <div style={{ marginRight: '10px' }}>
-                                <img
-                                    src={image.thumbnail}
-                                    alt={`미리보기${index}`}
-                                    style={{ width: '100px', height: 'auto' }}
-                                />
-                            </div>
-                            <div>
-                                <p>이미지 이름: {image.file.name}</p>
-                                <button onClick={() => handleImageDelete(index)}>X</button>
-                            </div>
-                        </div>
-                    ))}
-                </div>
-            )}
-            <br />
-            {/* <Content
-                value={content}
-                onChange={onChangeContent}
-                placeholder="내용"
-                style={{ width: '400px', height: '400px' }}
-                maxLength={50}
+            <ReactQuill
+                value={editorHtml}
+                onChange={handleEditorChange}
+                modules={modules}
+                theme="snow"
+                ref={editorRef}
+                onPaste={(e) => handleImageUpload(e.clipboardData.files[0])}
             />
-            <br />
-            <div
-                onDrop={handleDrop}
-                onDragOver={(e) => e.preventDefault(e)}
-                style={{ border: '2px dashed gray', padding: '20px', margin: '20px 0', width: '400px' }}
-            >
-                <p>이미지를 드래그 앤 드롭하세요.</p>
-                <p>또는 아래 버튼을 클릭하여 이미지를 선택하세요.</p>
-            </div>
-            <input type="file" ref={fileInputRef} onChange={handleFileChange} style={{ display: 'none' }} multiple />
-            <button type="button" onClick={() => fileInputRef.current?.click()}>
-                이미지 선택
-            </button>
-            <button type="submit">게시물 생성</button> */}
-            <div>
-                <ReactQuill onChange={onChangeContents} modules={modules} theme="snow" />
-                <div dangerouslySetInnerHTML={{ __html: content }} />
-            </div>
-            <button type="submit">게시물 생성</button>
-        </form>
+            <button onClick={handleSubmit}>게시물 작성</button>
+        </div>
     );
 }
 
