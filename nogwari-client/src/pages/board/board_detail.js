@@ -87,7 +87,7 @@ function BoardDetailPage() {
                 {item.hits}
             </BoardContent>
             <hr />
-            {item.content}
+            <div dangerouslySetInnerHTML={{ __html: item.content }}></div>
             <hr />
             <DeleteBoard />
         </>

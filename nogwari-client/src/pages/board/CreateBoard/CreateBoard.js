@@ -35,7 +35,7 @@ function CreateBoard() {
     }, []);
 
     const onChangeCategoryId = (e) => {
-        const selectedCategoryId = e.target.value;
+        const selectedCategoryId = parseInt(e.target.value);
         setCategoryId(selectedCategoryId);
     };
 
@@ -166,6 +166,7 @@ function CreateBoard() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        console.log('눌림');
         try {
             const newPosts = await createNewPosting(title, editorHtml, categoryId); // 이미지가 포함된 내용 전달
             console.log('New posting created:', newPosts);
