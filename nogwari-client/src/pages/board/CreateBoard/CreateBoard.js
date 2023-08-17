@@ -123,59 +123,55 @@ function CreateBoard() {
         []
     );
 
-    const handleDrop = (e) => {
-        e.preventDefault();
-        const fileList = e.dataTransfer.files;
+    // const handleDrop = (e) => {
+    //     e.preventDefault();
+    //     const fileList = e.dataTransfer.files;
 
-        if (fileList && fileList.length > 0) {
-            const newImages = Array.from(fileList).map((file) => ({
-                file: file,
-                thumbnail: URL.createObjectURL(file),
-                type: file.type.slice(0, 5),
-            }));
+    //     if (fileList && fileList.length > 0) {
+    //         const newImages = Array.from(fileList).map((file) => ({
+    //             file: file,
+    //             thumbnail: URL.createObjectURL(file),
+    //             type: file.type.slice(0, 5),
+    //         }));
 
-            setImageFiles((prevImages) => [...prevImages, ...newImages]);
+    //         setImageFiles((prevImages) => [...prevImages, ...newImages]);
+    //     }
+    // };
+
+    const createNewPosting = async (title, content, categoryId) => {
+        const url = Http + '/board';
+
+        try {
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${localStorage.getItem('token')}`,
+                },
+                body: JSON.stringify({ title, content, categoryId }),
+            });
+            console.log('잘 간다');
+
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+
+            const data = await response.json();
+            return data;
+        } catch (error) {
+            console.log('Error creating new Posting', error.message);
+            throw error;
         }
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        const formData = new FormData();
-
-        imageFiles.forEach((image, index) => {
-            formData.append(`imageFile${index}`, image.file);
-        });
-
-        formData.append('title', title);
-        formData.append('content', editorHtml);
-        formData.append('categoryId', categoryId);
-
-        const url = Http + '/board/upload';
-
-        fetch(url, {
-            method: 'POST',
-            headers: {
-                Authorization: `Bearer ${localStorage.getItem('token')}`,
-            },
-            body: formData,
-        })
-            .then((response) => {
-                console.log(response);
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.json();
-            })
-            .then((data) => {
-                if (data) {
-                    alert('성공');
-                } else {
-                    alert('실패');
-                }
-            })
-            .catch((error) => {
-                alert('에러: ' + error.message);
-            });
+        try {
+            const newPosts = await createNewPosting(title, editorHtml, categoryId); // 이미지가 포함된 내용 전달
+            console.log('New posting created:', newPosts);
+        } catch (error) {
+            console.error('Error creating new posting:', error.message);
+        }
     };
 
     return (
