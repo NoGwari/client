@@ -72,17 +72,20 @@ function CreateBoard() {
                             },
                             body: formData,
                         });
-                        imageUrl = response.data.url;
 
                         if (!response.ok) {
                             throw new Error('Network response was not ok');
                         }
-
+                        console.log('성공한듯?');
                         const data = await response.json();
                         const imageUrl = data.imageUrl;
 
                         const range = QuillRef.current.getEditor().getSelection();
-                        QuillRef.current.getEditor().insertEmbed(range.index, 'image', imageUrl);
+                        const quill = QuillRef.current.getEditor();
+
+                        quill.insertEmbed(range.index, 'image', imageUrl);
+                        console.log(imageUrl);
+                        console.log(data);
 
                         setImageFiles((prevImageFiles) => [...prevImageFiles, file]);
                     } catch (error) {
