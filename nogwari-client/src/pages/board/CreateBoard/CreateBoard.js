@@ -4,8 +4,6 @@ import styled from 'styled-components';
 import Layout from 'component/layout/Layout';
 import ReactQuill, { Quill } from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
-import ImageResize from 'quill-image-resize';
-Quill.register('modules/ImageResize', ImageResize);
 
 const Title = styled.div``;
 const Content = styled.textarea``;
@@ -129,9 +127,6 @@ function CreateBoard() {
                 ['image', 'video'],
                 ['clean'],
             ],
-        },
-        imageResize: {
-            displaySize: true,
         },
     };
 
