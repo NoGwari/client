@@ -1,43 +1,47 @@
-import React, { useState } from "react";
-import { Http } from "../../../common";
-import { useParams } from "react-router-dom";
+import React from 'react';
+import { Http } from '../../../common';
+import { useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 function DeleteBoard() {
-  const params = useParams().itemId;
-  console.log(params);
-  const deletePost = async () => {
-    const url = Http + `/board/${params}`; // 백엔드 서버의 엔드포인트 주소
-    try {
-      const response = await fetch(url, {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json',
-          "Authorization" : `Bearer ${localStorage.getItem("token")}`
-        },
-      });
+    const params = useParams().itemId;
+    const navigate = useNavigate();
+    const deletePost = async () => {
+        const url = Http + `/board/${params}`;
+        try {
+            const response = await fetch(url, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${localStorage.getItem('token')}`,
+                },
+            });
 
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-      return;
-    } catch (error) {
-      console.error('Error Deleting posting:', error.message);
-      throw error;
-    }
-  };
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
 
-  const handleSubmit = (e) => {
-    e.preventDefault(); 
-    deletePost()
-  };
+            console.log('게시물이 성공적으로 삭제되었습니다.');
+            navigate('/board');
+        } catch (error) {
+            console.error('Error Deleting posting:', error.message);
+        }
+    };
 
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        try {
+            await deletePost();
+        } catch (error) {
+            console.error('Error in handleSubmit:', error.message);
+        }
+    };
 
-
-  return (
-    <form onSubmit={handleSubmit}>
-    <button type="submit">게시물 삭제</button>
-    </form>
-  );
+    return (
+        <form onSubmit={handleSubmit}>
+            <button type="submit">게시물 삭제</button>
+        </form>
+    );
 }
 
 export default DeleteBoard;

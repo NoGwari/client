@@ -3,6 +3,7 @@ import { Http } from '../../../common';
 import styled from 'styled-components';
 import Layout from 'component/layout/Layout';
 import ReactQuill, { Quill } from 'react-quill';
+import { useNavigate } from 'react-router-dom';
 import 'react-quill/dist/quill.snow.css';
 import ImageResize from 'quill-image-resize-module-react';
 Quill.register('modules/imageResize', ImageResize);
@@ -19,6 +20,7 @@ function CreateBoard() {
     const [imageFiles, setImageFiles] = useState([]);
     const editorRef = useRef(null);
     const QuillRef = useRef();
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchCategories = async () => {
@@ -158,6 +160,7 @@ function CreateBoard() {
                 body: JSON.stringify({ title, content, categoryId }),
             });
             console.log('잘 간다');
+            navigate('/board');
 
             if (!response.ok) {
                 throw new Error('Network response was not ok');
@@ -175,7 +178,7 @@ function CreateBoard() {
         e.preventDefault();
         console.log('눌림');
         try {
-            const newPosts = await createNewPosting(title, editorHtml, categoryId); // 이미지가 포함된 내용 전달
+            const newPosts = await createNewPosting(title, editorHtml, categoryId);
             console.log('New posting created:', newPosts);
         } catch (error) {
             console.error('Error creating new posting:', error.message);
