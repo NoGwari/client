@@ -4,6 +4,8 @@ import styled from 'styled-components';
 import Layout from 'component/layout/Layout';
 import ReactQuill, { Quill } from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
+import ImageResize from 'quill-image-resize-module-react';
+Quill.register('modules/imageResize', ImageResize);
 
 const Title = styled.div``;
 const Content = styled.textarea``;
@@ -121,6 +123,10 @@ function CreateBoard() {
                     matchVisual: false,
                 },
             },
+            imageResize: {
+                parchment: Quill.import('parchment'),
+                modules: ['Resize', 'DisplaySize', 'Toolbar'],
+            },
         }),
         []
     );
@@ -199,6 +205,7 @@ function CreateBoard() {
                 modules={modules}
                 theme="snow"
                 formats={formats}
+                ImageResize={ImageResize}
                 ref={(element) => {
                     if (element != null) {
                         QuillRef.current = element;

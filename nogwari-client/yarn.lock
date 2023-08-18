@@ -9340,6 +9340,15 @@
     "extend" "^3.0.2"
     "fast-diff" "1.1.2"
 
+"quill-image-resize-module-react@^3.0.0":
+  "integrity" "sha512-3jVChLoXh+fwEELx3OswOEEuF+1KU3r/B9RAqZ//s+d+UMduVZzUepU1g/XoxjKoBJvWD2lJwBIFBRUNb8ebCw=="
+  "resolved" "https://registry.npmjs.org/quill-image-resize-module-react/-/quill-image-resize-module-react-3.0.0.tgz"
+  "version" "3.0.0"
+  dependencies:
+    "lodash" "^4.17.4"
+    "quill" "^1.2.2"
+    "raw-loader" "^0.5.1"
+
 "quill-image-resize-module@^3.0.0":
   "integrity" "sha512-1TZBnUxU/WIx5dPyVjQ9yN7C6mLZSp04HyWBEMqT320DIq4MW4JgzlOPDZX5ZpBM3bU6sacU4kTLUc8VgYQZYw=="
   "resolved" "https://registry.npmjs.org/quill-image-resize-module/-/quill-image-resize-module-3.0.0.tgz"
