@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect, useMemo } from 'react';
 import { Http } from '../../../common';
 import styled from 'styled-components';
 import Layout from 'component/layout/Layout';
-import ReactQuill from 'react-quill';
+import ReactQuill, { Quill } from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 
 const Title = styled.div``;
@@ -62,10 +62,10 @@ function CreateBoard() {
                 formData.append('image', file);
 
                 if (QuillRef.current) {
-                    const back = Http + '/board/upload';
+                    const url = Http + '/board/upload';
 
                     try {
-                        const response = await fetch(back, {
+                        const response = await fetch(url, {
                             method: 'POST',
                             headers: {
                                 Authorization: `Bearer ${localStorage.getItem('token')}`,
@@ -76,13 +76,14 @@ function CreateBoard() {
                         if (!response.ok) {
                             throw new Error('Network response was not ok');
                         }
-                        
-                        const url = response.url;
-                        console.log(url);
+
+                        const data = await response.json();
+                        const imageUrl = data; // 이미지 URL 가져오기
+
                         const quill = QuillRef.current.getEditor();
                         const range = quill.getSelection();
 
-                        quill.insertEmbed(range.index, 'image', url);
+                        quill.insertEmbed(range.index, 'image', imageUrl);
                         quill.setSelection(range.index + 1);
 
                         setImageFiles((prevImageFiles) => [...prevImageFiles, file]);
@@ -123,21 +124,20 @@ function CreateBoard() {
         }),
         []
     );
-
-    // const handleDrop = (e) => {
-    //     e.preventDefault();
-    //     const fileList = e.dataTransfer.files;
-
-    //     if (fileList && fileList.length > 0) {
-    //         const newImages = Array.from(fileList).map((file) => ({
-    //             file: file,
-    //             thumbnail: URL.createObjectURL(file),
-    //             type: file.type.slice(0, 5),
-    //         }));
-
-    //         setImageFiles((prevImages) => [...prevImages, ...newImages]);
-    //     }
-    // };
+    const formats = [
+        'header',
+        'font',
+        'size',
+        'bold',
+        'italic',
+        'underline',
+        'strike',
+        'blockquote',
+        'list',
+        'bullet',
+        'align',
+        'image',
+    ];
 
     const createNewPosting = async (title, content, categoryId) => {
         const url = Http + '/board';
@@ -194,10 +194,11 @@ function CreateBoard() {
                 ))}
             </select>
             <ReactQuill
-                value={editorHtml}
+                value={editorHtml || ' '}
                 onChange={handleEditorChange}
                 modules={modules}
                 theme="snow"
+                formats={formats}
                 ref={(element) => {
                     if (element != null) {
                         QuillRef.current = element;
