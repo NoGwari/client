@@ -1,7 +1,7 @@
 import React from "react";
 import {Link} from "react-router-dom";
 import styled from "styled-components";
-import Navbar from "pages/Navbar";
+import Navbar from "component/layout/Navbar";
 
 const NavContainer = styled.div`
   margin-top: 70px;

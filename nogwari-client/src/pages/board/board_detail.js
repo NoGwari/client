@@ -5,9 +5,9 @@ import { Http } from 'common';
 import Layout from 'component/layout/Layout';
 import styled from 'styled-components';
 import DeleteBoard from './DeleteBoard/DeleteBoard';
-
 import { FiThumbsUp } from 'react-icons/fi';
 import { AiOutlineEye } from 'react-icons/ai';
+import UpdateBoard from './UpdateBoard/UpdateBoard';
 
 const BoardTitleContainer = styled.div`
     display: flex;
