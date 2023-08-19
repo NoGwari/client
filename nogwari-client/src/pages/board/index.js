@@ -130,7 +130,7 @@ function Board() {
         const fetchData = async () => {
             const res = await fetch(Http + '/board');
             const result = await res.json();
-            setBoard(result);
+            setBoard(result.data);
         };
         fetchData();
     }, []);

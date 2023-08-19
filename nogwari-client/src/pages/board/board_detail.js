@@ -1,6 +1,5 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { useEffect, useState } from 'react';
 import { Http } from 'common';
 import Layout from 'component/layout/Layout';
 import styled from 'styled-components';
@@ -34,18 +33,22 @@ const BoardContent = styled.p`
 
 function BoardDetailPage() {
     const [board, setBoard] = useState([]);
+    const { itemId } = useParams();
     useEffect(() => {
         const fetchData = async () => {
-            const res = await fetch(Http + '/board');
-            const result = await res.json();
-            setBoard(result);
+            try {
+                const res = await fetch(Http + `/board/${itemId}`);
+                if (!res.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                const result = await res.json();
+                setBoard(result);
+            } catch (error) {
+                console.error('Error fetching board data:', error);
+            }
         };
         fetchData();
-    }, []);
-
-    const { itemId } = useParams();
-    const id = Number(itemId);
-    const item = board.find((item) => item.id === Number(id));
+    }, [itemId]);
 
     const hitUrl = async () => {
         try {
@@ -62,32 +65,33 @@ function BoardDetailPage() {
 
             const data = await response.json();
             setBoard((prevBoard) =>
-                prevBoard.map((item) => (item.id === data.id ? { ...item, hits: data.hits } : item))
+                prevBoard.map((board) => (board.id === data.id ? { ...board, hits: data.hits } : board))
             );
         } catch (error) {
             console.error('Error posting like:', error);
         }
     };
 
-    if (!item) {
-        return <div></div>;
+    if (!board) {
+        // board로 체크
+        return <div>Loading...</div>;
     }
 
     return (
         <>
             <Layout></Layout>
             <BoardTitleContainer>
-                <CategoryTitle>{item.categoryName}</CategoryTitle>
-                <BoardTitle>{item.title}</BoardTitle>
+                <CategoryTitle>{board.categoryName}</CategoryTitle>
+                <BoardTitle>{board.title}</BoardTitle>
             </BoardTitleContainer>
             <BoardContent>
-                {item.userImg}
-                {item.userNickname} &middot; &nbsp; <AiOutlineEye />
-                {item.views} &middot;&nbsp; <FiThumbsUp onClick={hitUrl} style={{ cursor: 'pointer' }} />
-                {item.hits}
+                {board.userImg}
+                {board.userNickname} &middot; &nbsp; <AiOutlineEye />
+                {board.views} &middot;&nbsp; <FiThumbsUp onClick={hitUrl} style={{ cursor: 'pointer' }} />
+                {board.hits}
             </BoardContent>
             <hr />
-            <div dangerouslySetInnerHTML={{ __html: item.content }}></div>
+            <div dangerouslySetInnerHTML={{ __html: board.content }}></div>
             <hr />
             <DeleteBoard />
         </>
