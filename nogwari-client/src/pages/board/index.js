@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 import React, { useEffect, lazy, Suspense, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { Http } from '../../common';
+import Pagination from './pagination';
 
 const defaultImageSrc = '../../img/boardlist.png';
 
@@ -89,6 +90,9 @@ const WriteContainer = styled.div`
 const Write = styled.button`
     border-radius: 4px;
 `;
+
+const Page = styled.button``;
+
 function CreateTime(timestamp) {
     if (!timestamp) {
         return '알수없음';
@@ -119,6 +123,9 @@ function CreateTime(timestamp) {
 
 function Board() {
     const [board, setBoard] = useState([]);
+    const [limit, setLimit] = useState(5);
+    const [page, setPage] = useState(1);
+    const offset = (page - 1) * limit;
     useEffect(() => {
         const fetchData = async () => {
             const res = await fetch(Http + '/board');
@@ -127,12 +134,26 @@ function Board() {
         };
         fetchData();
     }, []);
+
+    const startIndex = (page - 1) * limit;
+    const endIndex = startIndex + limit;
+    const currentData = board.slice(startIndex, endIndex);
     return (
         <>
             <Layout></Layout>
             <List>전체게시글</List>
             <BoardListContainer>
-                {board.map((item) => (
+                <Page />
+                표시할 페이지의 개수 : &nbsp;
+                <select type="number" value={limit} onChange={({ target: { value } }) => setLimit(Number(value))}>
+                    <option value="3">3</option>
+                    <option value="5">5</option>
+                    <option value="10">10</option>
+                    <option value="20">20</option>
+                </select>
+                <br />
+                <hr />
+                {currentData.map((item) => (
                     <Link to={`/board/${item.id}`} key={item.id}>
                         <BoardItemContainer>
                             <BoardImage src={item.userImg ? item.userImg : defaultImageSrc}></BoardImage>
@@ -157,6 +178,10 @@ function Board() {
                     <Link to={`/createBoard`}>글쓰기</Link>
                 </Write>
             </WriteContainer>
+            <hr />
+            <footer>
+                <Pagination total={board.length} limit={limit} page={page} setPage={setPage} />
+            </footer>
         </>
     );
 }
