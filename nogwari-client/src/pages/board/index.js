@@ -165,21 +165,21 @@ function Board() {
         category_list();
     }, []);
 
-    const list_num = async () => {
-        try {
-            const response = await fetch(Http + `/board?list_num=${limit}`);
-            if (response.ok) {
-                const data = await response.json();
-            } else {
-                console.error('error');
-            }
-        } catch (error) {
-            console.log('error 발생', error);
-        }
-    };
-    useEffect(() => {
-        list_num(limit);
-    }, [limit]);
+    // const list_num = async () => {
+    //     try {
+    //         const response = await fetch(Http + `/board?list_num=${limit}`);
+    //         if (response.ok) {
+    //             const data = await response.json();
+    //         } else {
+    //             console.error('error');
+    //         }
+    //     } catch (error) {
+    //         console.log('error 발생', error);
+    //     }
+    // };
+    // useEffect(() => {
+    //     list_num(limit);
+    // }, [limit]);
 
     return (
         <>
