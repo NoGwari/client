@@ -127,13 +127,17 @@ function Board() {
     const [page, setPage] = useState(1);
     const [categroy, setCategory] = useState(null);
     const [totalPages, setTotalPages] = useState(1);
-    const offset = (page - 1) * limit;
+    const [categoryNames, setCategoryNames] = useState([]);
+
     useEffect(() => {
         const fetchData = async () => {
             const res = await fetch(Http + `/board?page=${page}&list_num=${limit}&category=${categroy}`);
             const result = await res.json();
             setBoard(result.data);
             setTotalPages(Math.ceil(result.count));
+
+            const newCategoryNames = result.data.map((item) => item.categoryName);
+            setCategoryNames([...new Set(newCategoryNames)]);
         };
         fetchData();
     }, [limit, page, categroy]);
@@ -155,9 +159,13 @@ function Board() {
         list_num(limit);
     }, [limit]);
 
-    // const startIndex = (page - 1) * limit;
-    // const endIndex = startIndex + limit;
-    // const currentData = board.slice(startIndex, endIndex);
+    board.forEach((item) => {
+        const categoryName = item.categoryName;
+        if (!categoryNames.includes(categoryName)) {
+            categoryNames.push(categoryName);
+        }
+    });
+
     return (
         <>
             <Layout></Layout>
@@ -165,11 +173,34 @@ function Board() {
             <BoardListContainer>
                 <Page />
                 표시할 페이지의 개수 : &nbsp;
-                <select type="number" value={limit} onChange={({ target: { value } }) => setLimit(Number(value))}>
-                    <option value="3">3</option>
+                <select
+                    type="number"
+                    value={limit}
+                    onChange={({ target: { value } }) => {
+                        setLimit(Number(value));
+                        setPage(1);
+                    }}
+                >
                     <option value="5">5</option>
                     <option value="10">10</option>
                     <option value="20">20</option>
+                </select>
+                <br />
+                보고싶은 카테고리 이름 : &nbsp;
+                <select
+                    type="string"
+                    value={categoryNames}
+                    onChange={({ target: { value } }) => {
+                        setCategoryNames(value);
+                        setPage(1);
+                    }}
+                >
+                    <option value="">전체 카테고리</option>
+                    {categoryNames.map((categoryName, index) => {
+                        <option key={index} value={categoryName}>
+                            {categoryName}
+                        </option>;
+                    })}
                 </select>
                 <br />
                 <hr />
