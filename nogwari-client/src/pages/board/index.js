@@ -126,12 +126,14 @@ function Board() {
     const [limit, setLimit] = useState(5);
     const [page, setPage] = useState(1);
     const [categroy, setCategory] = useState(null);
+    const [totalPages, setTotalPages] = useState(1);
     const offset = (page - 1) * limit;
     useEffect(() => {
         const fetchData = async () => {
             const res = await fetch(Http + `/board?page=${page}&list_num=${limit}&category=${categroy}`);
             const result = await res.json();
             setBoard(result.data);
+            setTotalPages(Math.ceil(result.count));
         };
         fetchData();
     }, [limit, page, categroy]);
@@ -198,7 +200,7 @@ function Board() {
             </WriteContainer>
             <hr />
             <footer>
-                <Pagination total={board.length} limit={limit} page={page} setPage={setPage} />
+                <Pagination total={totalPages} limit={limit} page={page} setPage={setPage} value={limit} />
             </footer>
         </>
     );
