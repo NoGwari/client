@@ -3,8 +3,7 @@ import Layout from 'component/layout/Layout';
 import { FiThumbsUp } from 'react-icons/fi';
 import { AiOutlineEye } from 'react-icons/ai';
 import { Link } from 'react-router-dom';
-import React, { useEffect, lazy, Suspense, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import React, { useEffect, useState } from 'react'; // Removed unnecessary imports
 import { Http } from '../../common';
 import Pagination from './pagination';
 
@@ -125,29 +124,52 @@ function Board() {
     const [board, setBoard] = useState([]);
     const [limit, setLimit] = useState(5);
     const [page, setPage] = useState(1);
-    const [categroy, setCategory] = useState(null);
+    const [category, setCategory] = useState(null);
     const [totalPages, setTotalPages] = useState(1);
     const [categoryNames, setCategoryNames] = useState([]);
 
     useEffect(() => {
         const fetchData = async () => {
-            const res = await fetch(Http + `/board?page=${page}&list_num=${limit}&category=${categroy}`);
-            const result = await res.json();
-            setBoard(result.data);
-            setTotalPages(Math.ceil(result.count));
-
-            const newCategoryNames = result.data.map((item) => item.categoryName);
-            setCategoryNames([...new Set(newCategoryNames)]);
+            try {
+                const response = await fetch(Http + `/board?page=${page}&list_num=${limit}&category=${category}`);
+                if (response.ok) {
+                    const result = await response.json();
+                    setBoard(result.data);
+                    setTotalPages(Math.ceil(result.count));
+                } else {
+                    console.error('불러오기 실패');
+                }
+            } catch (error) {
+                console.error('에러 발생', error);
+            }
         };
         fetchData();
-    }, [limit, page, categroy]);
+    }, [limit, page, category]);
+
+    useEffect(() => {
+        const category_list = async () => {
+            try {
+                const response = await fetch(Http + '/category');
+                if (response.ok) {
+                    const result = await response.json();
+                    const newCategoryNames = result.map((item) => item.name);
+                    setCategoryNames([...new Set(newCategoryNames)]);
+                    console.log(categoryNames);
+                } else {
+                    console.error('불러오기 실패');
+                }
+            } catch (error) {
+                console.error('에러 발생', error);
+            }
+        };
+        category_list();
+    }, []);
 
     const list_num = async () => {
         try {
             const response = await fetch(Http + `/board?list_num=${limit}`);
             if (response.ok) {
                 const data = await response.json();
-                console.log(data);
             } else {
                 console.error('error');
             }
@@ -158,13 +180,6 @@ function Board() {
     useEffect(() => {
         list_num(limit);
     }, [limit]);
-
-    board.forEach((item) => {
-        const categoryName = item.categoryName;
-        if (!categoryNames.includes(categoryName)) {
-            categoryNames.push(categoryName);
-        }
-    });
 
     return (
         <>
@@ -186,22 +201,6 @@ function Board() {
                     <option value="20">20</option>
                 </select>
                 <br />
-                보고싶은 카테고리 이름 : &nbsp;
-                <select
-                    type="string"
-                    value={categoryNames}
-                    onChange={({ target: { value } }) => {
-                        setCategoryNames(value);
-                        setPage(1);
-                    }}
-                >
-                    <option value="">전체 카테고리</option>
-                    {categoryNames.map((categoryName, index) => {
-                        <option key={index} value={categoryName}>
-                            {categoryName}
-                        </option>;
-                    })}
-                </select>
                 <br />
                 <hr />
                 {board.map((item) => (
@@ -236,4 +235,5 @@ function Board() {
         </>
     );
 }
+
 export default Board;
