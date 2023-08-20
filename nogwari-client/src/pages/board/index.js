@@ -125,19 +125,37 @@ function Board() {
     const [board, setBoard] = useState([]);
     const [limit, setLimit] = useState(5);
     const [page, setPage] = useState(1);
+    const [categroy, setCategory] = useState(null);
     const offset = (page - 1) * limit;
     useEffect(() => {
         const fetchData = async () => {
-            const res = await fetch(Http + '/board');
+            const res = await fetch(Http + `/board?page=${page}&list_num=${limit}&category=${categroy}`);
             const result = await res.json();
             setBoard(result.data);
         };
         fetchData();
-    }, []);
+    }, [limit, page, categroy]);
 
-    const startIndex = (page - 1) * limit;
-    const endIndex = startIndex + limit;
-    const currentData = board.slice(startIndex, endIndex);
+    const list_num = async () => {
+        try {
+            const response = await fetch(Http + `/board?list_num=${limit}`);
+            if (response.ok) {
+                const data = await response.json();
+                console.log(data);
+            } else {
+                console.error('error');
+            }
+        } catch (error) {
+            console.log('error 발생', error);
+        }
+    };
+    useEffect(() => {
+        list_num(limit);
+    }, [limit]);
+
+    // const startIndex = (page - 1) * limit;
+    // const endIndex = startIndex + limit;
+    // const currentData = board.slice(startIndex, endIndex);
     return (
         <>
             <Layout></Layout>
@@ -153,7 +171,7 @@ function Board() {
                 </select>
                 <br />
                 <hr />
-                {currentData.map((item) => (
+                {board.map((item) => (
                     <Link to={`/board/${item.id}`} key={item.id}>
                         <BoardItemContainer>
                             <BoardImage src={item.userImg ? item.userImg : defaultImageSrc}></BoardImage>
