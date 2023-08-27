@@ -93,56 +93,32 @@ const Write = styled.button`
 
 const Page = styled.button``;
 
-function CreateTime(createdAt, updatedAt) {
-    if (!createdAt && !updatedAt) {
-        return '알 수 없음';
+function CreateTime(timestamp) {
+    if (!timestamp) {
+        return '알수없음';
     }
 
-    if (updatedAt) {
-        const now = new Date();
-        const past = new Date(updatedAt);
-        const timeDiff = now.getTime() - past.getTime();
-        const seconds = Math.floor(timeDiff / 1000);
-        const minutes = Math.floor(seconds / 60);
-        const hours = Math.floor(minutes / 60);
-        const days = Math.floor(hours / 24);
+    const now = new Date();
+    const past = new Date(timestamp);
+    const timeDiff = now.getTime() - past.getTime();
+    const seconds = Math.floor(timeDiff / 1000);
+    const minutes = Math.floor(seconds / 60);
+    const hours = Math.floor(minutes / 60);
+    const days = Math.floor(hours / 24);
 
-        if (days >= 7) {
-            const Month = past.getMonth() + 1;
-            const Day = past.getDate();
-            return `${Month}월 ${Day}일`;
-        } else if (days >= 1) {
-            return `${days}일 전`;
-        } else if (hours >= 1) {
-            return `${hours}시간 전`;
-        } else if (minutes >= 1) {
-            return `${minutes}분 전`;
-        }
-
-        return '방금 전';
-    } else if (createdAt) {
-        const now = new Date();
-        const past = new Date(createdAt);
-        const timeDiff = now.getTime() - past.getTime();
-        const seconds = Math.floor(timeDiff / 1000);
-        const minutes = Math.floor(seconds / 60);
-        const hours = Math.floor(minutes / 60);
-        const days = Math.floor(hours / 24);
-
-        if (days >= 7) {
-            const Month = past.getMonth() + 1;
-            const Day = past.getDate();
-            return `${Month}월 ${Day}일`;
-        } else if (days >= 1) {
-            return `${days}일 전`;
-        } else if (hours >= 1) {
-            return `${hours}시간 전`;
-        } else if (minutes >= 1) {
-            return `${minutes}분 전`;
-        }
-
-        return '방금 전';
+    if (days >= 7) {
+        const Month = past.getMonth() + 1;
+        const Day = past.getDate();
+        return `${Month}월 ${Day}일`;
+    } else if (days >= 1) {
+        return `${days}일 전`;
+    } else if (hours >= 1) {
+        return `${hours}시간 전`;
+    } else if (minutes >= 1) {
+        return `${minutes}분 전`;
     }
+
+    return '방금 전';
 }
 
 function Board() {
@@ -221,7 +197,7 @@ function Board() {
                                     <BoardTitle>{item.title}</BoardTitle>
                                 </BoardTitleContainer>
                                 <BoardContent>
-                                    {item.userNickname} &middot; {CreateTime(item.createdAt, item.updatedAt)}
+                                    {item.userNickname} &middot; {CreateTime(item.createdAt)}
                                     &nbsp; <AiOutlineEye />
                                     {item.views} &middot;&nbsp; <FiThumbsUp />
                                     {item.hits}
