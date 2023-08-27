@@ -1,11 +1,13 @@
 import React, {useEffect, useState} from "react";
 import {Http} from "common";
 import Layout from "component/layout/Layout";
+import { useNavigate } from "react-router-dom";
 
 function Mypage() {
     const [me, setMe] = useState(null);
     const [newNickname, setNewNickname] = useState("");
     const [isUpdatingNickname, setIsUpdatingNickname] = useState(false);
+    const navigate=useNavigate();
 
     useEffect(() => {
         const fetchMyPage = async () => {
@@ -55,6 +57,10 @@ function Mypage() {
             setIsUpdatingNickname(false);
         }
     };
+    const logOut= ()=>{
+        localStorage.removeItem("token");
+        navigate("/")
+    }
 
     return (
         <>
@@ -74,6 +80,7 @@ function Mypage() {
                                 {isUpdatingNickname ? "변경 중..." : "변경"}
                             </button>
                         </div>
+                        <button onClick={logOut}>로그아웃</button>
                     </div>
                 ) : (
                     <p>로그인 정보를 불러오는 중...</p>
