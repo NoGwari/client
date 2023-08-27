@@ -187,7 +187,7 @@ function Board() {
                 <br />
                 <hr />
                 {board.map((item) => (
-                    <Link to={`/board/${categoryId}`} key={item.id}>
+                    <Link to={`/board/${item.id}`} key={item.id}>
                         <BoardItemContainer>
                             <BoardImage src={item.userImg ? item.userImg : defaultImageSrc}></BoardImage>
                             <BoardContainer>

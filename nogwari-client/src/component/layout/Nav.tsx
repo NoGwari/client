@@ -47,6 +47,7 @@ const Nav: React.FC = () => {
         <>
             <NavContainer>
                 <GridBox>
+                    <Link to={`/board`}>전체 글 조회</Link>
                     {categories.map((category, index) => (
                         <Link key={index} to={`/board?category=${category.id}`}>
                             {category.name}
