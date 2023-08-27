@@ -1,14 +1,14 @@
-import { styled } from '../../styles/theme';
-import Layout from 'component/layout/Layout';
-import { FiThumbsUp } from 'react-icons/fi';
-import { AiOutlineEye } from 'react-icons/ai';
-import { Link, useParams, useLocation } from 'react-router-dom';
-import React, { useEffect, useState } from 'react'; // Removed unnecessary imports
-import { Http } from '../../common';
-import Pagination from './pagination';
-import { updateLanguageServiceSourceFile } from 'typescript';
+import {styled} from "../../styles/theme";
+import Layout from "component/layout/Layout";
+import {FiThumbsUp} from "react-icons/fi";
+import {AiOutlineEye} from "react-icons/ai";
+import {Link, useParams, useLocation} from "react-router-dom";
+import React, {useEffect, useState} from "react"; // Removed unnecessary imports
+import {Http} from "../../common";
+import Pagination from "./pagination";
+import {updateLanguageServiceSourceFile} from "typescript";
 
-const defaultImageSrc = '../../img/boardlist.png';
+const defaultImageSrc = "../../img/boardlist.png";
 
 const List = styled.div`
     margin-top: 50px;
@@ -95,7 +95,7 @@ const Page = styled.button``;
 
 function CreateTime(timestamp) {
     if (!timestamp) {
-        return '알수없음';
+        return "알수없음";
     }
 
     const now = new Date();
@@ -118,7 +118,7 @@ function CreateTime(timestamp) {
         return `${minutes}분 전`;
     }
 
-    return '방금 전';
+    return "방금 전";
 }
 
 function Board() {
@@ -129,21 +129,26 @@ function Board() {
     const [totalPages, setTotalPages] = useState(1);
     const location = useLocation();
     const queryParams = new URLSearchParams(location.search);
-    const categoryId = queryParams.get('category');
+    const categoryId = queryParams.get("category");
 
     useEffect(() => {
         const fetchData = async () => {
             try {
                 const response = await fetch(Http + `/board?page=${page}&list_num=${limit}&category=${categoryId}`);
+                // TODO 배포시 credentials 옵션 추가
+                // const response = await fetch(Http + `/board?page=${page}&list_num=${limit}&category=${categoryId}`, {
+                //     method: "GET",
+                //     credentials: "include",
+                // });
                 if (response.ok) {
                     const result = await response.json();
                     setBoard(result.data);
                     setTotalPages(Math.ceil(result.count));
                 } else {
-                    console.error('불러오기 실패');
+                    console.error("불러오기 실패");
                 }
             } catch (error) {
-                console.error('에러 발생', error);
+                console.error("에러 발생", error);
             }
         };
         fetchData();
@@ -155,10 +160,10 @@ function Board() {
             if (response.ok) {
                 const data = await response.json();
             } else {
-                console.error('error');
+                console.error("error");
             }
         } catch (error) {
-            console.log('error 발생', error);
+            console.log("error 발생", error);
         }
     };
     useEffect(() => {
@@ -175,7 +180,7 @@ function Board() {
                 <select
                     type="number"
                     value={limit}
-                    onChange={({ target: { value } }) => {
+                    onChange={({target: {value}}) => {
                         setLimit(Number(value));
                         setPage(1);
                     }}
