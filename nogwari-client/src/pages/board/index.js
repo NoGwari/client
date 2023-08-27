@@ -2,7 +2,7 @@ import { styled } from '../../styles/theme';
 import Layout from 'component/layout/Layout';
 import { FiThumbsUp } from 'react-icons/fi';
 import { AiOutlineEye } from 'react-icons/ai';
-import { Link } from 'react-router-dom';
+import { Link, useParams, useLocation } from 'react-router-dom';
 import React, { useEffect, useState } from 'react'; // Removed unnecessary imports
 import { Http } from '../../common';
 import Pagination from './pagination';
@@ -126,12 +126,14 @@ function Board() {
     const [page, setPage] = useState(1);
     const [category, setCategory] = useState(null);
     const [totalPages, setTotalPages] = useState(1);
-    const [categoryNames, setCategoryNames] = useState([]);
+    const location = useLocation();
+    const queryParams = new URLSearchParams(location.search);
+    const categoryId = queryParams.get('category');
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await fetch(Http + `/board?page=${page}&list_num=${limit}&category=${category}`);
+                const response = await fetch(Http + `/board?page=${page}&list_num=${limit}&category=${categoryId}`);
                 if (response.ok) {
                     const result = await response.json();
                     setBoard(result.data);
@@ -144,42 +146,23 @@ function Board() {
             }
         };
         fetchData();
-    }, [limit, page, category]);
+    }, [limit, page, categoryId]);
 
-    useEffect(() => {
-        const category_list = async () => {
-            try {
-                const response = await fetch(Http + '/category');
-                if (response.ok) {
-                    const result = await response.json();
-                    const newCategoryNames = result.map((item) => item.name);
-                    setCategoryNames([...new Set(newCategoryNames)]);
-                    console.log(categoryNames);
-                } else {
-                    console.error('불러오기 실패');
-                }
-            } catch (error) {
-                console.error('에러 발생', error);
+    const list_num = async () => {
+        try {
+            const response = await fetch(Http + `/board?list_num=${limit}`);
+            if (response.ok) {
+                const data = await response.json();
+            } else {
+                console.error('error');
             }
-        };
-        category_list();
-    }, []);
-
-    // const list_num = async () => {
-    //     try {
-    //         const response = await fetch(Http + `/board?list_num=${limit}`);
-    //         if (response.ok) {
-    //             const data = await response.json();
-    //         } else {
-    //             console.error('error');
-    //         }
-    //     } catch (error) {
-    //         console.log('error 발생', error);
-    //     }
-    // };
-    // useEffect(() => {
-    //     list_num(limit);
-    // }, [limit]);
+        } catch (error) {
+            console.log('error 발생', error);
+        }
+    };
+    useEffect(() => {
+        list_num(limit);
+    }, [limit]);
 
     return (
         <>
@@ -204,7 +187,7 @@ function Board() {
                 <br />
                 <hr />
                 {board.map((item) => (
-                    <Link to={`/board/${item.id}`} key={item.id}>
+                    <Link to={`/board/${categoryId}`} key={item.id}>
                         <BoardItemContainer>
                             <BoardImage src={item.userImg ? item.userImg : defaultImageSrc}></BoardImage>
                             <BoardContainer>

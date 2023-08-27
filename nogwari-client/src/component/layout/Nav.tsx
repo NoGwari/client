@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { Http } from 'common';
 
@@ -25,6 +25,7 @@ const GridBox = styled.div`
 
 const Nav: React.FC = () => {
     const [categories, setCategories] = useState<Category[]>([]);
+    const { categoryId } = useParams<{ categoryId: string }>();
 
     useEffect(() => {
         const fetchData = async () => {
@@ -47,8 +48,7 @@ const Nav: React.FC = () => {
             <NavContainer>
                 <GridBox>
                     {categories.map((category, index) => (
-                        // 각 링크 안에 카테고리 이름만 표시합니다.
-                        <Link key={index} to={`/board/${category.name}`}>
+                        <Link key={index} to={`/board?category=${category.id}`}>
                             {category.name}
                         </Link>
                     ))}
