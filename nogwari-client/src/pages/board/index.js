@@ -197,7 +197,15 @@ function Board() {
                     <Link to={`/board/${item.id}`} key={item.id}>
                         <BoardItemContainer>
                             <BoardImage>
-                                <FiImage style={{ height: '48px', width: '48px' }}></FiImage>
+                                {item.thumbnail ? (
+                                    <img
+                                        src={item.thumbnail}
+                                        alt="Thumbnail"
+                                        style={{ height: '48px', width: '48px' }}
+                                    />
+                                ) : (
+                                    <FiImage style={{ height: '48px', width: '48px' }} />
+                                )}
                             </BoardImage>
                             <BoardContainer>
                                 <BoardTitleContainer>
