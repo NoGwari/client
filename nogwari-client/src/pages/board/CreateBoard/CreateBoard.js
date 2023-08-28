@@ -18,7 +18,8 @@ function CreateBoard() {
     const [categoryId, setCategoryId] = useState('');
     const [editorHtml, setEditorHtml] = useState('');
     const [imageFiles, setImageFiles] = useState([]);
-    const editorRef = useRef(null);
+    const [imageUrls, setImageUrls] = useState([]);
+    const [imageUrl, setImageUrl] = useState('');
     const QuillRef = useRef();
     const navigate = useNavigate();
 
@@ -64,7 +65,6 @@ function CreateBoard() {
             const file = input.files[0];
             if (file != null) {
                 formData.append('image', file);
-
                 if (QuillRef.current) {
                     const url = Http + '/board/upload';
 
@@ -82,12 +82,15 @@ function CreateBoard() {
                         }
 
                         const data = await response.json();
-                        const imageUrl = data; // 이미지 URL 가져오기
+                        const newImageUrl = data;
+
+                        setImageUrls((prevImageUrls) => [...prevImageUrls, newImageUrl]);
+                        setImageUrl(newImageUrl);
 
                         const quill = QuillRef.current.getEditor();
                         const range = quill.getSelection();
 
-                        quill.insertEmbed(range.index, 'image', imageUrl);
+                        quill.insertEmbed(range.index, 'image', newImageUrl);
                         quill.setSelection(range.index + 1);
 
                         setImageFiles((prevImageFiles) => [...prevImageFiles, file]);
@@ -147,7 +150,7 @@ function CreateBoard() {
         'image',
     ];
 
-    const createNewPosting = async (title, content, categoryId) => {
+    const createNewPosting = async (title, content, categoryId, imageUrl) => {
         const url = Http + '/board';
 
         try {
@@ -157,7 +160,7 @@ function CreateBoard() {
                     'Content-Type': 'application/json',
                     Authorization: `Bearer ${localStorage.getItem('token')}`,
                 },
-                body: JSON.stringify({ title, content, categoryId }),
+                body: JSON.stringify({ title, content, categoryId, imageUrl }),
             });
             console.log('잘 간다');
             navigate('/board');
@@ -178,7 +181,7 @@ function CreateBoard() {
         e.preventDefault();
         console.log('눌림');
         try {
-            const newPosts = await createNewPosting(title, editorHtml, categoryId);
+            const newPosts = await createNewPosting(title, editorHtml, categoryId, imageUrl);
             console.log('New posting created:', newPosts);
         } catch (error) {
             console.error('Error creating new posting:', error.message);
