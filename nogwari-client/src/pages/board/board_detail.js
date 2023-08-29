@@ -30,10 +30,47 @@ const BoardContent = styled.p`
     display: flex;
     flex-direction: row;
 `;
+const CommentContainer = styled.div`
+    width : 100%;
+    margin : 0 auto;
+    font family : Arrial, sans-serif;
+`;
+const Comment = styled.div`
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-bottom: 10px;
+    background-color: #f9f9f9;
+    width: 100%;
+`;
+const CommentContent = styled.div`
+    margin-top: 5px;
+`;
+const CommentForm = styled.div`
+    margin-top: 20px;
+    display: flex;
+    flex-direction: colunmn;
+`;
+
+const CommentTextarea = styled.textarea`
+    width: 100%;
+    padding: 5px;
+    margin-right: 10px;
+`;
+const CommentSubmit = styled.button`
+    background-color: #007bff;
+    color: #fff;
+    padding: 12px 24px;
+    cursor: pointer;
+    font-size: 13px;
+    white-space: nowrap;
+`;
 
 function BoardDetailPage() {
     const [board, setBoard] = useState([]);
     const { itemId } = useParams();
+    const [comments, setComments] = useState([]);
+    const [content, setContent] = useState('');
+
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -72,8 +109,20 @@ function BoardDetailPage() {
         }
     };
 
+    const handleContentChange = (e) => {
+        setContent(e.target.value);
+    };
+    const handleSubmit = () => {
+        if (content) {
+            const newComment = {
+                content,
+            };
+            setComments([...comments, newComment]);
+            setContent('');
+        }
+    };
+
     if (!board) {
-        // board로 체크
         return <div>Loading...</div>;
     }
 
@@ -94,6 +143,17 @@ function BoardDetailPage() {
             <div dangerouslySetInnerHTML={{ __html: board.content }}></div>
             <hr />
             <DeleteBoard />
+            <CommentContainer>
+                {comments.map((comment, index) => (
+                    <Comment key={index}>
+                        <CommentContent>{comment.content}</CommentContent>
+                    </Comment>
+                ))}
+                <CommentForm>
+                    <CommentTextarea placeholder="댓글을 입력하세요" value={content} onChange={handleContentChange} />
+                    <CommentSubmit onClick={handleSubmit}>댓글작성</CommentSubmit>
+                </CommentForm>
+            </CommentContainer>
         </>
     );
 }
