@@ -196,7 +196,7 @@ function BoardDetailPage() {
                 {comments.map((comment) => (
                     <Comment key={comment.id}>
                         <CommentContent>
-                            {comment.id}. {comment.content}
+                            {comment.userNickname} : {comment.content}
                         </CommentContent>
                     </Comment>
                 ))}
