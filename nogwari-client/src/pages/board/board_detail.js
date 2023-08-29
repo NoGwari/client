@@ -7,6 +7,8 @@ import DeleteBoard from './DeleteBoard/DeleteBoard';
 import { FiThumbsUp } from 'react-icons/fi';
 import { AiOutlineEye } from 'react-icons/ai';
 import UpdateBoard from './UpdateBoard/UpdateBoard';
+import { ImReply } from 'react-icons/im';
+import { RiAlarmWarningFill } from 'react-icons/ri';
 
 const BoardTitleContainer = styled.div`
     display: flex;
@@ -46,6 +48,9 @@ const Comment = styled.div`
 const CommentContent = styled.div`
     margin-top: 1px;
     margin-bottom: 1px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 `;
 const CommentForm = styled.div`
     margin-top: 20px;
@@ -196,7 +201,11 @@ function BoardDetailPage() {
                 {comments.map((comment) => (
                     <Comment key={comment.id}>
                         <CommentContent>
-                            {comment.userNickname} : {comment.content}
+                            <div>
+                                {comment.userNickname} : {comment.content}
+                                &nbsp;&nbsp;&nbsp;&nbsp;<ImReply></ImReply>
+                            </div>
+                            <RiAlarmWarningFill></RiAlarmWarningFill>
                         </CommentContent>
                     </Comment>
                 ))}
