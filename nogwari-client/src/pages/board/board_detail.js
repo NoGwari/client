@@ -34,21 +34,23 @@ const CommentContainer = styled.div`
     width : 100%;
     margin : 0 auto;
     font family : Arrial, sans-serif;
+    
 `;
 const Comment = styled.div`
     border: 1px solid #ccc;
-    padding: 10px;
-    margin-bottom: 10px;
+    padding: 3px;
+    margin-bottom: 5px;
     background-color: #f9f9f9;
     width: 100%;
 `;
 const CommentContent = styled.div`
-    margin-top: 5px;
+    margin-top: 1px;
+    margin-bottom: 1px;
 `;
 const CommentForm = styled.div`
     margin-top: 20px;
     display: flex;
-    flex-direction: colunmn;
+    flex-direction: column;
 `;
 
 const CommentTextarea = styled.textarea`
@@ -109,20 +111,65 @@ function BoardDetailPage() {
         }
     };
 
+    useEffect(() => {
+        async function fetchComments() {
+            try {
+                const response = await fetch(Http + `/comment/${itemId}`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    console.log(data);
+                    setComments(data.comment);
+                } else {
+                    console.error('댓글 가져오기 실패');
+                }
+            } catch (error) {
+                console.error('오류 발생:', error);
+            }
+        }
+
+        fetchComments();
+    }, []);
+
     const handleContentChange = (e) => {
         setContent(e.target.value);
     };
-    const handleSubmit = () => {
+
+    const handleSubmit = async () => {
         if (content) {
             const newComment = {
                 content,
             };
-            setComments([...comments, newComment]);
-            setContent('');
+
+            try {
+                const response = await fetch(Http + `/comment/${itemId}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Authorization: `Bearer ${localStorage.getItem('token')}`,
+                    },
+                    body: JSON.stringify(newComment),
+                });
+
+                if (response.ok) {
+                    setContent('');
+                    setComments([...comments, newComment]);
+                    console.log('댓글 작성 성공');
+                } else {
+                    console.error('댓글 작성 실패');
+                }
+            } catch (error) {
+                console.error('오류 발생:', error);
+            }
         }
     };
 
-    if (!board) {
+    if (board === null || comments === null) {
         return <div>Loading...</div>;
     }
 
@@ -143,10 +190,14 @@ function BoardDetailPage() {
             <div dangerouslySetInnerHTML={{ __html: board.content }}></div>
             <hr />
             <DeleteBoard />
+            <hr />
+            <br />
             <CommentContainer>
-                {comments.map((comment, index) => (
-                    <Comment key={index}>
-                        <CommentContent>{comment.content}</CommentContent>
+                {comments.map((comment) => (
+                    <Comment key={comment.id}>
+                        <CommentContent>
+                            {comment.id}. {comment.content}
+                        </CommentContent>
                     </Comment>
                 ))}
                 <CommentForm>
