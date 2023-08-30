@@ -77,6 +77,7 @@ function BoardDetailPage() {
     const { itemId } = useParams();
     const [comments, setComments] = useState([]);
     const [content, setContent] = useState('');
+    const [hits, setHits] = useState([]);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -130,6 +131,8 @@ function BoardDetailPage() {
                     const data = await response.json();
                     console.log(data);
                     setComments(data.comment);
+                    setHits(data.id);
+                    console.log(hits);
                 } else {
                     console.error('댓글 가져오기 실패');
                 }
@@ -141,23 +144,23 @@ function BoardDetailPage() {
         fetchComments();
     }, []);
 
-    const hitComment = async () => {
+    const hitComment = async (commentId) => {
         try {
-            const response = await fetch(Http + `/comment/hits/${comments.id}`, {
+            const response = await fetch(Http + `/comment/hits/${commentId}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
                     Authorization: `Bearer ${localStorage.getItem('token')}`,
                 },
             });
-            console.log(comments.id);
+
             if (!response.ok) {
                 throw new Error('Network response was not ok');
             }
 
-            const data = await response.json();
-            setBoard((prevBoard) =>
-                prevBoard.map((board) => (board.id === data.id ? { ...board, hits: data.hits } : board))
+            const updatedComment = await response.json();
+            setComments((prevComments) =>
+                prevComments.map((comment) => (comment.id === updatedComment.id ? updatedComment : comment))
             );
         } catch (error) {
             console.error('Error posting like:', error);
