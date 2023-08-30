@@ -141,6 +141,29 @@ function BoardDetailPage() {
         fetchComments();
     }, []);
 
+    const hitComment = async () => {
+        try {
+            const response = await fetch(Http + `/comment/hits/${comments.id}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${localStorage.getItem('token')}`,
+                },
+            });
+            console.log(comments.id);
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+
+            const data = await response.json();
+            setBoard((prevBoard) =>
+                prevBoard.map((board) => (board.id === data.id ? { ...board, hits: data.hits } : board))
+            );
+        } catch (error) {
+            console.error('Error posting like:', error);
+        }
+    };
+
     const handleContentChange = (e) => {
         setContent(e.target.value);
     };
@@ -205,6 +228,9 @@ function BoardDetailPage() {
                                 {comment.userNickname} : {comment.content}
                                 &nbsp;&nbsp;&nbsp;&nbsp;<ImReply></ImReply>
                             </div>
+                            <FiThumbsUp onClick={hitComment} style={{ cursor: 'pointer' }}>
+                                {comment.hits}
+                            </FiThumbsUp>
                             <RiAlarmWarningFill></RiAlarmWarningFill>
                         </CommentContent>
                     </Comment>
