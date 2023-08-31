@@ -77,6 +77,7 @@ function BoardDetailPage() {
     const [comments, setComments] = useState([]);
     const [content, setContent] = useState('');
     const [hits, setHits] = useState(0);
+    const [commentHits, setCommentHits] = useState(0);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -155,6 +156,7 @@ function BoardDetailPage() {
             const responseData = await response.text();
             if (responseData === 'OK') {
                 console.log('좋아요가 성공적으로 처리되었습니다.');
+                setCommentHits(commentHits + 1);
             } else {
                 const updatedComment = JSON.parse(responseData);
                 console.log(updatedComment);
