@@ -33,10 +33,9 @@ const BoardContent = styled.p`
     flex-direction: row;
 `;
 const CommentContainer = styled.div`
-    width : 100%;
-    margin : 0 auto;
-    font family : Arrial, sans-serif;
-    
+    width: 100%;
+    margin: 0 auto;
+    font-family: Arial, sans-serif;
 `;
 const Comment = styled.div`
     border: 1px solid #ccc;
@@ -73,11 +72,11 @@ const CommentSubmit = styled.button`
 `;
 
 function BoardDetailPage() {
-    const [board, setBoard] = useState([]);
+    const [board, setBoard] = useState({});
     const { itemId } = useParams();
     const [comments, setComments] = useState([]);
     const [content, setContent] = useState('');
-    const [hits, setHits] = useState([]);
+    const [hits, setHits] = useState(0);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -108,10 +107,7 @@ function BoardDetailPage() {
                 throw new Error('Network response was not ok');
             }
 
-            const data = await response.json();
-            setBoard((prevBoard) =>
-                prevBoard.map((board) => (board.id === data.id ? { ...board, hits: data.hits } : board))
-            );
+            setHits(hits + 1);
         } catch (error) {
             console.error('Error posting like:', error);
         }
@@ -131,8 +127,6 @@ function BoardDetailPage() {
                     const data = await response.json();
                     console.log(data);
                     setComments(data.comment);
-                    setHits(data.id);
-                    console.log(hits);
                 } else {
                     console.error('댓글 가져오기 실패');
                 }
@@ -158,10 +152,20 @@ function BoardDetailPage() {
                 throw new Error('Network response was not ok');
             }
 
-            const updatedComment = await response.json();
-            setComments((prevComments) =>
-                prevComments.map((comment) => (comment.id === updatedComment.id ? updatedComment : comment))
-            );
+            const responseData = await response.text();
+            if (responseData === 'OK') {
+                console.log('좋아요가 성공적으로 처리되었습니다.');
+            } else {
+                const updatedComment = JSON.parse(responseData);
+                console.log(updatedComment);
+                setComments((prevComments) =>
+                    prevComments.map((comment) =>
+                        comment.id === updatedComment.id
+                            ? { ...updatedComment, hits: updatedComment.hits + 1 }
+                            : comment
+                    )
+                );
+            }
         } catch (error) {
             console.error('Error posting like:', error);
         }
@@ -200,7 +204,7 @@ function BoardDetailPage() {
         }
     };
 
-    if (board === null || comments === null) {
+    if (!board.title || comments === null) {
         return <div>Loading...</div>;
     }
 
@@ -212,10 +216,10 @@ function BoardDetailPage() {
                 <BoardTitle>{board.title}</BoardTitle>
             </BoardTitleContainer>
             <BoardContent>
-                {board.userImg}
+                <img src={board.userImg} alt="사용자 이미지" /> &middot; &nbsp;
                 {board.userNickname} &middot; &nbsp; <AiOutlineEye />
                 {board.views} &middot;&nbsp; <FiThumbsUp onClick={hitUrl} style={{ cursor: 'pointer' }} />
-                {board.hits}
+                {hits}
             </BoardContent>
             <hr />
             <div dangerouslySetInnerHTML={{ __html: board.content }}></div>
@@ -229,12 +233,17 @@ function BoardDetailPage() {
                         <CommentContent>
                             <div>
                                 {comment.userNickname} : {comment.content}
-                                &nbsp;&nbsp;&nbsp;&nbsp;<ImReply></ImReply>
+                                &nbsp;&nbsp;&nbsp;<ImReply></ImReply>
                             </div>
-                            <FiThumbsUp onClick={hitComment} style={{ cursor: 'pointer' }}>
+                            <div>
+                                <FiThumbsUp
+                                    onClick={() => hitComment(comment.id)}
+                                    style={{ cursor: 'pointer', marginLeft: '5px' }}
+                                />
                                 {comment.hits}
-                            </FiThumbsUp>
-                            <RiAlarmWarningFill></RiAlarmWarningFill>
+                                &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+                                <RiAlarmWarningFill></RiAlarmWarningFill>
+                            </div>
                         </CommentContent>
                     </Comment>
                 ))}
