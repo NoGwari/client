@@ -8,23 +8,26 @@ function DeleteBoard() {
     const navigate = useNavigate();
     const deletePost = async () => {
         const url = Http + `/board/${params}`;
-        try {
-            const response = await fetch(url, {
-                method: 'DELETE',
-                headers: {
-                    'Content-Type': 'application/json',
-                    Authorization: `Bearer ${localStorage.getItem('token')}`,
-                },
-            });
+        const shouldDelete = window.confirm('게시물을 삭제하시겠습니까?');
+        if (shouldDelete) {
+            try {
+                const response = await fetch(url, {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Authorization: `Bearer ${localStorage.getItem('token')}`,
+                    },
+                });
 
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+
+                console.log('게시물이 성공적으로 삭제되었습니다.');
+                navigate('/board');
+            } catch (error) {
+                console.error('Error Deleting posting:', error.message);
             }
-
-            console.log('게시물이 성공적으로 삭제되었습니다.');
-            navigate('/board');
-        } catch (error) {
-            console.error('Error Deleting posting:', error.message);
         }
     };
 
