@@ -5,7 +5,7 @@ import Layout from 'component/layout/Layout';
 import styled from 'styled-components';
 import DeleteBoard from './DeleteBoard/DeleteBoard';
 import { FiThumbsUp } from 'react-icons/fi';
-import { AiOutlineEye } from 'react-icons/ai';
+import { AiOutlineEye, AiFillDelete } from 'react-icons/ai';
 import { ImReply } from 'react-icons/im';
 import { RiAlarmWarningFill } from 'react-icons/ri';
 
@@ -168,6 +168,26 @@ function BoardDetailPage() {
             console.error('Error posting like:', error);
         }
     };
+    const deleteComment = async (commentId) => {
+        const shouldDelete = window.confirm('댓글을 삭제하시겠습니까?');
+        if (shouldDelete) {
+            try {
+                const response = await fetch(Http + `/comment/${commentId}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Authorization: `Bearer ${localStorage.getItem('token')}`,
+                    },
+                });
+                if (response.ok) {
+                    console.log('댓글 삭제 완료');
+                    fetchComments();
+                }
+            } catch (error) {
+                console.error('에러', error);
+            }
+        }
+    };
 
     const handleContentChange = (e) => {
         setContent(e.target.value);
@@ -240,8 +260,10 @@ function BoardDetailPage() {
                                     style={{ cursor: 'pointer', marginLeft: '5px' }}
                                 />
                                 {comment.hits}
-                                &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
-                                <RiAlarmWarningFill></RiAlarmWarningFill>
+                                &nbsp;&nbsp; &nbsp;&nbsp;
+                                <AiFillDelete onClick={() => deleteComment(comment.id)} style={{ cursor: 'pointer' }} />
+                                &nbsp;&nbsp;
+                                <RiAlarmWarningFill />
                             </div>
                         </CommentContent>
                     </Comment>
