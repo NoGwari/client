@@ -6,7 +6,6 @@ import styled from 'styled-components';
 import DeleteBoard from './DeleteBoard/DeleteBoard';
 import { FiThumbsUp } from 'react-icons/fi';
 import { AiOutlineEye } from 'react-icons/ai';
-import UpdateBoard from './UpdateBoard/UpdateBoard';
 import { ImReply } from 'react-icons/im';
 import { RiAlarmWarningFill } from 'react-icons/ri';
 
@@ -93,6 +92,7 @@ function BoardDetailPage() {
             }
         };
         fetchData();
+        fetchComments();
     }, [itemId]);
 
     const hitUrl = async () => {
@@ -113,31 +113,26 @@ function BoardDetailPage() {
             console.error('Error posting like:', error);
         }
     };
+    const fetchComments = async () => {
+        try {
+            const response = await fetch(Http + `/comment/${itemId}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
 
-    useEffect(() => {
-        async function fetchComments() {
-            try {
-                const response = await fetch(Http + `/comment/${itemId}`, {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                });
-
-                if (response.ok) {
-                    const data = await response.json();
-                    console.log(data);
-                    setComments(data.comment);
-                } else {
-                    console.error('댓글 가져오기 실패');
-                }
-            } catch (error) {
-                console.error('오류 발생:', error);
+            if (response.ok) {
+                const data = await response.json();
+                console.log(data);
+                setComments(data.comment);
+            } else {
+                console.error('댓글 가져오기 실패');
             }
+        } catch (error) {
+            console.error('오류 발생:', error);
         }
-
-        fetchComments();
-    }, []);
+    };
 
     const hitComment = async (commentId) => {
         try {
@@ -157,6 +152,7 @@ function BoardDetailPage() {
             if (responseData === 'OK') {
                 console.log('좋아요가 성공적으로 처리되었습니다.');
                 setCommentHits(commentHits + 1);
+                fetchComments();
             } else {
                 const updatedComment = JSON.parse(responseData);
                 console.log(updatedComment);
@@ -196,6 +192,7 @@ function BoardDetailPage() {
                 if (response.ok) {
                     setContent('');
                     setComments([...comments, newComment]);
+                    fetchComments();
                     console.log('댓글 작성 성공');
                 } else {
                     console.error('댓글 작성 실패');
