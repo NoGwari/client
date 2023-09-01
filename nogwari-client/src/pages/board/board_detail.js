@@ -74,6 +74,8 @@ function BoardDetailPage() {
     const [board, setBoard] = useState({});
     const { itemId } = useParams();
     const [comments, setComments] = useState([]);
+    const [reply, setReply] = useState([]);
+    const [selectedCommentId, setSelectedCommentId] = useState(null);
     const [content, setContent] = useState('');
     const [hits, setHits] = useState(0);
     const [commentHits, setCommentHits] = useState(0);
@@ -126,11 +128,43 @@ function BoardDetailPage() {
                 const data = await response.json();
                 console.log(data);
                 setComments(data.comment);
+                setReply(data.reply);
             } else {
                 console.error('댓글 가져오기 실패');
             }
         } catch (error) {
             console.error('오류 발생:', error);
+        }
+    };
+
+    const handleCommentClick = (commentId) => {
+        setSelectedCommentId(commentId);
+    };
+
+    const fetchReply = async () => {
+        handleCommentClick();
+        console.log(selectedCommentId);
+        try {
+            const response = await fetch(Http + `/comment/reply/${itemId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    content: 'string',
+                    parentCommentId: selectedCommentId,
+                }),
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                console.log(data);
+                setReply(data);
+            } else {
+                console.error('답글 실패');
+            }
+        } catch (error) {
+            console.error('오류발생:', error);
         }
     };
 
@@ -252,7 +286,8 @@ function BoardDetailPage() {
                         <CommentContent>
                             <div>
                                 {comment.userNickname} : {comment.content}
-                                &nbsp;&nbsp;&nbsp;<ImReply></ImReply>
+                                &nbsp;&nbsp;&nbsp;
+                                <ImReply onClick={() => fetchReply(comment.id)} style={{ cursor: 'pointer' }} />
                             </div>
                             <div>
                                 <FiThumbsUp
