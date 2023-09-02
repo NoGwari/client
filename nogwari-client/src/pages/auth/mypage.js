@@ -10,10 +10,20 @@ function Mypage() {
     const navigate = useNavigate();
     const [imageFile, setImageFile] = useState(null);
     const [isUploadingImage, setIsUploadingImage] = useState(false);
+    const [imagePreview, setImagePreview] = useState(null);
 
     const handleImageChange = (e) => {
         const selectedFile = e.target.files[0];
         setImageFile(selectedFile);
+        if (selectedFile) {
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setImagePreview(reader.result);
+            };
+            reader.readAsDataURL(selectedFile);
+        } else {
+            setImagePreview(null);
+        }
     };
 
     const handleImageUpload = async () => {
@@ -112,6 +122,8 @@ function Mypage() {
                         <div>
                             <p>이미지 변경:</p>
                             <input type="file" accept="image/*" onChange={handleImageChange} />
+                            <br />
+                            {imagePreview && <img src={imagePreview} alt="미리보기" style={{ maxWidth: '200px' }} />}
                             <button onClick={handleImageUpload} disabled={isUploadingImage}>
                                 {isUploadingImage ? '업로드 중...' : '업로드'}
                             </button>
