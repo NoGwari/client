@@ -77,6 +77,9 @@ function BoardDetailPage() {
     const [content, setContent] = useState('');
     const [hits, setHits] = useState(0);
     const [commentHits, setCommentHits] = useState(0);
+    const [isReplying, setIsReplying] = useState(false);
+    const [replyCommentId, setReplyCommentId] = useState(null);
+    const [replyComments, setReplyComments] = useState({});
     const [reply, setReply] = useState('');
 
     useEffect(() => {
@@ -195,26 +198,37 @@ function BoardDetailPage() {
     };
 
     const ReplyComment = async () => {
-        try {
-            const response = await fetch(Http + `/commnet/reply/${itemId}`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    Authorization: `Bearer ${localStorage.getItem('token')}`,
-                },
-                body: JSON.stringify({
-                    content: reply,
-                    parentCommentId: comments.id,
-                }),
-            });
-        } catch (error) {
-            console.error('error발생', error);
+        if (reply) {
+            try {
+                const response = await fetch(Http + `/comment/reply/${itemId}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Authorization: `Bearer ${localStorage.getItem('token')}`,
+                    },
+                    body: JSON.stringify({
+                        content: reply,
+                        parentCommentId: replyCommentId,
+                    }),
+                });
+
+                if (response.ok) {
+                    setReply('');
+                    setIsReplying(false);
+                    fetchComments();
+                    console.log('답글 작성 성공');
+                } else {
+                    console.error('답글 작성 실패');
+                }
+            } catch (error) {
+                console.error('오류 발생:', error);
+            }
         }
     };
-    const [isReplying, setIsReplying] = useState(false);
 
-    const toggleReply = () => {
+    const toggleReply = (commentId) => {
         setIsReplying(!isReplying);
+        setReplyCommentId(commentId);
     };
 
     const handleSubmit = async () => {
@@ -277,15 +291,15 @@ function BoardDetailPage() {
                             <div>
                                 {comment.userNickname} : {comment.content}
                                 &nbsp;&nbsp;&nbsp;
-                                <button onClick={toggleReply}>댓글 달기</button>
-                                {isReplying && (
+                                <button onClick={() => toggleReply(comment.id)}>답글 달기</button>
+                                {isReplying && replyCommentId === comment.id && (
                                     <div>
                                         <textarea
                                             placeholder="답글 내용을 입력하세요"
                                             value={reply}
-                                            onChange={(e) => setReply(e.target.reply)}
+                                            onChange={(e) => setReply(e.target.value)}
                                         />
-                                        <button onClick={() => ReplyComment(reply, comment.id)}>전송</button>
+                                        <button onClick={() => ReplyComment(reply)}>전송</button>
                                     </div>
                                 )}
                             </div>
