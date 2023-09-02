@@ -283,7 +283,7 @@ function BoardDetailPage() {
                                         <textarea
                                             placeholder="답글 내용을 입력하세요"
                                             value={reply}
-                                            onChange={(e) => setReply(e.target.value)}
+                                            onChange={(e) => setReply(e.target.reply)}
                                         />
                                         <button onClick={() => ReplyComment(reply, comment.id)}>전송</button>
                                     </div>
