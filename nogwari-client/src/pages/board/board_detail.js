@@ -193,6 +193,29 @@ function BoardDetailPage() {
         setContent(e.target.value);
     };
 
+    const ReplyComment = async (content, parentCommentId) => {
+        try {
+            const response = await fetch(Http + `/commnet/reply/${itemId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${localStorage.getItem('token')}`,
+                },
+                body: JSON.stringify({
+                    content,
+                    parentCommentId,
+                }),
+            });
+        } catch (error) {
+            console.error('error발생', error);
+        }
+    };
+    const [isReplying, setIsReplying] = useState(false);
+
+    const toggleReply = () => {
+        setIsReplying(!isReplying);
+    };
+
     const handleSubmit = async () => {
         if (content) {
             const newComment = {
@@ -253,7 +276,17 @@ function BoardDetailPage() {
                             <div>
                                 {comment.userNickname} : {comment.content}
                                 &nbsp;&nbsp;&nbsp;
-                                <ImReply />
+                                <button onClick={toggleReply}>댓글 달기</button>
+                                {isReplying && (
+                                    <div>
+                                        <textarea
+                                            placeholder="답글 내용을 입력하세요"
+                                            value={content}
+                                            onChange={(e) => setContent(e.target.value)}
+                                        />
+                                        <button onClick={() => ReplyComment(content, comment.id)}>전송</button>
+                                    </div>
+                                )}
                             </div>
                             <div>
                                 <FiThumbsUp
