@@ -77,6 +77,7 @@ function BoardDetailPage() {
     const [content, setContent] = useState('');
     const [hits, setHits] = useState(0);
     const [commentHits, setCommentHits] = useState(0);
+    const [reply, setReply] = useState('');
 
     useEffect(() => {
         const fetchData = async () => {
@@ -193,7 +194,7 @@ function BoardDetailPage() {
         setContent(e.target.value);
     };
 
-    const ReplyComment = async (content, parentCommentId) => {
+    const ReplyComment = async () => {
         try {
             const response = await fetch(Http + `/commnet/reply/${itemId}`, {
                 method: 'POST',
@@ -202,8 +203,8 @@ function BoardDetailPage() {
                     Authorization: `Bearer ${localStorage.getItem('token')}`,
                 },
                 body: JSON.stringify({
-                    content,
-                    parentCommentId,
+                    content: reply,
+                    parentCommentId: comments.id,
                 }),
             });
         } catch (error) {
@@ -281,10 +282,10 @@ function BoardDetailPage() {
                                     <div>
                                         <textarea
                                             placeholder="답글 내용을 입력하세요"
-                                            value={content}
-                                            onChange={(e) => setContent(e.target.value)}
+                                            value={reply}
+                                            onChange={(e) => setReply(e.target.value)}
                                         />
-                                        <button onClick={() => ReplyComment(content, comment.id)}>전송</button>
+                                        <button onClick={() => ReplyComment(reply, comment.id)}>전송</button>
                                     </div>
                                 )}
                             </div>
