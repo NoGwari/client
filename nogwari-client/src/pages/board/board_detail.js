@@ -81,6 +81,7 @@ function BoardDetailPage() {
     const [replyCommentId, setReplyCommentId] = useState(null);
     const [replyComments, setReplyComments] = useState([]);
     const [reply, setReply] = useState('');
+    const [replies, setReplise] = useState([]);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -198,37 +199,6 @@ function BoardDetailPage() {
         setContent(e.target.value);
     };
 
-    const ReplyComment = async () => {
-        if (reply) {
-            try {
-                const response = await fetch(Http + `/comment/reply/${itemId}`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        Authorization: `Bearer ${localStorage.getItem('token')}`,
-                    },
-                    body: JSON.stringify({
-                        content: reply,
-                        parentCommentId: replyCommentId,
-                    }),
-                });
-
-                if (response.ok) {
-                    setReply('');
-                    setIsReplying(false);
-                    fetchComments();
-                    setReplyComments(reply);
-                    console.log('답글 작성 성공');
-                    console.log(reply);
-                } else {
-                    console.error('답글 작성 실패');
-                }
-            } catch (error) {
-                console.error('오류 발생:', error);
-            }
-        }
-    };
-
     const toggleReply = (commentId) => {
         setIsReplying(!isReplying);
         setReplyCommentId(commentId);
@@ -257,6 +227,39 @@ function BoardDetailPage() {
                     console.log('댓글 작성 성공');
                 } else {
                     console.error('댓글 작성 실패');
+                }
+            } catch (error) {
+                console.error('오류 발생:', error);
+            }
+        }
+    };
+    const ReplyComment = async () => {
+        if (reply) {
+            const newReply = {
+                reply,
+            };
+            try {
+                const response = await fetch(Http + `/comment/reply/${itemId}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Authorization: `Bearer ${localStorage.getItem('token')}`,
+                    },
+                    body: JSON.stringify({
+                        content: reply,
+                        parentCommentId: replyCommentId,
+                    }),
+                });
+
+                if (response.ok) {
+                    setReply('');
+                    setReplyComments([...replies, newReply]);
+                    setIsReplying(false);
+                    fetchComments();
+                    console.log('답글 작성 성공');
+                    console.log(reply);
+                } else {
+                    console.error('답글 작성 실패');
                 }
             } catch (error) {
                 console.error('오류 발생:', error);
@@ -319,10 +322,10 @@ function BoardDetailPage() {
                             </div>
                         </CommentContent>
 
-                        {replyComments[comment.id] && (
+                        {replies[comment.id] && (
                             <div>
-                                {replyComments[comment.id].map((replyComment) => (
-                                    <div key={replyComment.id}>{replyComment.content}</div>
+                                {replies[comment.id].map((replyComment) => (
+                                    <div key={replyComment.id}>{reply.content}</div>
                                 ))}
                             </div>
                         )}
