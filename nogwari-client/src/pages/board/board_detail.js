@@ -79,7 +79,7 @@ function BoardDetailPage() {
     const [commentHits, setCommentHits] = useState(0);
     const [isReplying, setIsReplying] = useState(false);
     const [replyCommentId, setReplyCommentId] = useState(null);
-    const [replyComments, setReplyComments] = useState({});
+    const [replyComments, setReplyComments] = useState([]);
     const [reply, setReply] = useState('');
 
     useEffect(() => {
@@ -130,6 +130,7 @@ function BoardDetailPage() {
                 const data = await response.json();
                 console.log(data);
                 setComments(data.comment);
+                setReply(data.reply);
             } else {
                 console.error('댓글 가져오기 실패');
             }
@@ -216,7 +217,9 @@ function BoardDetailPage() {
                     setReply('');
                     setIsReplying(false);
                     fetchComments();
+                    setReplyComments(reply);
                     console.log('답글 작성 성공');
+                    console.log(reply);
                 } else {
                     console.error('답글 작성 실패');
                 }
@@ -315,6 +318,13 @@ function BoardDetailPage() {
                                 <RiAlarmWarningFill />
                             </div>
                         </CommentContent>
+                        {replyComments[comment.id] && (
+                            <div>
+                                {replyComments[comment.id].map((replyComment) => (
+                                    <div key={replyComment.id}>{replyComment.content}</div>
+                                ))}
+                            </div>
+                        )}
                     </Comment>
                 ))}
                 <CommentForm>
