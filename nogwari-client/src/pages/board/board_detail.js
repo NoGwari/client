@@ -130,7 +130,7 @@ function BoardDetailPage() {
                 const data = await response.json();
                 console.log(data);
                 setComments(data.comment);
-                setReply(data.reply);
+                setReplyComments(data.reply);
             } else {
                 console.error('댓글 가져오기 실패');
             }
@@ -318,6 +318,7 @@ function BoardDetailPage() {
                                 <RiAlarmWarningFill />
                             </div>
                         </CommentContent>
+
                         {replyComments[comment.id] && (
                             <div>
                                 {replyComments[comment.id].map((replyComment) => (
