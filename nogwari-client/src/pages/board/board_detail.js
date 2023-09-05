@@ -70,6 +70,17 @@ const CommentSubmit = styled.button`
     white-space: nowrap;
 `;
 
+const ReplyContent = styled.div`
+    margin-top: 1px;
+    margin-bottom: 1px;
+    margin-left: 10px;
+    font-size: 14px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 80%;
+`;
+
 function BoardDetailPage() {
     const [board, setBoard] = useState({});
     const { itemId } = useParams();
@@ -77,7 +88,6 @@ function BoardDetailPage() {
     const [content, setContent] = useState('');
     const [hits, setHits] = useState(0);
     const [commentHits, setCommentHits] = useState(0);
-
     const [isReplying, setIsReplying] = useState(false);
     const [replyCommentId, setReplyCommentId] = useState(null);
     const [replyComments, setReplyComments] = useState([]);
@@ -139,9 +149,9 @@ function BoardDetailPage() {
         }
     };
 
-    const hitComment = async (commentId) => {
+    const hitComment = async (id) => {
         try {
-            const response = await fetch(Http + `/comment/hits/${commentId}`, {
+            const response = await fetch(Http + `/comment/hits/${id}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -173,11 +183,11 @@ function BoardDetailPage() {
             console.error('Error posting like:', error);
         }
     };
-    const deleteComment = async (commentId) => {
-        const shouldDelete = window.confirm('댓글을 삭제하시겠습니까?');
+    const deleteComment = async (id) => {
+        const shouldDelete = window.confirm('삭제하시겠습니까?');
         if (shouldDelete) {
             try {
-                const response = await fetch(Http + `/comment/${commentId}`, {
+                const response = await fetch(Http + `/comment/${id}`, {
                     method: 'DELETE',
                     headers: {
                         'Content-Type': 'application/json',
@@ -252,7 +262,7 @@ function BoardDetailPage() {
 
                 if (response.ok) {
                     setReply('');
-                    setReplyComments(response.data.reply);
+                    setReplyComments(newReply);
                     setIsReplying(false);
                     fetchComments();
                     console.log('답글 작성 성공');
@@ -325,15 +335,29 @@ function BoardDetailPage() {
                                     <RiAlarmWarningFill />
                                 </div>
                             </CommentContent>
-
-                            {replyComments
-                                .filter((element) => {
-                                    console.log(element);
-                                    return parseInt(element.parentCommentsId) == parseInt(comment.id);
-                                })
-                                .map((reply) => {
-                                    return <div key={reply.id}>{reply.content}</div>;
-                                })}
+                            {Object.values(replyComments)
+                                .filter((element) => parseInt(element.parentCommentsId) === parseInt(comment.id))
+                                .map((reply) => (
+                                    <ReplyContent key={reply.id}>
+                                        <div>
+                                            {reply.userNickname} : {reply.content} <ImReply />
+                                        </div>
+                                        <div>
+                                            <FiThumbsUp
+                                                onClick={() => hitComment(reply.id)}
+                                                style={{ cursor: 'pointer', marginLeft: '5px' }}
+                                            />
+                                            {comment.hits}
+                                            &nbsp;&nbsp; &nbsp;&nbsp;
+                                            <AiFillDelete
+                                                onClick={() => deleteComment(reply.id)}
+                                                style={{ cursor: 'pointer' }}
+                                            />
+                                            &nbsp;&nbsp;
+                                            <RiAlarmWarningFill />
+                                        </div>
+                                    </ReplyContent>
+                                ))}
                         </Comment>
                     );
                 })}
