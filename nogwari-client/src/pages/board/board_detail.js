@@ -77,11 +77,11 @@ function BoardDetailPage() {
     const [content, setContent] = useState('');
     const [hits, setHits] = useState(0);
     const [commentHits, setCommentHits] = useState(0);
+
     const [isReplying, setIsReplying] = useState(false);
     const [replyCommentId, setReplyCommentId] = useState(null);
-    const [replyComments, setReplyComments] = useState([]);
+    const [replyComments, setReplyComments] = useState({});
     const [reply, setReply] = useState('');
-    const [replies, setReplise] = useState([]);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -131,7 +131,11 @@ function BoardDetailPage() {
                 const data = await response.json();
                 console.log(data);
                 setComments(data.comment);
-                setReplyComments(data.reply);
+                setReplyComments((prevReplyComments) => ({
+                    ...prevReplyComments,
+                    [comments.id]: data.reply,
+                }));
+                console.log(replyComments);
             } else {
                 console.error('댓글 가져오기 실패');
             }
@@ -253,11 +257,12 @@ function BoardDetailPage() {
 
                 if (response.ok) {
                     setReply('');
-                    setReplyComments([...replies, newReply]);
+                    setReplyComments([...replyComments, newReply]);
                     setIsReplying(false);
                     fetchComments();
                     console.log('답글 작성 성공');
-                    console.log(reply);
+                    console.log(newReply);
+                    console.log(replyCommentId);
                 } else {
                     console.error('답글 작성 실패');
                 }
@@ -322,10 +327,10 @@ function BoardDetailPage() {
                             </div>
                         </CommentContent>
 
-                        {replies[comment.id] && (
+                        {replyComments[comment.id] && (
                             <div>
-                                {replies[comment.id].map((replyComment) => (
-                                    <div key={replyComment.id}>{reply.content}</div>
+                                {replyComments[comment.id].map((reply) => (
+                                    <div key={reply.id}>{reply.content}</div>
                                 ))}
                             </div>
                         )}
