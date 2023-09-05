@@ -80,7 +80,7 @@ function BoardDetailPage() {
 
     const [isReplying, setIsReplying] = useState(false);
     const [replyCommentId, setReplyCommentId] = useState(null);
-    const [replyComments, setReplyComments] = useState({});
+    const [replyComments, setReplyComments] = useState([]);
     const [reply, setReply] = useState('');
 
     useEffect(() => {
@@ -129,13 +129,8 @@ function BoardDetailPage() {
 
             if (response.ok) {
                 const data = await response.json();
-                console.log(data);
                 setComments(data.comment);
-                setReplyComments((prevReplyComments) => ({
-                    ...prevReplyComments,
-                    [comments.id]: data.reply,
-                }));
-                console.log(replyComments);
+                setReplyComments(data.reply);
             } else {
                 console.error('댓글 가져오기 실패');
             }
@@ -257,7 +252,7 @@ function BoardDetailPage() {
 
                 if (response.ok) {
                     setReply('');
-                    setReplyComments([...replyComments, newReply]);
+                    setReplyComments(response.data.reply);
                     setIsReplying(false);
                     fetchComments();
                     console.log('답글 작성 성공');
@@ -296,46 +291,52 @@ function BoardDetailPage() {
             <hr />
             <br />
             <CommentContainer>
-                {comments.map((comment) => (
-                    <Comment key={comment.id}>
-                        <CommentContent>
-                            <div>
-                                {comment.userNickname} : {comment.content}
-                                &nbsp;&nbsp;&nbsp;
-                                <button onClick={() => toggleReply(comment.id)}>답글 달기</button>
-                                {isReplying && replyCommentId === comment.id && (
-                                    <div>
-                                        <textarea
-                                            placeholder="답글 내용을 입력하세요"
-                                            value={reply}
-                                            onChange={(e) => setReply(e.target.value)}
-                                        />
-                                        <button onClick={() => ReplyComment(reply)}>전송</button>
-                                    </div>
-                                )}
-                            </div>
-                            <div>
-                                <FiThumbsUp
-                                    onClick={() => hitComment(comment.id)}
-                                    style={{ cursor: 'pointer', marginLeft: '5px' }}
-                                />
-                                {comment.hits}
-                                &nbsp;&nbsp; &nbsp;&nbsp;
-                                <AiFillDelete onClick={() => deleteComment(comment.id)} style={{ cursor: 'pointer' }} />
-                                &nbsp;&nbsp;
-                                <RiAlarmWarningFill />
-                            </div>
-                        </CommentContent>
+                {comments.map((comment) => {
+                    return (
+                        <Comment key={comment.id}>
+                            <CommentContent>
+                                <div>
+                                    {comment.userNickname} : {comment.content}
+                                    &nbsp;&nbsp;&nbsp;
+                                    <button onClick={() => toggleReply(comment.id)}>답글 달기</button>
+                                    {isReplying && replyCommentId === comment.id && (
+                                        <div>
+                                            <textarea
+                                                placeholder="답글 내용을 입력하세요"
+                                                value={reply}
+                                                onChange={(e) => setReply(e.target.value)}
+                                            />
+                                            <button onClick={() => ReplyComment(reply)}>전송</button>
+                                        </div>
+                                    )}
+                                </div>
+                                <div>
+                                    <FiThumbsUp
+                                        onClick={() => hitComment(comment.id)}
+                                        style={{ cursor: 'pointer', marginLeft: '5px' }}
+                                    />
+                                    {comment.hits}
+                                    &nbsp;&nbsp; &nbsp;&nbsp;
+                                    <AiFillDelete
+                                        onClick={() => deleteComment(comment.id)}
+                                        style={{ cursor: 'pointer' }}
+                                    />
+                                    &nbsp;&nbsp;
+                                    <RiAlarmWarningFill />
+                                </div>
+                            </CommentContent>
 
-                        {replyComments[comment.id] && (
-                            <div>
-                                {replyComments[comment.id].map((reply) => (
-                                    <div key={reply.id}>{reply.content}</div>
-                                ))}
-                            </div>
-                        )}
-                    </Comment>
-                ))}
+                            {replyComments
+                                .filter((element) => {
+                                    console.log(element);
+                                    return parseInt(element.parentCommentsId) == parseInt(comment.id);
+                                })
+                                .map((reply) => {
+                                    return <div key={reply.id}>{reply.content}</div>;
+                                })}
+                        </Comment>
+                    );
+                })}
                 <CommentForm>
                     <CommentTextarea placeholder="댓글을 입력하세요" value={content} onChange={handleContentChange} />
                     <CommentSubmit onClick={handleSubmit}>댓글작성</CommentSubmit>
