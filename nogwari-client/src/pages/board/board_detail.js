@@ -88,6 +88,7 @@ function BoardDetailPage() {
     const [content, setContent] = useState('');
     const [hits, setHits] = useState(0);
     const [commentHits, setCommentHits] = useState(0);
+    const [replyHits, setReplyHits] = useState(0);
     const [isReplying, setIsReplying] = useState(false);
     const [replyCommentId, setReplyCommentId] = useState(null);
     const [replyComments, setReplyComments] = useState([]);
@@ -149,9 +150,9 @@ function BoardDetailPage() {
         }
     };
 
-    const hitComment = async (id) => {
+    const hitComment = async (commentId) => {
         try {
-            const response = await fetch(Http + `/comment/hits/${id}`, {
+            const response = await fetch(Http + `/comment/hits/${commentId}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -166,23 +167,20 @@ function BoardDetailPage() {
             const responseData = await response.text();
             if (responseData === 'OK') {
                 console.log('좋아요가 성공적으로 처리되었습니다.');
-                setCommentHits(commentHits + 1);
-                fetchComments();
+                if (!replyComments[commentId]) {
+                    setCommentHits(commentHits + 1);
+                } else {
+                    setReplyHits(replyHits + 1);
+                }
             } else {
-                const updatedComment = JSON.parse(responseData);
-                console.log(updatedComment);
-                setComments((prevComments) =>
-                    prevComments.map((comment) =>
-                        comment.id === updatedComment.id
-                            ? { ...updatedComment, hits: updatedComment.hits + 1 }
-                            : comment
-                    )
-                );
+                console.log('좋아요가 눌리지 않아요');
             }
+            fetchComments();
         } catch (error) {
             console.error('Error posting like:', error);
         }
     };
+
     const deleteComment = async (id) => {
         const shouldDelete = window.confirm('삭제하시겠습니까?');
         if (shouldDelete) {
@@ -347,7 +345,7 @@ function BoardDetailPage() {
                                                 onClick={() => hitComment(reply.id)}
                                                 style={{ cursor: 'pointer', marginLeft: '5px' }}
                                             />
-                                            {comment.hits}
+                                            {reply.hits}
                                             &nbsp;&nbsp; &nbsp;&nbsp;
                                             <AiFillDelete
                                                 onClick={() => deleteComment(reply.id)}
