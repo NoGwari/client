@@ -361,7 +361,7 @@ function BoardDetailPage() {
                 })}
                 <CommentForm>
                     <CommentTextarea placeholder="댓글을 입력하세요" value={content} onChange={handleContentChange} />
-                    <CommentSubmit onClick={handleSubmit}>댓글작성</CommentSubmit>
+                    <CommentSubmit onClick={handleSubmit}>댓글 작성</CommentSubmit>
                 </CommentForm>
             </CommentContainer>
         </>
