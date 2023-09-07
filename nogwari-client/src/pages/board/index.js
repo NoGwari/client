@@ -155,6 +155,19 @@ function Board() {
         fetchData();
     }, [limit, page, categoryId]);
 
+    const login = async () => {
+        try {
+            const response = await fetch(Http + `/google`);
+            if (response.ok) {
+                console.log(response);
+            } else {
+                console.error('실패');
+            }
+        } catch (error) {
+            console.error('에러발생', error);
+        }
+    };
+
     const list_num = async () => {
         try {
             const response = await fetch(Http + `/board?list_num=${limit}`);
@@ -228,6 +241,7 @@ function Board() {
                     <Link to={`/createBoard`}>글쓰기</Link>
                 </Write>
             </WriteContainer>
+            <button onClick={login}>구글 호출</button>
             <hr />
             <footer>
                 <Pagination total={totalPages} limit={limit} page={page} setPage={setPage} value={limit} />
