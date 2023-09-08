@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { Http } from 'common';
+import { idText } from 'typescript';
 
 interface Category {
     id: number;
@@ -26,6 +27,8 @@ const GridBox = styled.div`
 const Nav: React.FC = () => {
     const [categories, setCategories] = useState<Category[]>([]);
     const { categoryId } = useParams<{ categoryId: string }>();
+    const [newCategoryName, setNewCategoryName] = useState('');
+    const [newId, setNewId] = useState<Number>(0);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -43,6 +46,37 @@ const Nav: React.FC = () => {
         fetchData();
     }, []);
 
+    const addCategory = async () => {
+        try {
+            const response = await fetch(Http + '/category', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${localStorage.getItem('token')}`,
+                },
+                body: JSON.stringify({
+                    id: newId,
+                    name: newCategoryName,
+                }),
+            });
+            console.log(response);
+            if (response.ok) {
+                const responseData = await response.json();
+                const updateResponse = await fetch(Http + `/category`);
+                const updateData = (await updateResponse.json()) as Category[];
+                setCategories(updateData);
+                setNewId(responseData.id);
+            } else {
+                throw new Error('카테고리 추가 실패');
+            }
+        } catch (error) {
+            console.error('에러발생 : ', error);
+        }
+    };
+    const handleCategoryNameChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+        setNewCategoryName(e.target.value);
+    };
+
     return (
         <>
             <NavContainer>
@@ -54,6 +88,12 @@ const Nav: React.FC = () => {
                         </Link>
                     ))}
                 </GridBox>
+                <textarea
+                    placeholder="카테고리 이름을 입력하세요"
+                    value={newCategoryName}
+                    onChange={handleCategoryNameChange}
+                />
+                <button onClick={addCategory}>카테고리 추가</button>
             </NavContainer>
         </>
     );
