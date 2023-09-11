@@ -117,7 +117,7 @@ function BoardDetailPage() {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: `Bearer ${localStorage.getItem('token')}`,
+                    Authorization: `Bearer ${sessionStorage.getItem('token')}`,
                 },
             });
             if (!response.ok) {
@@ -156,7 +156,7 @@ function BoardDetailPage() {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: `Bearer ${localStorage.getItem('token')}`,
+                    Authorization: `Bearer ${sessionStorage.getItem('token')}`,
                 },
             });
 
@@ -189,7 +189,7 @@ function BoardDetailPage() {
                     method: 'DELETE',
                     headers: {
                         'Content-Type': 'application/json',
-                        Authorization: `Bearer ${localStorage.getItem('token')}`,
+                        Authorization: `Bearer ${sessionStorage.getItem('token')}`,
                     },
                 });
                 if (response.ok) {
@@ -222,7 +222,7 @@ function BoardDetailPage() {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
-                        Authorization: `Bearer ${localStorage.getItem('token')}`,
+                        Authorization: `Bearer ${sessionStorage.getItem('token')}`,
                     },
                     body: JSON.stringify(newComment),
                 });
@@ -250,7 +250,7 @@ function BoardDetailPage() {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
-                        Authorization: `Bearer ${localStorage.getItem('token')}`,
+                        Authorization: `Bearer ${sessionStorage.getItem('token')}`,
                     },
                     body: JSON.stringify({
                         content: reply,

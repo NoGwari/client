@@ -35,7 +35,7 @@ function CreateBoard() {
 
             const data = await response.json(); // 로그인 성공 시 데이터를 가져옴
             // 로그인 성공 후 처리: data를 활용하여 필요한 작업 수행
-            localStorage.setItem('token', data.token);
+            sessionStorage.setItem('token', data.token);
             console.log(data);
             navigate('/board');
         } catch (error) {

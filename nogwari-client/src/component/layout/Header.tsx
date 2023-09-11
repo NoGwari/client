@@ -57,7 +57,7 @@ export const NavbarWrap = styled.ul`
 
 const Header: React.FC = () => {
     const isNotLogin = () => {
-        return localStorage.getItem('token') === null;
+        return sessionStorage.getItem('token') === null;
     };
     return (
         <HeaderContainer>

@@ -39,7 +39,7 @@ function Mypage() {
             const response = await fetch(Http + '/auth/me', {
                 method: 'POST',
                 headers: {
-                    Authorization: `Bearer ${localStorage.getItem('token')}`,
+                    Authorization: `Bearer ${sessionStorage.getItem('token')}`,
                 },
                 body: formData,
             });
@@ -61,7 +61,7 @@ function Mypage() {
             try {
                 const response = await fetch(Http + '/auth/me', {
                     headers: {
-                        Authorization: `Bearer ${localStorage.getItem('token')}`,
+                        Authorization: `Bearer ${sessionStorage.getItem('token')}`,
                     },
                 });
                 if (!response.ok) {
@@ -88,7 +88,7 @@ function Mypage() {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: `Bearer ${localStorage.getItem('token')}`,
+                    Authorization: `Bearer ${sessionStorage.getItem('token')}`,
                 },
                 body: JSON.stringify({ nickname: newNickname }),
             });
@@ -105,7 +105,7 @@ function Mypage() {
         }
     };
     const logOut = () => {
-        localStorage.removeItem('token');
+        sessionStorage.removeItem('token');
         navigate('/');
     };
 
