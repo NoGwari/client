@@ -111,6 +111,24 @@ function BoardDetailPage() {
         fetchComments();
     }, [itemId]);
 
+    const ishit = async () => {
+        try {
+            const response = await fetch(Http + `/board/ishit/${itemId}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${sessionStorage.getItem('token')}`,
+                },
+            });
+            if (!response.ok) {
+                throw new Error('Network reponse was not ok');
+            }
+            console.log(response);
+        } catch (error) {
+            console.error('확인 에러: ', error);
+        }
+    };
+
     const hitUrl = async () => {
         try {
             const response = await fetch(Http + `/board/hits/${itemId}`, {
@@ -289,7 +307,7 @@ function BoardDetailPage() {
             <BoardContent>
                 <img src={board.userImg} alt="사용자 이미지" /> &middot; &nbsp;
                 {board.userNickname} &middot; &nbsp; <AiOutlineEye />
-                {board.views} &middot;&nbsp; <FiThumbsUp onClick={hitUrl} style={{ cursor: 'pointer' }} />
+                {board.views} &middot;&nbsp; <FiThumbsUp onClick={hitUrl && ishit} style={{ cursor: 'pointer' }} />
                 {hits}
             </BoardContent>
             <hr />

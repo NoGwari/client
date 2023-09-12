@@ -126,7 +126,6 @@ function Board() {
     const [board, setBoard] = useState([]);
     const [limit, setLimit] = useState(5);
     const [page, setPage] = useState(1);
-    const [category, setCategory] = useState(null);
     const [totalPages, setTotalPages] = useState(1);
     const location = useLocation();
     const queryParams = new URLSearchParams(location.search);
