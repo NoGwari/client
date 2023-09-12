@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Http } from '../../common';
 import { useNavigate } from 'react-router-dom';
+import GoogleLoginButton from './GoogleLogin';
 
 function CreateBoard() {
     const [id, setId] = useState('');
@@ -48,6 +49,7 @@ function CreateBoard() {
             <input value={id} onChange={onChangeId} type="text" placeholder="아이디" maxLength={20} />
             <input value={password} onChange={onChangePassword} type="password" placeholder="패스워드" />
             <button type="submit">로그인</button>
+            <GoogleLoginButton />
         </form>
     );
 }
