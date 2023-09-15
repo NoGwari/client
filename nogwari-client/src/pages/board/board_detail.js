@@ -109,8 +109,20 @@ function BoardDetailPage() {
         };
         fetchData();
         fetchComments();
-        ishit();
     }, [itemId]);
+
+    const boardData = async () => {
+        try {
+            const res = await fetch(Http + `/board/${itemId}`);
+            if (!res.ok) {
+                throw new Error('Network response was not ok');
+            }
+            const result = await res.json();
+            setBoard(result);
+        } catch (error) {
+            console.error('Error fetching board data:', error);
+        }
+    };
 
     const ishit = async () => {
         try {
@@ -122,8 +134,6 @@ function BoardDetailPage() {
                 },
             });
             const data = await response.json();
-            console.log(response);
-            console.log(data);
             if (response.ok) {
                 if (data === false) {
                     try {
@@ -164,6 +174,7 @@ function BoardDetailPage() {
         } catch (error) {
             console.error('확인 에러: ', error);
         }
+        // boardData();
     };
 
     const fetchComments = async () => {
