@@ -109,6 +109,7 @@ function BoardDetailPage() {
         };
         fetchData();
         fetchComments();
+        ishit();
     }, [itemId]);
 
     const ishit = async () => {
@@ -120,33 +121,51 @@ function BoardDetailPage() {
                     Authorization: `Bearer ${sessionStorage.getItem('token')}`,
                 },
             });
-            if (!response.ok) {
-                throw new Error('Network reponse was not ok');
-            }
+            const data = await response.json();
             console.log(response);
+            console.log(data);
+            if (response.ok) {
+                if (data === false) {
+                    try {
+                        const hitResponse = await fetch(Http + `/board/hits/${itemId}`, {
+                            method: 'GET',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                Authorization: `Bearer ${sessionStorage.getItem('token')}`,
+                            },
+                        });
+                        if (hitResponse.ok) {
+                            console.log('좋아요 누름');
+                            setHits(hits + 1);
+                        }
+                    } catch (error) {
+                        console.error('좋아요 누르기 실패:', error);
+                    }
+                } else if (data === true) {
+                    try {
+                        const unhitResponse = await fetch(Http + `/board/unhits/${itemId}`, {
+                            method: 'GET',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                Authorization: `Bearer ${sessionStorage.getItem('token')}`,
+                            },
+                        });
+                        if (unhitResponse.ok) {
+                            console.log('좋아요 취소');
+                            setHits(hits - 1);
+                        }
+                    } catch (error) {
+                        console.error('좋아요 취소 실패:', error);
+                    }
+                }
+            } else {
+                throw new Error('Network response was not ok');
+            }
         } catch (error) {
             console.error('확인 에러: ', error);
         }
     };
 
-    const hitUrl = async () => {
-        try {
-            const response = await fetch(Http + `/board/hits/${itemId}`, {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                    Authorization: `Bearer ${sessionStorage.getItem('token')}`,
-                },
-            });
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-
-            setHits(hits + 1);
-        } catch (error) {
-            console.error('Error posting like:', error);
-        }
-    };
     const fetchComments = async () => {
         try {
             const response = await fetch(Http + `/comment/${itemId}`, {
@@ -307,8 +326,8 @@ function BoardDetailPage() {
             <BoardContent>
                 <img src={board.userImg} alt="사용자 이미지" /> &middot; &nbsp;
                 {board.userNickname} &middot; &nbsp; <AiOutlineEye />
-                {board.views} &middot;&nbsp; <FiThumbsUp onClick={hitUrl && ishit} style={{ cursor: 'pointer' }} />
-                {hits}
+                {board.views} &middot;&nbsp; <FiThumbsUp onClick={ishit} style={{ cursor: 'pointer' }} />
+                {board.hits}
             </BoardContent>
             <hr />
             <div dangerouslySetInnerHTML={{ __html: board.content }}></div>
