@@ -93,6 +93,7 @@ function BoardDetailPage() {
     const [replyCommentId, setReplyCommentId] = useState(null);
     const [replyComments, setReplyComments] = useState([]);
     const [reply, setReply] = useState('');
+    const [isLiked, setIsLiked] = useState(false);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -145,8 +146,8 @@ function BoardDetailPage() {
                             },
                         });
                         if (hitResponse.ok) {
-                            console.log('좋아요 누름');
                             setHits(hits + 1);
+                            setIsLiked(true);
                         }
                     } catch (error) {
                         console.error('좋아요 누르기 실패:', error);
@@ -161,8 +162,8 @@ function BoardDetailPage() {
                             },
                         });
                         if (unhitResponse.ok) {
-                            console.log('좋아요 취소');
                             setHits(hits - 1);
+                            setIsLiked(false);
                         }
                     } catch (error) {
                         console.error('좋아요 취소 실패:', error);
@@ -174,7 +175,7 @@ function BoardDetailPage() {
         } catch (error) {
             console.error('확인 에러: ', error);
         }
-        // boardData();
+        boardData();
     };
 
     const fetchComments = async () => {
@@ -337,7 +338,8 @@ function BoardDetailPage() {
             <BoardContent>
                 <img src={board.userImg} alt="사용자 이미지" /> &middot; &nbsp;
                 {board.userNickname} &middot; &nbsp; <AiOutlineEye />
-                {board.views} &middot;&nbsp; <FiThumbsUp onClick={ishit} style={{ cursor: 'pointer' }} />
+                {board.views} &middot;&nbsp;{' '}
+                <FiThumbsUp onClick={ishit} style={{ cursor: 'pointer', color: isLiked ? 'red' : 'black' }} />
                 {board.hits}
             </BoardContent>
             <hr />
