@@ -198,36 +198,57 @@ function BoardDetailPage() {
             console.error('오류 발생:', error);
         }
     };
-
-    const hitComment = async (commentId) => {
+    const ishitComment = async (commentId) => {
         try {
-            const response = await fetch(Http + `/comment/hits/${commentId}`, {
+            const response = await fetch(Http + `/comment/ishit/${commentId}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
                     Authorization: `Bearer ${sessionStorage.getItem('token')}`,
                 },
             });
-
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-
-            const responseData = await response.text();
-            if (responseData === 'OK') {
-                console.log('좋아요가 성공적으로 처리되었습니다.');
-                if (!replyComments[commentId]) {
-                    setCommentHits(commentHits + 1);
-                } else {
-                    setReplyHits(replyHits + 1);
+            const data = await response.json();
+            if (response.ok) {
+                if (data === false) {
+                    try {
+                        const hitResponse = await fetch(Http + `/comment/hits/${commentId}`, {
+                            method: 'GET',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                Authorization: `Bearer ${sessionStorage.getItem('token')}`,
+                            },
+                        });
+                        if (hitResponse.ok) {
+                            setCommentHits(commentHits + 1);
+                            setIsLiked(true);
+                        }
+                    } catch (error) {
+                        console.error('좋아요 누르기 실패:', error);
+                    }
+                } else if (data === true) {
+                    try {
+                        const unhitResponse = await fetch(Http + `/comment/unhits/${commentId}`, {
+                            method: 'GET',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                Authorization: `Bearer ${sessionStorage.getItem('token')}`,
+                            },
+                        });
+                        if (unhitResponse.ok) {
+                            setCommentHits(commentHits - 1);
+                            setIsLiked(false);
+                        }
+                    } catch (error) {
+                        console.error('좋아요 취소 실패:', error);
+                    }
                 }
             } else {
-                console.log('좋아요가 눌리지 않아요');
+                throw new Error('Network response was not ok');
             }
-            fetchComments();
         } catch (error) {
-            console.error('Error posting like:', error);
+            console.error('확인 에러: ', error);
         }
+        fetchComments();
     };
 
     const deleteComment = async (id) => {
@@ -370,7 +391,7 @@ function BoardDetailPage() {
                                 </div>
                                 <div>
                                     <FiThumbsUp
-                                        onClick={() => hitComment(comment.id)}
+                                        onClick={() => ishitComment(comment.id)}
                                         style={{ cursor: 'pointer', marginLeft: '5px' }}
                                     />
                                     {comment.hits}
@@ -392,7 +413,7 @@ function BoardDetailPage() {
                                         </div>
                                         <div>
                                             <FiThumbsUp
-                                                onClick={() => hitComment(reply.id)}
+                                                onClick={() => ishitComment(reply.id)}
                                                 style={{ cursor: 'pointer', marginLeft: '5px' }}
                                             />
                                             {reply.hits}
