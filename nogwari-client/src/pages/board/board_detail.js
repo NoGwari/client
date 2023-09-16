@@ -93,9 +93,6 @@ function BoardDetailPage() {
     const [replyCommentId, setReplyCommentId] = useState(null);
     const [replyComments, setReplyComments] = useState([]);
     const [reply, setReply] = useState('');
-    const [isLiked, setisLiked] = useState(false);
-    const [isLikedComment, setisLikedComment] = useState(false);
-    const [isLikedReply, setisLikedReply] = useState(false);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -149,7 +146,6 @@ function BoardDetailPage() {
                         });
                         if (hitResponse.ok) {
                             setHits(hits + 1);
-                            setisLiked(true);
                         }
                     } catch (error) {
                         console.error('좋아요 누르기 실패:', error);
@@ -165,7 +161,6 @@ function BoardDetailPage() {
                         });
                         if (unhitResponse.ok) {
                             setHits(hits - 1);
-                            setisLiked(false);
                         }
                     } catch (error) {
                         console.error('좋아요 취소 실패:', error);
@@ -200,6 +195,7 @@ function BoardDetailPage() {
             console.error('오류 발생:', error);
         }
     };
+
     const ishitComment = async (commentId) => {
         try {
             const response = await fetch(Http + `/comment/ishit/${commentId}`, {
@@ -222,7 +218,6 @@ function BoardDetailPage() {
                         });
                         if (hitResponse.ok) {
                             setCommentHits(commentHits + 1);
-                            setisLikedComment(true);
                         }
                     } catch (error) {
                         console.error('좋아요 누르기 실패:', error);
@@ -238,7 +233,6 @@ function BoardDetailPage() {
                         });
                         if (unhitResponse.ok) {
                             setCommentHits(commentHits - 1);
-                            setisLikedComment(false);
                         }
                     } catch (error) {
                         console.error('좋아요 취소 실패:', error);
@@ -369,7 +363,8 @@ function BoardDetailPage() {
                         });
                         if (hitResponse.ok) {
                             setReplyHits(replyHits + 1);
-                            setisLikedReply(true);
+                            if (commentId == reply.id) {
+                            }
                         }
                     } catch (error) {
                         console.error('좋아요 누르기 실패:', error);
@@ -385,7 +380,8 @@ function BoardDetailPage() {
                         });
                         if (unhitResponse.ok) {
                             setReplyHits(replyHits - 1);
-                            setisLikedReply(false);
+                            if (commentId == reply.id) {
+                            }
                         }
                     } catch (error) {
                         console.error('좋아요 취소 실패:', error);
@@ -415,7 +411,13 @@ function BoardDetailPage() {
                 <img src={board.userImg} alt="사용자 이미지" /> &middot; &nbsp;
                 {board.userNickname} &middot; &nbsp; <AiOutlineEye />
                 {board.views} &middot;&nbsp;{' '}
-                <FiThumbsUp onClick={ishit} style={{ cursor: 'pointer', color: isLiked ? 'red' : 'black' }} />
+                <FiThumbsUp
+                    onClick={ishit}
+                    style={{
+                        cursor: 'pointer',
+                        /*color: isLiked ? 'red' : 'black'*/
+                    }}
+                />
                 {board.hits}
             </BoardContent>
             <hr />
@@ -447,7 +449,7 @@ function BoardDetailPage() {
                                 <div>
                                     <FiThumbsUp
                                         onClick={() => ishitComment(comment.id)}
-                                        style={{ cursor: 'pointer', color: isLikedComment ? 'red' : 'black' }}
+                                        style={{ cursor: 'pointer' /*color:  ? 'red' : 'black'*/ }}
                                     />
                                     {comment.hits}
                                     &nbsp;&nbsp; &nbsp;&nbsp;
@@ -469,7 +471,10 @@ function BoardDetailPage() {
                                         <div>
                                             <FiThumbsUp
                                                 onClick={() => ishitReply(reply.id)}
-                                                style={{ cursor: 'pointer', color: isLikedReply ? 'red' : 'black' }}
+                                                style={{
+                                                    cursor: 'pointer',
+                                                    //color: isLikedReply ? 'red' : 'black',
+                                                }}
                                             />
                                             {reply.hits}
                                             &nbsp;&nbsp; &nbsp;&nbsp;
