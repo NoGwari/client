@@ -93,7 +93,9 @@ function BoardDetailPage() {
     const [replyCommentId, setReplyCommentId] = useState(null);
     const [replyComments, setReplyComments] = useState([]);
     const [reply, setReply] = useState('');
-    const [isLiked, setIsLiked] = useState(false);
+    const [isLiked, setisLiked] = useState(false);
+    const [isLikedComment, setisLikedComment] = useState(false);
+    const [isLikedReply, setisLikedReply] = useState(false);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -147,7 +149,7 @@ function BoardDetailPage() {
                         });
                         if (hitResponse.ok) {
                             setHits(hits + 1);
-                            setIsLiked(true);
+                            setisLiked(true);
                         }
                     } catch (error) {
                         console.error('좋아요 누르기 실패:', error);
@@ -163,7 +165,7 @@ function BoardDetailPage() {
                         });
                         if (unhitResponse.ok) {
                             setHits(hits - 1);
-                            setIsLiked(false);
+                            setisLiked(false);
                         }
                     } catch (error) {
                         console.error('좋아요 취소 실패:', error);
@@ -220,7 +222,7 @@ function BoardDetailPage() {
                         });
                         if (hitResponse.ok) {
                             setCommentHits(commentHits + 1);
-                            setIsLiked(true);
+                            setisLikedComment(true);
                         }
                     } catch (error) {
                         console.error('좋아요 누르기 실패:', error);
@@ -236,7 +238,7 @@ function BoardDetailPage() {
                         });
                         if (unhitResponse.ok) {
                             setCommentHits(commentHits - 1);
-                            setIsLiked(false);
+                            setisLikedComment(false);
                         }
                     } catch (error) {
                         console.error('좋아요 취소 실패:', error);
@@ -345,6 +347,59 @@ function BoardDetailPage() {
         }
     };
 
+    const ishitReply = async (commentId) => {
+        try {
+            const response = await fetch(Http + `/comment/ishit/${commentId}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${sessionStorage.getItem('token')}`,
+                },
+            });
+            const data = await response.json();
+            if (response.ok) {
+                if (data === false) {
+                    try {
+                        const hitResponse = await fetch(Http + `/comment/hits/${commentId}`, {
+                            method: 'GET',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                Authorization: `Bearer ${sessionStorage.getItem('token')}`,
+                            },
+                        });
+                        if (hitResponse.ok) {
+                            setReplyHits(replyHits + 1);
+                            setisLikedReply(true);
+                        }
+                    } catch (error) {
+                        console.error('좋아요 누르기 실패:', error);
+                    }
+                } else if (data === true) {
+                    try {
+                        const unhitResponse = await fetch(Http + `/comment/unhits/${commentId}`, {
+                            method: 'GET',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                Authorization: `Bearer ${sessionStorage.getItem('token')}`,
+                            },
+                        });
+                        if (unhitResponse.ok) {
+                            setReplyHits(replyHits - 1);
+                            setisLikedReply(false);
+                        }
+                    } catch (error) {
+                        console.error('좋아요 취소 실패:', error);
+                    }
+                }
+            } else {
+                throw new Error('Network response was not ok');
+            }
+        } catch (error) {
+            console.error('확인 에러: ', error);
+        }
+        fetchComments();
+    };
+
     if (!board.title || comments === null) {
         return <div>Loading...</div>;
     }
@@ -392,7 +447,7 @@ function BoardDetailPage() {
                                 <div>
                                     <FiThumbsUp
                                         onClick={() => ishitComment(comment.id)}
-                                        style={{ cursor: 'pointer', marginLeft: '5px' }}
+                                        style={{ cursor: 'pointer', color: isLikedComment ? 'red' : 'black' }}
                                     />
                                     {comment.hits}
                                     &nbsp;&nbsp; &nbsp;&nbsp;
@@ -413,8 +468,8 @@ function BoardDetailPage() {
                                         </div>
                                         <div>
                                             <FiThumbsUp
-                                                onClick={() => ishitComment(reply.id)}
-                                                style={{ cursor: 'pointer', marginLeft: '5px' }}
+                                                onClick={() => ishitReply(reply.id)}
+                                                style={{ cursor: 'pointer', color: isLikedReply ? 'red' : 'black' }}
                                             />
                                             {reply.hits}
                                             &nbsp;&nbsp; &nbsp;&nbsp;
