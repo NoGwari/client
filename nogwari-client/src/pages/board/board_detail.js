@@ -93,7 +93,7 @@ function BoardDetailPage() {
     const [replyCommentId, setReplyCommentId] = useState(null);
     const [replyComments, setReplyComments] = useState([]);
     const [reply, setReply] = useState('');
-    const [thumsUpColor, setThumbsUpColor] = useState(localStorage.getItem('thumbsUpColor') || 'initial');
+    const [thumbsUpColor, setThumbsUpColor] = useState(localStorage.getItem('thumbsUpColor') || 'initial');
 
     useEffect(() => {
         const fetchData = async () => {
@@ -164,6 +164,8 @@ function BoardDetailPage() {
                         });
                         if (unhitResponse.ok) {
                             setHits(hits - 1);
+                            setThumbsUpColor('black');
+                            localStorage.setItem('thumbsUpColor', 'black');
                         }
                     } catch (error) {
                         console.error('좋아요 취소 실패:', error);
@@ -418,7 +420,7 @@ function BoardDetailPage() {
                     onClick={ishit}
                     style={{
                         cursor: 'pointer',
-                        color: thumsUpColor,
+                        color: thumbsUpColor,
                     }}
                 />
                 {board.hits}
