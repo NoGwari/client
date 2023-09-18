@@ -8,6 +8,7 @@ import { Http } from '../../common';
 import Pagination from './pagination';
 import { updateLanguageServiceSourceFile } from 'typescript';
 import { FiImage } from 'react-icons/fi';
+import { AiOutlineSearch } from 'react-icons/ai';
 
 const defaultImageSrc = FiImage;
 
@@ -202,6 +203,9 @@ function Board() {
                     <option value="10">10</option>
                     <option value="20">20</option>
                 </select>
+                <br />
+                <input type="text" placeholder="검색할 단어를 입력하세요."></input>&nbsp;
+                <AiOutlineSearch />
                 <br />
                 <br />
                 <hr />
