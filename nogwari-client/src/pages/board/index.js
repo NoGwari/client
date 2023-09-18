@@ -128,6 +128,7 @@ function Board() {
     const [limit, setLimit] = useState(5);
     const [page, setPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
+    const [searchvalue, setSearchvalue] = useState('');
     const location = useLocation();
     const queryParams = new URLSearchParams(location.search);
     const categoryId = queryParams.get('category');
@@ -167,10 +168,35 @@ function Board() {
             console.log('error 발생', error);
         }
     };
+
     useEffect(() => {
         list_num(limit);
     }, [limit]);
 
+    const search = async () => {
+        try {
+            const encodedValue = encodeURIComponent(searchvalue)
+            const response = await fetch(Http + `/board/search?keyword=${encodedValue}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+            if (response.ok) {
+                const data = await response.json();
+                console.log(data);
+            } else {
+                console.log('검색 결과를 불러오는데 실패했습니다.');
+            }
+        } catch (error) {
+            console.error('에러 발생', error);
+        }
+    };
+
+    const handleSearchValue = (e) => {
+        setSearchvalue(e.target.value);
+    };
+    
     return (
         <>
             <Layout></Layout>
@@ -191,8 +217,14 @@ function Board() {
                     <option value="20">20</option>
                 </select>
                 <br />
-                <input type="text" placeholder="검색할 단어를 입력하세요."></input>&nbsp;
-                <AiOutlineSearch />
+                <input
+                    type="text"
+                    placeholder="검색할 단어를 입력하세요."
+                    value={searchvalue}
+                    onChange={handleSearchValue}
+                ></input>
+                &nbsp;
+                <AiOutlineSearch onClick={search} />
                 <br />
                 <br />
                 <hr />
