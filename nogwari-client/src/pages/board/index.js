@@ -181,6 +181,7 @@ function Board() {
     const search = async () => {
         try {
             const encodedValue = encodeURIComponent(searchvalue);
+            console.log(encodedValue);
             const response = await fetch(Http + `/board/search?searchType=${selectOption}&keyword=${encodedValue}`, {
                 method: 'GET',
                 headers: {
@@ -191,6 +192,7 @@ function Board() {
                 const data = await response.json();
                 setBoard(data.rows);
                 setTotalPages(Math.ceil(data.count));
+                setSearchvalue('');
             } else {
                 console.log('검색 결과를 불러오는데 실패했습니다.');
             }

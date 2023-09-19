@@ -76,12 +76,13 @@ const Nav: React.FC = () => {
     const handleCategoryNameChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
         setNewCategoryName(e.target.value);
     };
+    
 
     return (
         <>
             <NavContainer>
                 <GridBox>
-                    <Link to={`/board`}>전체 글 조회</Link>
+                    <Link to={`/board?category=0`}>전체 글 조회</Link>
                     {categories.map((category, index) => (
                         <Link key={index} to={`/board?category=${category.id}`}>
                             {category.name}
