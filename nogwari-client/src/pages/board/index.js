@@ -129,7 +129,7 @@ function Board() {
     const [page, setPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
     const [searchvalue, setSearchvalue] = useState('');
-    const [selectOption, setSelectOption] = useState('제목');
+    const [selectOption, setSelectOption] = useState('title');
     const location = useLocation();
     const queryParams = new URLSearchParams(location.search);
     const categoryId = queryParams.get('category');
@@ -189,7 +189,8 @@ function Board() {
             });
             if (response.ok) {
                 const data = await response.json();
-                console.log(data);
+                setBoard(data.rows);
+                setTotalPages(Math.ceil(data.count));
             } else {
                 console.log('검색 결과를 불러오는데 실패했습니다.');
             }
