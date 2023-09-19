@@ -129,6 +129,7 @@ function Board() {
     const [page, setPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
     const [searchvalue, setSearchvalue] = useState('');
+    const [selectOption, setSelectOption] = useState('제목');
     const location = useLocation();
     const queryParams = new URLSearchParams(location.search);
     const categoryId = queryParams.get('category');
@@ -173,10 +174,14 @@ function Board() {
         list_num(limit);
     }, [limit]);
 
+    const handleSearchValue = (e) => {
+        setSearchvalue(e.target.value);
+    };
+
     const search = async () => {
         try {
-            const encodedValue = encodeURIComponent(searchvalue)
-            const response = await fetch(Http + `/board/search?keyword=${encodedValue}`, {
+            const encodedValue = encodeURIComponent(searchvalue);
+            const response = await fetch(Http + `/board/search?searchType=${selectOption}&keyword=${encodedValue}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -193,10 +198,6 @@ function Board() {
         }
     };
 
-    const handleSearchValue = (e) => {
-        setSearchvalue(e.target.value);
-    };
-    
     return (
         <>
             <Layout></Layout>
@@ -217,6 +218,11 @@ function Board() {
                     <option value="20">20</option>
                 </select>
                 <br />
+                &nbsp;
+                <select type="text" value={selectOption} onChange={(e) => setSelectOption(e.target.value)}>
+                    <option value="title">제목</option>
+                    <option value="nickname">작성자</option>
+                </select>
                 <input
                     type="text"
                     placeholder="검색할 단어를 입력하세요."
