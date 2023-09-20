@@ -11,6 +11,7 @@ function Mypage() {
     const [imageFile, setImageFile] = useState(null);
     const [isUploadingImage, setIsUploadingImage] = useState(false);
     const [imagePreview, setImagePreview] = useState(null);
+    const [imageUrl, setImageUrl] = useState('');
 
     const handleImageChange = (e) => {
         const selectedFile = e.target.files[0];
@@ -36,7 +37,7 @@ function Mypage() {
             const formData = new FormData();
             formData.append('image', imageFile);
 
-            const response = await fetch(Http + '/auth/me', {
+            const response = await fetch(Http + '/user/upload', {
                 method: 'POST',
                 headers: {
                     Authorization: `Bearer ${sessionStorage.getItem('token')}`,
@@ -47,7 +48,11 @@ function Mypage() {
             if (!response.ok) {
                 throw new Error('Network response was not ok.');
             }
-
+            const data = await response.json();
+            const newImageUrl = data;
+            setImageUrl((prevImageUrl) => [...prevImageUrl, newImageUrl]);
+            setImageUrl(newImageUrl);
+            console.log(newImageUrl);
             console.log('이미지 업로드 완료');
         } catch (error) {
             console.error('이미지 업로드 오류', error.message);
@@ -57,7 +62,7 @@ function Mypage() {
     };
 
     useEffect(() => {
-        const fetchMyPage = async () => {
+        const fetchMyPage = async (nickname, email, img) => {
             try {
                 const response = await fetch(Http + '/auth/me', {
                     headers: {
