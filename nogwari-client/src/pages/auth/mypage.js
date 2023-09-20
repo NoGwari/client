@@ -62,7 +62,7 @@ function Mypage() {
     };
 
     useEffect(() => {
-        const fetchMyPage = async (nickname, email, img) => {
+        const fetchMyPage = async () => {
             try {
                 const response = await fetch(Http + '/auth/me', {
                     headers: {
@@ -118,12 +118,15 @@ function Mypage() {
         <>
             <Layout></Layout>
             <div>
-                {me ? (
+                {me && (
                     <div>
                         <p>여기는 마이페이지 입니다.</p>
                         <p>사용자 닉네임: {me.nickname}</p>
                         <p>이메일: {me.email}</p>
-                        <p>사용자 이미지: {me.img}</p>
+                        <p>
+                            사용자 이미지:{' '}
+                            {me.img && <img src={me.img} alt="프로필 이미지" style={{ maxWidth: '50px' }} />}
+                        </p>
                         <div>
                             <p>이미지 변경:</p>
                             <input type="file" accept="image/*" onChange={handleImageChange} />
@@ -143,8 +146,6 @@ function Mypage() {
                         </div>
                         <button onClick={logOut}>로그아웃</button>
                     </div>
-                ) : (
-                    <p>로그인 정보를 불러오는 중...</p>
                 )}
             </div>
         </>
