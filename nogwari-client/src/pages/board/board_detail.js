@@ -413,7 +413,7 @@ function BoardDetailPage() {
                 <BoardTitle>{board.title}</BoardTitle>
             </BoardTitleContainer>
             <BoardContent>
-                <img src={board.userImg} alt="사용자 이미지" /> &middot; &nbsp;
+                <img src={board.userImg} alt="사용자 이미지" style={{ maxWidth: '50px' }} /> &nbsp;
                 {board.userNickname} &middot; &nbsp; <AiOutlineEye />
                 {board.views} &middot;&nbsp;{' '}
                 <FiThumbsUp
