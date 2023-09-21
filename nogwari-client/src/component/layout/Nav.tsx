@@ -76,13 +76,23 @@ const Nav: React.FC = () => {
     const handleCategoryNameChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
         setNewCategoryName(e.target.value);
     };
-    
+
+    const currentPath = window.location.pathname;
+    const currentSearch = window.location.search;
+
+    let newLink;
+
+    if (currentPath === '/board' && currentSearch !== '?category=0') {
+        newLink = `${currentPath}?category=0`;
+    } else {
+        newLink = '/board';
+    }
 
     return (
         <>
             <NavContainer>
                 <GridBox>
-                    <Link to={`/board?category=0`}>전체 글 조회</Link>
+                    <Link to={newLink}>전체 글 조회</Link>
                     {categories.map((category, index) => (
                         <Link key={index} to={`/board?category=${category.id}`}>
                             {category.name}
