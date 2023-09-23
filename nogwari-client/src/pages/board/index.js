@@ -12,6 +12,10 @@ import { AiOutlineSearch } from 'react-icons/ai';
 
 const defaultImageSrc = FiImage;
 
+const Container = styled.div`
+    margin: 0 100px;
+`;
+
 const List = styled.div`
     margin-top: 50px;
     font-size: 17px;
@@ -213,7 +217,7 @@ function Board() {
     })();
 
     return (
-        <>
+        <Container>
             <Layout></Layout>
             <List>{title}</List>
             <BoardListContainer>
@@ -287,7 +291,7 @@ function Board() {
             <footer>
                 <Pagination total={totalPages} limit={limit} page={page} setPage={setPage} value={limit} />
             </footer>
-        </>
+        </Container>
     );
 }
 

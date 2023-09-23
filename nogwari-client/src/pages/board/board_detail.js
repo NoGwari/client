@@ -9,6 +9,9 @@ import { AiOutlineEye, AiFillDelete } from 'react-icons/ai';
 import { ImReply } from 'react-icons/im';
 import { RiAlarmWarningFill } from 'react-icons/ri';
 
+const Container = styled.div`
+    margin: 0 100px;
+`;
 const BoardTitleContainer = styled.div`
     display: flex;
     margin-top: 10px;
@@ -406,7 +409,7 @@ function BoardDetailPage() {
     }
 
     return (
-        <>
+        <Container>
             <Layout></Layout>
             <BoardTitleContainer>
                 <CategoryTitle>{board.categoryName}</CategoryTitle>
@@ -500,7 +503,7 @@ function BoardDetailPage() {
                     <CommentSubmit onClick={handleSubmit}>댓글 작성</CommentSubmit>
                 </CommentForm>
             </CommentContainer>
-        </>
+        </Container>
     );
 }
 

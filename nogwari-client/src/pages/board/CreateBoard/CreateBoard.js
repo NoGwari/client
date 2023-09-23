@@ -10,7 +10,9 @@ Quill.register('modules/imageResize', ImageResize);
 
 const Title = styled.div``;
 const Content = styled.textarea``;
-
+const Container = styled.div`
+    margin: 0 100px;
+`;
 function CreateBoard() {
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
@@ -189,7 +191,7 @@ function CreateBoard() {
     };
 
     return (
-        <div>
+        <Container>
             <Layout></Layout>
             <Title>
                 <input value={title} onChange={onChangeTitle} type="text" placeholder="제목" maxLength={20} />
@@ -219,7 +221,7 @@ function CreateBoard() {
                 }}
             />
             <button onClick={handleSubmit}>게시물 작성</button>
-        </div>
+        </Container>
     );
 }
 

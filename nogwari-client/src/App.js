@@ -60,7 +60,6 @@ function App() {
                 <Route path="/" element={<Board />}></Route>
                 <Route path="*" element={<Error />} />
             </Routes>
-            <Link to="http://ec2-13-209-73-184.ap-northeast-2.compute.amazonaws.com/auth/google">구글 호출</Link>
             {/*<header>*/}
             {/*    {board && board.map(x =>*/}
             {/*        <BoardTest>*/}
