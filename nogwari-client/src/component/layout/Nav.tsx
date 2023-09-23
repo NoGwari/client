@@ -55,11 +55,58 @@ const CategoryLink = styled(Link)`
     }
 `;
 
+const CategoryAdd = styled.button`
+    display: inline-block;
+    padding: 4px 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: black;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+    margin-bottom: 5px;
+    margin-right: 2px;
+    font-size: 13px;
+    font-weight: bold;
+    color: white;
+    transition: background-color 0.3s;
+
+    &:hover {
+        background-color: skyblue;
+        transform: translateY(-2px);
+    }
+    &: active {
+        background-color: tomato;
+    }
+`;
+const CategoryButton = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    flex-grow: 1;
+
+    input[type='text'] {
+        height: 30px;
+        border: 1px solid #ccc;
+        padding: 5px;
+        box-sizing: border-box;
+    }
+    button {
+        padding: 6px 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        background-color: black;
+        color: white;
+        cursor: pointer;
+    }
+`;
+
 const Nav: React.FC = () => {
     const [categories, setCategories] = useState<Category[]>([]);
     const { categoryId } = useParams<{ categoryId: string }>();
     const [newCategoryName, setNewCategoryName] = useState('');
     const [newId, setNewId] = useState<Number>(0);
+    const [toggle, setToggle] = useState(false);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -104,9 +151,10 @@ const Nav: React.FC = () => {
             console.error('에러발생 : ', error);
         }
     };
-    const handleCategoryNameChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const handleCategoryNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setNewCategoryName(e.target.value);
     };
+
     const currentPath = window.location.pathname;
     const currentSearch = window.location.search;
 
@@ -129,15 +177,18 @@ const Nav: React.FC = () => {
                         </CategoryLink>
                     ))}
                 </GridBox>
-                <CategoryBox>
-                    <textarea
-                        placeholder="카테고리 이름을 입력하세요"
+            </NavContainer>
+            <CategoryBox>
+                <CategoryButton>
+                    <input
+                        type="text"
+                        placeholder="추가할 카테고리 이름"
                         value={newCategoryName}
                         onChange={handleCategoryNameChange}
                     />
-                    <button onClick={addCategory}>카테고리 추가</button>
-                </CategoryBox>
-            </NavContainer>
+                    <button onClick={addCategory}>추가</button>
+                </CategoryButton>
+            </CategoryBox>
         </>
     );
 };
