@@ -201,10 +201,21 @@ function Board() {
         }
     };
 
+    const title = (() => {
+        const params = new URLSearchParams(window.location.search);
+        const category = params.get('category');
+
+        if (category === null || category === '0') {
+            return '전체게시글';
+        } else {
+            return `카테고리${category}`;
+        }
+    })();
+
     return (
         <>
             <Layout></Layout>
-            <List>전체게시글</List>
+            <List>{title}</List>
             <BoardListContainer>
                 <Page />
                 표시할 페이지의 개수 : &nbsp;
