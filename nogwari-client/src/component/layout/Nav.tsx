@@ -11,7 +11,6 @@ interface Category {
 }
 
 const NavContainer = styled.div`
-    margin-top: 70px;
     display: flex;
     align-items: center;
     justify-content: space-between;
