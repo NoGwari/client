@@ -13,6 +13,8 @@ interface Category {
 const NavContainer = styled.div`
     margin-top: 70px;
     display: flex;
+    align-items: center;
+    justify-content: space-between;
     width: 100%;
     height: 100px;
     background-color: whitesmoke;
@@ -22,6 +24,36 @@ const GridBox = styled.div`
     display: grid;
     grid-template-columns: repeat(5, 1fr);
     gap: 16px;
+`;
+
+const CategoryBox = styled.div`
+    display: flex;
+    margin: 3px;
+`;
+
+const CategoryLink = styled(Link)`
+    display: inline-block;
+    padding: 4px 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: black;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+    margin-bottom: 5px;
+    margin-right: 2px;
+    font-size: 13px;
+    font-weight: bold;
+    color: white;
+    transition: background-color 0.3s;
+
+    &:hover {
+        background-color: skyblue;
+        transform: translateY(-2px);
+    }
+    &: active {
+        background-color: tomato;
+    }
 `;
 
 const Nav: React.FC = () => {
@@ -91,19 +123,21 @@ const Nav: React.FC = () => {
         <>
             <NavContainer>
                 <GridBox>
-                    <Link to={newLink}>전체 글 조회</Link>
+                    <CategoryLink to={newLink}>전체 글 조회</CategoryLink>
                     {categories.map((category, index) => (
-                        <Link key={index} to={`/board?category=${category.id}`}>
+                        <CategoryLink key={index} to={`/board?category=${category.id}`}>
                             {category.name}
-                        </Link>
+                        </CategoryLink>
                     ))}
                 </GridBox>
-                <textarea
-                    placeholder="카테고리 이름을 입력하세요"
-                    value={newCategoryName}
-                    onChange={handleCategoryNameChange}
-                />
-                <button onClick={addCategory}>카테고리 추가</button>
+                <CategoryBox>
+                    <textarea
+                        placeholder="카테고리 이름을 입력하세요"
+                        value={newCategoryName}
+                        onChange={handleCategoryNameChange}
+                    />
+                    <button onClick={addCategory}>카테고리 추가</button>
+                </CategoryBox>
             </NavContainer>
         </>
     );
