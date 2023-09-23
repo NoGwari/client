@@ -14,6 +14,9 @@ const defaultImageSrc = FiImage;
 
 const Container = styled.div`
     margin: 0 100px;
+    ::-ms-scrollbar {
+        display: none;
+    }
 `;
 
 const List = styled.div`
@@ -98,6 +101,25 @@ const Write = styled.button`
 `;
 
 const Page = styled.button``;
+
+const SearchButton = styled.div`
+    display: flex;
+    align-items: center;
+
+    input[type='text'] {
+        height: 30px;
+        border: 1px solid #ccc;
+        padding: 5px;
+        box-sizing: border-box;
+    }
+
+    select {
+        height: 30px;
+        border: 1px solid #ccc;
+        box-sizing: border-box;
+        text-align: center;
+    }
+`;
 
 function CreateTime(timestamp) {
     if (!timestamp) {
@@ -237,18 +259,20 @@ function Board() {
                 </select>
                 <br />
                 &nbsp;
-                <select type="text" value={selectOption} onChange={(e) => setSelectOption(e.target.value)}>
-                    <option value="title">제목</option>
-                    <option value="nickname">작성자</option>
-                </select>
-                <input
-                    type="text"
-                    placeholder="검색할 단어를 입력하세요."
-                    value={searchvalue}
-                    onChange={handleSearchValue}
-                ></input>
-                &nbsp;
-                <AiOutlineSearch onClick={search} />
+                <SearchButton>
+                    <select type="text" value={selectOption} onChange={(e) => setSelectOption(e.target.value)}>
+                        <option value="title">제목</option>
+                        <option value="nickname">작성자</option>
+                    </select>
+                    <input
+                        className="search-bar"
+                        type="text"
+                        value={searchvalue}
+                        onChange={handleSearchValue}
+                        placeholder="검색할 내용을 입력하세요"
+                    />
+                    <AiOutlineSearch onClick={search} />
+                </SearchButton>
                 <br />
                 <br />
                 <hr />
