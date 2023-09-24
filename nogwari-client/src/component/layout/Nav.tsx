@@ -92,7 +92,7 @@ const Nav: React.FC = () => {
     const [newCategoryName, setNewCategoryName] = useState('');
     const [newId, setNewId] = useState<Number>(0);
     const [toggle, setToggle] = useState(false);
-
+    const { itemId } = useParams();
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -129,6 +129,28 @@ const Nav: React.FC = () => {
                 const updateData = (await updateResponse.json()) as Category[];
                 setCategories(updateData);
                 setNewId(responseData.id);
+            } else {
+                throw new Error('카테고리 추가 실패');
+            }
+        } catch (error) {
+            console.error('에러발생 : ', error);
+        }
+    };
+    const deleteCategory = async () => {
+        try {
+            const response = await fetch(Http + `/category/${itemId}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${sessionStorage.getItem('token')}`,
+                },
+            });
+            console.log(response);
+            if (response.ok) {
+                const responseData = await response.json();
+                const updateResponse = await fetch(Http + `/category`);
+                const updateData = (await updateResponse.json()) as Category[];
+                setCategories(updateData);
             } else {
                 throw new Error('카테고리 추가 실패');
             }
