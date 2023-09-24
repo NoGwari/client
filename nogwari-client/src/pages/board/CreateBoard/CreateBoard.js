@@ -191,37 +191,39 @@ function CreateBoard() {
     };
 
     return (
-        <Container>
+        <div>
             <Layout></Layout>
-            <Title>
-                <input value={title} onChange={onChangeTitle} type="text" placeholder="제목" maxLength={20} />
-            </Title>
-            <br />
-            <select value={categoryId} onChange={onChangeCategoryId}>
-                <option value="">카테고리 선택</option>
-                {categories.map((item) => (
-                    <>
-                        <option key={item.id} value={item.id}>
-                            {item.name}
-                        </option>
-                    </>
-                ))}
-            </select>
-            <ReactQuill
-                value={editorHtml || ' '}
-                onChange={handleEditorChange}
-                modules={modules}
-                theme="snow"
-                formats={formats}
-                ImageResize={ImageResize}
-                ref={(element) => {
-                    if (element != null) {
-                        QuillRef.current = element;
-                    }
-                }}
-            />
-            <button onClick={handleSubmit}>게시물 작성</button>
-        </Container>
+            <Container>
+                <Title>
+                    <input value={title} onChange={onChangeTitle} type="text" placeholder="제목" maxLength={20} />
+                </Title>
+                <br />
+                <select value={categoryId} onChange={onChangeCategoryId}>
+                    <option value="">카테고리 선택</option>
+                    {categories.map((item) => (
+                        <>
+                            <option key={item.id} value={item.id}>
+                                {item.name}
+                            </option>
+                        </>
+                    ))}
+                </select>
+                <ReactQuill
+                    value={editorHtml || ' '}
+                    onChange={handleEditorChange}
+                    modules={modules}
+                    theme="snow"
+                    formats={formats}
+                    ImageResize={ImageResize}
+                    ref={(element) => {
+                        if (element != null) {
+                            QuillRef.current = element;
+                        }
+                    }}
+                />
+                <button onClick={handleSubmit}>게시물 작성</button>
+            </Container>
+        </div>
     );
 }
 

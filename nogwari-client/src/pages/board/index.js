@@ -14,7 +14,7 @@ const defaultImageSrc = FiImage;
 
 const Container = styled.div`
     margin: 0 100px;
-    ::-ms-scrollbar {
+    :: -webkit-scrollbar {
         display: none;
     }
 `;
@@ -239,83 +239,85 @@ function Board() {
     })();
 
     return (
-        <Container>
+        <div>
             <Layout></Layout>
-            <List>{title}</List>
-            <BoardListContainer>
-                <Page />
-                표시할 페이지의 개수 : &nbsp;
-                <select
-                    type="number"
-                    value={limit}
-                    onChange={({ target: { value } }) => {
-                        setLimit(Number(value));
-                        setPage(1);
-                    }}
-                >
-                    <option value="5">5</option>
-                    <option value="10">10</option>
-                    <option value="20">20</option>
-                </select>
-                <br />
-                &nbsp;
-                <SearchButton>
-                    <select type="text" value={selectOption} onChange={(e) => setSelectOption(e.target.value)}>
-                        <option value="title">제목</option>
-                        <option value="nickname">작성자</option>
+            <Container>
+                <List>{title}</List>
+                <BoardListContainer>
+                    <Page />
+                    표시할 페이지의 개수 : &nbsp;
+                    <select
+                        type="number"
+                        value={limit}
+                        onChange={({ target: { value } }) => {
+                            setLimit(Number(value));
+                            setPage(1);
+                        }}
+                    >
+                        <option value="5">5</option>
+                        <option value="10">10</option>
+                        <option value="20">20</option>
                     </select>
-                    <input
-                        className="search-bar"
-                        type="text"
-                        value={searchvalue}
-                        onChange={handleSearchValue}
-                        placeholder="검색할 내용을 입력하세요"
-                    />
-                    <AiOutlineSearch onClick={search} />
-                </SearchButton>
-                <br />
-                <br />
+                    <br />
+                    &nbsp;
+                    <SearchButton>
+                        <select type="text" value={selectOption} onChange={(e) => setSelectOption(e.target.value)}>
+                            <option value="title">제목</option>
+                            <option value="nickname">작성자</option>
+                        </select>
+                        <input
+                            className="search-bar"
+                            type="text"
+                            value={searchvalue}
+                            onChange={handleSearchValue}
+                            placeholder="검색할 내용을 입력하세요"
+                        />
+                        <AiOutlineSearch onClick={search} />
+                    </SearchButton>
+                    <br />
+                    <br />
+                    <hr />
+                    {board.map((item) => (
+                        <Link to={`/board/${item.id}`} key={item.id}>
+                            <BoardItemContainer>
+                                <BoardImage>
+                                    {item.thumbnail ? (
+                                        <img
+                                            src={item.thumbnail}
+                                            alt="Thumbnail"
+                                            style={{ height: '48px', width: '48px' }}
+                                        />
+                                    ) : (
+                                        <FiImage style={{ height: '48px', width: '48px' }} />
+                                    )}
+                                </BoardImage>
+                                <BoardContainer>
+                                    <BoardTitleContainer>
+                                        <CategoryTitle>{item.categoryName}</CategoryTitle>
+                                        <BoardTitle>{item.title}</BoardTitle>
+                                    </BoardTitleContainer>
+                                    <BoardContent>
+                                        {item.userNickname} &middot; {CreateTime(item.createdAt)}
+                                        &nbsp; <AiOutlineEye />
+                                        {item.views} &middot;&nbsp; <FiThumbsUp />
+                                        {item.hits}
+                                    </BoardContent>
+                                </BoardContainer>
+                            </BoardItemContainer>
+                        </Link>
+                    ))}
+                </BoardListContainer>
+                <WriteContainer>
+                    <Write>
+                        <Link to={`/createBoard`}>글쓰기</Link>
+                    </Write>
+                </WriteContainer>
                 <hr />
-                {board.map((item) => (
-                    <Link to={`/board/${item.id}`} key={item.id}>
-                        <BoardItemContainer>
-                            <BoardImage>
-                                {item.thumbnail ? (
-                                    <img
-                                        src={item.thumbnail}
-                                        alt="Thumbnail"
-                                        style={{ height: '48px', width: '48px' }}
-                                    />
-                                ) : (
-                                    <FiImage style={{ height: '48px', width: '48px' }} />
-                                )}
-                            </BoardImage>
-                            <BoardContainer>
-                                <BoardTitleContainer>
-                                    <CategoryTitle>{item.categoryName}</CategoryTitle>
-                                    <BoardTitle>{item.title}</BoardTitle>
-                                </BoardTitleContainer>
-                                <BoardContent>
-                                    {item.userNickname} &middot; {CreateTime(item.createdAt)}
-                                    &nbsp; <AiOutlineEye />
-                                    {item.views} &middot;&nbsp; <FiThumbsUp />
-                                    {item.hits}
-                                </BoardContent>
-                            </BoardContainer>
-                        </BoardItemContainer>
-                    </Link>
-                ))}
-            </BoardListContainer>
-            <WriteContainer>
-                <Write>
-                    <Link to={`/createBoard`}>글쓰기</Link>
-                </Write>
-            </WriteContainer>
-            <hr />
-            <footer>
-                <Pagination total={totalPages} limit={limit} page={page} setPage={setPage} value={limit} />
-            </footer>
-        </Container>
+                <footer>
+                    <Pagination total={totalPages} limit={limit} page={page} setPage={setPage} value={limit} />
+                </footer>
+            </Container>
+        </div>
     );
 }
 

@@ -409,101 +409,107 @@ function BoardDetailPage() {
     }
 
     return (
-        <Container>
+        <div>
             <Layout></Layout>
-            <BoardTitleContainer>
-                <CategoryTitle>{board.categoryName}</CategoryTitle>
-                <BoardTitle>{board.title}</BoardTitle>
-            </BoardTitleContainer>
-            <BoardContent>
-                <img src={board.userImg} alt="사용자 이미지" style={{ maxWidth: '50px' }} /> &nbsp;
-                {board.userNickname} &middot; &nbsp; <AiOutlineEye />
-                {board.views} &middot;&nbsp;{' '}
-                <FiThumbsUp
-                    onClick={ishit}
-                    style={{
-                        cursor: 'pointer',
-                        color: thumbsUpColor,
-                    }}
-                />
-                {board.hits}
-            </BoardContent>
-            <hr />
-            <div dangerouslySetInnerHTML={{ __html: board.content }}></div>
-            <hr />
-            <DeleteBoard />
-            <hr />
-            <br />
-            <CommentContainer>
-                {comments.map((comment) => {
-                    return (
-                        <Comment key={comment.id}>
-                            <CommentContent>
-                                <div>
-                                    {comment.userNickname} : {comment.content}
-                                    &nbsp;&nbsp;&nbsp;
-                                    <button onClick={() => toggleReply(comment.id)}>답글 달기</button>
-                                    {isReplying && replyCommentId === comment.id && (
-                                        <div>
-                                            <textarea
-                                                placeholder="답글 내용을 입력하세요"
-                                                value={reply}
-                                                onChange={(e) => setReply(e.target.value)}
-                                            />
-                                            <button onClick={() => ReplyComment(reply)}>전송</button>
-                                        </div>
-                                    )}
-                                </div>
-                                <div>
-                                    <FiThumbsUp
-                                        onClick={() => ishitComment(comment.id)}
-                                        style={{ cursor: 'pointer' /*color:  ? 'red' : 'black'*/ }}
-                                    />
-                                    {comment.hits}
-                                    &nbsp;&nbsp; &nbsp;&nbsp;
-                                    <AiFillDelete
-                                        onClick={() => deleteComment(comment.id)}
-                                        style={{ cursor: 'pointer' }}
-                                    />
-                                    &nbsp;&nbsp;
-                                    <RiAlarmWarningFill />
-                                </div>
-                            </CommentContent>
-                            {Object.values(replyComments)
-                                .filter((element) => parseInt(element.parentCommentsId) === parseInt(comment.id))
-                                .map((reply) => (
-                                    <ReplyContent key={reply.id}>
-                                        <div>
-                                            {reply.userNickname} : {reply.content} <ImReply />
-                                        </div>
-                                        <div>
-                                            <FiThumbsUp
-                                                onClick={() => ishitReply(reply.id)}
-                                                style={{
-                                                    cursor: 'pointer',
-                                                    //color: isLikedReply ? 'red' : 'black',
-                                                }}
-                                            />
-                                            {reply.hits}
-                                            &nbsp;&nbsp; &nbsp;&nbsp;
-                                            <AiFillDelete
-                                                onClick={() => deleteComment(reply.id)}
-                                                style={{ cursor: 'pointer' }}
-                                            />
-                                            &nbsp;&nbsp;
-                                            <RiAlarmWarningFill />
-                                        </div>
-                                    </ReplyContent>
-                                ))}
-                        </Comment>
-                    );
-                })}
-                <CommentForm>
-                    <CommentTextarea placeholder="댓글을 입력하세요" value={content} onChange={handleContentChange} />
-                    <CommentSubmit onClick={handleSubmit}>댓글 작성</CommentSubmit>
-                </CommentForm>
-            </CommentContainer>
-        </Container>
+            <Container>
+                <BoardTitleContainer>
+                    <CategoryTitle>{board.categoryName}</CategoryTitle>
+                    <BoardTitle>{board.title}</BoardTitle>
+                </BoardTitleContainer>
+                <BoardContent>
+                    <img src={board.userImg} alt="사용자 이미지" style={{ maxWidth: '50px' }} /> &nbsp;
+                    {board.userNickname} &middot; &nbsp; <AiOutlineEye />
+                    {board.views} &middot;&nbsp;{' '}
+                    <FiThumbsUp
+                        onClick={ishit}
+                        style={{
+                            cursor: 'pointer',
+                            color: thumbsUpColor,
+                        }}
+                    />
+                    {board.hits}
+                </BoardContent>
+                <hr />
+                <div dangerouslySetInnerHTML={{ __html: board.content }}></div>
+                <hr />
+                <DeleteBoard />
+                <hr />
+                <br />
+                <CommentContainer>
+                    {comments.map((comment) => {
+                        return (
+                            <Comment key={comment.id}>
+                                <CommentContent>
+                                    <div>
+                                        {comment.userNickname} : {comment.content}
+                                        &nbsp;&nbsp;&nbsp;
+                                        <button onClick={() => toggleReply(comment.id)}>답글 달기</button>
+                                        {isReplying && replyCommentId === comment.id && (
+                                            <div>
+                                                <textarea
+                                                    placeholder="답글 내용을 입력하세요"
+                                                    value={reply}
+                                                    onChange={(e) => setReply(e.target.value)}
+                                                />
+                                                <button onClick={() => ReplyComment(reply)}>전송</button>
+                                            </div>
+                                        )}
+                                    </div>
+                                    <div>
+                                        <FiThumbsUp
+                                            onClick={() => ishitComment(comment.id)}
+                                            style={{ cursor: 'pointer' /*color:  ? 'red' : 'black'*/ }}
+                                        />
+                                        {comment.hits}
+                                        &nbsp;&nbsp; &nbsp;&nbsp;
+                                        <AiFillDelete
+                                            onClick={() => deleteComment(comment.id)}
+                                            style={{ cursor: 'pointer' }}
+                                        />
+                                        &nbsp;&nbsp;
+                                        <RiAlarmWarningFill />
+                                    </div>
+                                </CommentContent>
+                                {Object.values(replyComments)
+                                    .filter((element) => parseInt(element.parentCommentsId) === parseInt(comment.id))
+                                    .map((reply) => (
+                                        <ReplyContent key={reply.id}>
+                                            <div>
+                                                {reply.userNickname} : {reply.content} <ImReply />
+                                            </div>
+                                            <div>
+                                                <FiThumbsUp
+                                                    onClick={() => ishitReply(reply.id)}
+                                                    style={{
+                                                        cursor: 'pointer',
+                                                        //color: isLikedReply ? 'red' : 'black',
+                                                    }}
+                                                />
+                                                {reply.hits}
+                                                &nbsp;&nbsp; &nbsp;&nbsp;
+                                                <AiFillDelete
+                                                    onClick={() => deleteComment(reply.id)}
+                                                    style={{ cursor: 'pointer' }}
+                                                />
+                                                &nbsp;&nbsp;
+                                                <RiAlarmWarningFill />
+                                            </div>
+                                        </ReplyContent>
+                                    ))}
+                            </Comment>
+                        );
+                    })}
+                    <CommentForm>
+                        <CommentTextarea
+                            placeholder="댓글을 입력하세요"
+                            value={content}
+                            onChange={handleContentChange}
+                        />
+                        <CommentSubmit onClick={handleSubmit}>댓글 작성</CommentSubmit>
+                    </CommentForm>
+                </CommentContainer>
+            </Container>
+        </div>
     );
 }
 
