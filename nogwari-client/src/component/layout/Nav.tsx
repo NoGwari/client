@@ -3,7 +3,8 @@ import { Link, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { Http } from 'common';
 import { idText } from 'typescript';
-
+import { GoTriangleDown } from 'react-icons/go';
+import { TextSize } from 'styles/styleds';
 interface Category {
     id: number;
     name: string;
@@ -15,19 +16,20 @@ const NavContainer = styled.div`
     align-items: center;
     justify-content: space-between;
     width: 100%;
-    height: 100px;
+    height: 60px;
     background-color: whitesmoke;
 `;
 
 const GridBox = styled.div`
     display: grid;
-    grid-template-columns: repeat(5, 1fr);
+    grid-template-columns: repeat(10, 1fr);
     gap: 16px;
+    margin-left: 10px;
 `;
 
 const CategoryBox = styled.div`
     display: flex;
-    margin: 3px;
+    justify-content: flex-end;
 `;
 
 const CategoryLink = styled(Link)`
@@ -55,30 +57,6 @@ const CategoryLink = styled(Link)`
     }
 `;
 
-const CategoryAdd = styled.button`
-    display: inline-block;
-    padding: 4px 5px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    background-color: black;
-    text-align: center;
-    text-decoration: none;
-    cursor: pointer;
-    margin-bottom: 5px;
-    margin-right: 2px;
-    font-size: 13px;
-    font-weight: bold;
-    color: white;
-    transition: background-color 0.3s;
-
-    &:hover {
-        background-color: skyblue;
-        transform: translateY(-2px);
-    }
-    &: active {
-        background-color: tomato;
-    }
-`;
 const CategoryButton = styled.div`
     display: flex;
     align-items: center;
@@ -98,6 +76,13 @@ const CategoryButton = styled.div`
         background-color: black;
         color: white;
         cursor: pointer;
+        &:hover {
+            background-color: skyblue;
+            transform: translateY(-2px);
+        }
+        &: active {
+            background-color: tomato;
+        }
     }
 `;
 
@@ -155,6 +140,10 @@ const Nav: React.FC = () => {
         setNewCategoryName(e.target.value);
     };
 
+    const handleToggle = () => {
+        setToggle((prevState) => !prevState);
+    };
+
     const currentPath = window.location.pathname;
     const currentSearch = window.location.search;
 
@@ -178,17 +167,29 @@ const Nav: React.FC = () => {
                     ))}
                 </GridBox>
             </NavContainer>
-            <CategoryBox>
-                <CategoryButton>
-                    <input
-                        type="text"
-                        placeholder="추가할 카테고리 이름"
-                        value={newCategoryName}
-                        onChange={handleCategoryNameChange}
-                    />
-                    <button onClick={addCategory}>추가</button>
-                </CategoryButton>
-            </CategoryBox>
+            <div style={{ backgroundColor: '#F5F5F5', height: '45px' }}>
+                <CategoryBox>
+                    {toggle && (
+                        <CategoryButton>
+                            <input
+                                type="text"
+                                placeholder="추가할 카테고리 이름"
+                                value={newCategoryName}
+                                onChange={handleCategoryNameChange}
+                            />
+                            <button
+                                onClick={() => {
+                                    addCategory();
+                                    setNewCategoryName('');
+                                }}
+                            >
+                                추가
+                            </button>
+                        </CategoryButton>
+                    )}
+                    <GoTriangleDown onClick={handleToggle} style={{ fontSize: '30px', transform: 'rotate(90deg)' }} />
+                </CategoryBox>
+            </div>
         </>
     );
 };

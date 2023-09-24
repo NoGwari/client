@@ -26,6 +26,7 @@ export const ServiceWrap = styled.div`
 export const HeaderLogo = styled.h1`
     display: flex;
     align-items: center;
+    position: relative;
     & a {
         display: block;
     }
@@ -34,13 +35,10 @@ export const HeaderLogo = styled.h1`
         box-shadow: 1px 0px 6px 0;
         border-radius: 100%;
         display: inline-block;
-        height: auto; /* 높이를 자동으로 조정합니다. */
-        max-height: 85px; /* 최대 높이를 85px로 제한합니다. */
-        max-width: 85px; /* 최대 넓이를 85px로 제한합니다. */
-        width: 10vw; /* 넓이를 화면 넓이의 10%로 설정합니다. */
+        height: 85px;
+        width: 85px;
     }
 `;
-
 export const Navbar = styled.li`
     display: flex;
     width: 100px;

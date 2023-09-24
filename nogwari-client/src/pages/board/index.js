@@ -21,7 +21,7 @@ const Container = styled.div`
 
 const List = styled.div`
     margin-top: 50px;
-    font-size: 17px;
+    font-size: 20px;
     margin-left: 20px;
     font-weight: bold;
 `;
@@ -258,7 +258,6 @@ function Board() {
                         <option value="10">10</option>
                         <option value="20">20</option>
                     </select>
-                    <br />
                     &nbsp;
                     <SearchButton>
                         <select type="text" value={selectOption} onChange={(e) => setSelectOption(e.target.value)}>
@@ -274,7 +273,6 @@ function Board() {
                         />
                         <AiOutlineSearch onClick={search} />
                     </SearchButton>
-                    <br />
                     <br />
                     <hr />
                     {board.map((item) => (
