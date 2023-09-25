@@ -1,6 +1,32 @@
 import React, { useEffect, useState } from 'react';
 import { Http } from 'common';
 import Layout from 'component/layout/Layout';
+import styled from 'styled-components';
+
+const Mypageword = styled.div`
+    color: black;
+    font-weight: bold;
+    font-size: 20px;
+    text-align: center;
+    margin-top: 80px;
+`;
+
+const MypageImg = styled.img`
+    border-radius: 50%;
+    width: 125px;
+    height: 125px;
+    border-radius: 50%;
+`;
+
+const MypageForm = styled.div`
+    text-align: center;
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    background-color: #f9f9f9;
+    margin-top: 20px;
+`;
 
 function Mypage() {
     const [me, setMe] = useState(null);
@@ -10,6 +36,8 @@ function Mypage() {
     const [isUploadingImage, setIsUploadingImage] = useState(false);
     const [imagePreview, setImagePreview] = useState(null);
     const [imageUrl, setImageUrl] = useState('');
+    let profile = 'public/img/profile.png';
+    let profileImg = me && me.img ? me.img : profile;
 
     const handleImageChange = (e) => {
         const selectedFile = e.target.files[0];
@@ -113,32 +141,37 @@ function Mypage() {
             <Layout></Layout>
             <div>
                 {me && (
-                    <div>
-                        <p>여기는 마이페이지 입니다.</p>
-                        <p>사용자 닉네임: {me.nickname}</p>
-                        <p>이메일: {me.email}</p>
-                        <p>
-                            사용자 이미지:{' '}
-                            {me.img && <img src={me.img} alt="프로필 이미지" style={{ maxWidth: '50px' }} />}
-                        </p>
-                        <div>
-                            <p>이미지 변경:</p>
-                            <input type="file" accept="image/*" onChange={handleImageChange} />
-                            <br />
-                            {imagePreview && <img src={imagePreview} alt="미리보기" style={{ maxWidth: '200px' }} />}
-                            <button onClick={handleImageUpload} disabled={isUploadingImage}>
-                                {isUploadingImage ? '업로드 중...' : '업로드'}
-                            </button>
-                        </div>
+                    <>
+                        <Mypageword>마이페이지</Mypageword>
+                        <MypageForm>
+                            <p>사용자 닉네임: {me.nickname}</p>
+                            <p>이메일: {me.email}</p>
+                            <MypageImg src={profileImg || profile} alt="프로필 이미지" />
+
+                            <div>
+                                <input type="file" accept="image/*" onChange={handleImageChange} />
+                                <br />
+                                {imagePreview && (
+                                    <img src={imagePreview} alt="미리보기" style={{ maxWidth: '200px' }} />
+                                )}
+                                <button onClick={handleImageUpload} disabled={isUploadingImage}>
+                                    {isUploadingImage ? '업로드 중...' : '업로드'}
+                                </button>
+                            </div>
+                            <div>
+                                <p>닉네임 변경:</p>
+                                <input
+                                    type="text"
+                                    value={newNickname}
+                                    onChange={(e) => setNewNickname(e.target.value)}
+                                />
+                                <button onClick={handleNicknameChange} disabled={isUpdatingNickname}>
+                                    {isUpdatingNickname ? '변경 중...' : '변경'}
+                                </button>
+                            </div>
+                        </MypageForm>
                         <br />
-                        <div>
-                            <p>닉네임 변경:</p>
-                            <input type="text" value={newNickname} onChange={(e) => setNewNickname(e.target.value)} />
-                            <button onClick={handleNicknameChange} disabled={isUpdatingNickname}>
-                                {isUpdatingNickname ? '변경 중...' : '변경'}
-                            </button>
-                        </div>
-                    </div>
+                    </>
                 )}
             </div>
         </>
