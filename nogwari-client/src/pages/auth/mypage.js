@@ -109,10 +109,6 @@ function Mypage() {
             setIsUpdatingNickname(false);
         }
     };
-    const logOut = () => {
-        sessionStorage.removeItem('token');
-        navigate('/');
-    };
 
     return (
         <>
@@ -144,7 +140,6 @@ function Mypage() {
                                 {isUpdatingNickname ? '변경 중...' : '변경'}
                             </button>
                         </div>
-                        <button onClick={logOut}>로그아웃</button>
                     </div>
                 )}
             </div>

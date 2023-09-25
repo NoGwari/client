@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-
+import { useNavigate } from 'react-router-dom';
 export const HeaderContainer = styled.header`
     display: flex;
     align-items: center;
@@ -56,10 +56,33 @@ export const NavbarWrap = styled.ul`
     color: white;
 `;
 
+const NavbarButton = styled.button`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: none;
+    font-size: 16px;
+    color: white;
+    text-decoration: none;
+    cursor: pointer;
+    padding: 0;
+`;
+
 const Header: React.FC = () => {
+    const navigate = useNavigate();
     const isNotLogin = () => {
         return sessionStorage.getItem('token') === null;
     };
+    const logOut = () => {
+        const confirmed = window.confirm('로그아웃하시겠습니까?');
+
+        if (confirmed) {
+            sessionStorage.removeItem('token');
+            navigate('/board');
+        }
+    };
+
     return (
         <HeaderContainer>
             <ServiceWrap>
@@ -80,9 +103,14 @@ const Header: React.FC = () => {
                         </Navbar>
                     </>
                 ) : (
-                    <Navbar>
-                        <Link to="/mypage">마이페이지</Link>
-                    </Navbar>
+                    <>
+                        <Navbar>
+                            <Link to="/mypage">마이페이지</Link>
+                        </Navbar>
+                        <Navbar>
+                            <NavbarButton onClick={logOut}>로그아웃</NavbarButton>
+                        </Navbar>
+                    </>
                 )}
             </NavbarWrap>
         </HeaderContainer>
