@@ -108,7 +108,7 @@ const SearchButton = styled.div`
 
     input[type='text'] {
         height: 30px;
-        border: 1px solid #ccc;
+        border: 1px solid white;
         padding: 5px;
         box-sizing: border-box;
     }
@@ -151,7 +151,7 @@ function CreateTime(timestamp) {
 
 function Board() {
     const [board, setBoard] = useState([]);
-    const [limit, setLimit] = useState(5);
+    const [limit, setLimit] = useState(10);
     const [page, setPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
     const [searchvalue, setSearchvalue] = useState('');
@@ -259,20 +259,22 @@ function Board() {
                         <option value="20">20</option>
                     </select>
                     &nbsp;
-                    <SearchButton>
-                        <select type="text" value={selectOption} onChange={(e) => setSelectOption(e.target.value)}>
-                            <option value="title">제목</option>
-                            <option value="nickname">작성자</option>
-                        </select>
-                        <input
-                            className="search-bar"
-                            type="text"
-                            value={searchvalue}
-                            onChange={handleSearchValue}
-                            placeholder="검색할 내용을 입력하세요"
-                        />
-                        <AiOutlineSearch onClick={search} />
-                    </SearchButton>
+                    <div style={{ border: '1px solid #ccc', display: 'felx', width: 'fit-content' }}>
+                        <SearchButton>
+                            <select type="text" value={selectOption} onChange={(e) => setSelectOption(e.target.value)}>
+                                <option value="title">제목</option>
+                                <option value="nickname">작성자</option>
+                            </select>
+                            <input
+                                className="search-bar"
+                                type="text"
+                                value={searchvalue}
+                                onChange={handleSearchValue}
+                                placeholder="검색할 내용을 입력하세요"
+                            />
+                            <AiOutlineSearch onClick={search} />
+                        </SearchButton>
+                    </div>
                     <br />
                     <hr />
                     {board.map((item) => (
