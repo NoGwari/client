@@ -36,8 +36,6 @@ function Mypage() {
     const [isUploadingImage, setIsUploadingImage] = useState(false);
     const [imagePreview, setImagePreview] = useState(null);
     const [imageUrl, setImageUrl] = useState('');
-    let profile = 'public/img/profile.png';
-    let profileImg = me && me.img ? me.img : profile;
 
     const handleImageChange = (e) => {
         const selectedFile = e.target.files[0];
@@ -146,7 +144,7 @@ function Mypage() {
                         <MypageForm>
                             <p>사용자 닉네임: {me.nickname}</p>
                             <p>이메일: {me.email}</p>
-                            <MypageImg src={profileImg || profile} alt="프로필 이미지" />
+                            <MypageImg src={me.img} alt="프로필 이미지" />
 
                             <div>
                                 <input type="file" accept="image/*" onChange={handleImageChange} />
