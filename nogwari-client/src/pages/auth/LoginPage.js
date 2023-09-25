@@ -2,8 +2,46 @@ import React, { useState } from 'react';
 import { Http } from '../../common';
 import { useNavigate } from 'react-router-dom';
 import GoogleLoginButton from './GoogleLogin';
+import styled from 'styled-components';
+import Layout from 'component/layout/Layout';
 
-function CreateBoard() {
+const LoginContainer = styled.div`
+    text-align: center;
+`;
+const Loginword = styled.div`
+    color: black;
+    font-weight: bold;
+    font-size: 20px;
+    text-align: center;
+    margin-top: 80px;
+`;
+const LoginForm = styled.form`
+    item-align: center;
+    max-width: 300px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    background-color: #f9f9f9;
+    margin-top: 20px;
+`;
+
+const Input = styled.input`
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    box-sizing: border-box;
+`;
+
+const Button = styled.button`
+    width: 100%;
+    padding: 10px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+`;
+
+function LoginPage() {
     const [id, setId] = useState('');
     const [password, setPassword] = useState('');
     const navigate = useNavigate();
@@ -19,23 +57,22 @@ function CreateBoard() {
     };
 
     const handleLogin = async (e) => {
-        e.preventDefault(); // 폼의 기본 동작인 페이지 새로고침 방지
+        e.preventDefault();
         try {
             const response = await fetch(Http + '/auth/login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ email: id, password }), // 로그인 요청 데이터 전송
+                body: JSON.stringify({ email: id, password }),
             });
 
             if (!response.ok) {
-                const errorData = await response.json(); // 서버에서 에러 응답을 받으면 에러 데이터를 가져옴
-                throw new Error(errorData.message); // 에러 데이터의 메시지를 에러로 던짐
+                const errorData = await response.json();
+                throw new Error(errorData.message);
             }
 
-            const data = await response.json(); // 로그인 성공 시 데이터를 가져옴
-            // 로그인 성공 후 처리: data를 활용하여 필요한 작업 수행
+            const data = await response.json();
             sessionStorage.setItem('token', data.token);
             console.log(data);
             navigate('/board');
@@ -45,13 +82,20 @@ function CreateBoard() {
     };
 
     return (
-        <form onSubmit={handleLogin}>
-            <input value={id} onChange={onChangeId} type="text" placeholder="아이디" maxLength={20} />
-            <input value={password} onChange={onChangePassword} type="password" placeholder="패스워드" />
-            <button type="submit">로그인</button>
-            <GoogleLoginButton />
-        </form>
+        <>
+            <Layout />
+            <LoginContainer>
+                <Loginword>로그인하기</Loginword>
+                <LoginForm onSubmit={handleLogin}>
+                    <Input value={id} onChange={onChangeId} type="text" placeholder="아이디" maxLength={20} />
+                    <Input value={password} onChange={onChangePassword} type="password" placeholder="패스워드" />
+                    <Button type="submit">로그인</Button>
+                    &nbsp;
+                    <GoogleLoginButton />
+                </LoginForm>
+            </LoginContainer>
+        </>
     );
 }
 
-export default CreateBoard;
+export default LoginPage;

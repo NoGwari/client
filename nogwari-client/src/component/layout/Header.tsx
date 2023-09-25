@@ -5,7 +5,6 @@ import { Link } from 'react-router-dom';
 export const HeaderContainer = styled.header`
     display: flex;
     align-items: center;
-    justify-content: space-between;
     top: 0;
     width: 100%;
     height: 70px;
@@ -37,8 +36,10 @@ export const HeaderLogo = styled.h1`
         display: inline-block;
         height: 85px;
         width: 85px;
+        max-width: 100%;
     }
 `;
+
 export const Navbar = styled.li`
     display: flex;
     width: 100px;
