@@ -1,13 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { Http } from 'common';
 import Layout from 'component/layout/Layout';
-import { useNavigate } from 'react-router-dom';
 
 function Mypage() {
     const [me, setMe] = useState(null);
     const [newNickname, setNewNickname] = useState('');
     const [isUpdatingNickname, setIsUpdatingNickname] = useState(false);
-    const navigate = useNavigate();
     const [imageFile, setImageFile] = useState(null);
     const [isUploadingImage, setIsUploadingImage] = useState(false);
     const [imagePreview, setImagePreview] = useState(null);

@@ -75,7 +75,7 @@ function LoginPage() {
             const data = await response.json();
             sessionStorage.setItem('token', data.token);
             console.log(data);
-            navigate('/board');
+            navigate('/mypage');
         } catch (error) {
             console.error('Error during login:', error.message);
         }

@@ -79,10 +79,9 @@ const Header: React.FC = () => {
 
         if (confirmed) {
             sessionStorage.removeItem('token');
-            navigate('/board');
+            navigate('/login');
         }
     };
-
     return (
         <HeaderContainer>
             <ServiceWrap>
