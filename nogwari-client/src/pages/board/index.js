@@ -163,12 +163,10 @@ function Board() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await fetch(Http + `/board?page=${page}&list_num=${limit}&category=${categoryId}`);
-                // TODO 배포시 credentials 옵션 추가
-                // const response = await fetch(Http + `/board?page=${page}&list_num=${limit}&category=${categoryId}`, {
-                //     method: "GET",
-                //     credentials: "include",
-                // });
+                const response = await fetch(Http + `/board?page=${page}&list_num=${limit}&category=${categoryId}`, {
+                    method: 'GET',
+                    credentials: 'include',
+                });
                 if (response.ok) {
                     const result = await response.json();
                     setBoard(result.data);
