@@ -123,7 +123,13 @@ function BoardDetailPage() {
 
     const boardData = async () => {
         try {
-            const res = await fetch(Http + `/board/${itemId}`);
+            const res = await fetch(Http + `/board/${itemId}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                credentials: 'include',
+            });
             if (!res.ok) {
                 throw new Error('Network response was not ok');
             }
@@ -142,6 +148,7 @@ function BoardDetailPage() {
                     'Content-Type': 'application/json',
                     Authorization: `Bearer ${sessionStorage.getItem('token')}`,
                 },
+                credentials: 'include',
             });
             const data = await response.json();
             if (response.ok) {
@@ -153,6 +160,7 @@ function BoardDetailPage() {
                                 'Content-Type': 'application/json',
                                 Authorization: `Bearer ${sessionStorage.getItem('token')}`,
                             },
+                            credentials: 'include',
                         });
                         if (hitResponse.ok) {
                             setHits(hits + 1);
@@ -170,6 +178,7 @@ function BoardDetailPage() {
                                 'Content-Type': 'application/json',
                                 Authorization: `Bearer ${sessionStorage.getItem('token')}`,
                             },
+                            credentials: 'include',
                         });
                         if (unhitResponse.ok) {
                             setHits(hits - 1);
@@ -196,6 +205,7 @@ function BoardDetailPage() {
                 headers: {
                     'Content-Type': 'application/json',
                 },
+                credentials: 'include',
             });
 
             if (response.ok) {
@@ -218,6 +228,7 @@ function BoardDetailPage() {
                     'Content-Type': 'application/json',
                     Authorization: `Bearer ${sessionStorage.getItem('token')}`,
                 },
+                credentials: 'include',
             });
             const data = await response.json();
             if (response.ok) {
@@ -229,6 +240,7 @@ function BoardDetailPage() {
                                 'Content-Type': 'application/json',
                                 Authorization: `Bearer ${sessionStorage.getItem('token')}`,
                             },
+                            credentials: 'include',
                         });
                         if (hitResponse.ok) {
                             setCommentHits(commentHits + 1);
@@ -244,6 +256,7 @@ function BoardDetailPage() {
                                 'Content-Type': 'application/json',
                                 Authorization: `Bearer ${sessionStorage.getItem('token')}`,
                             },
+                            credentials: 'include',
                         });
                         if (unhitResponse.ok) {
                             setCommentHits(commentHits - 1);
@@ -271,6 +284,7 @@ function BoardDetailPage() {
                         'Content-Type': 'application/json',
                         Authorization: `Bearer ${sessionStorage.getItem('token')}`,
                     },
+                    credentials: 'include',
                 });
                 if (response.ok) {
                     console.log('댓글 삭제 완료');
@@ -305,6 +319,7 @@ function BoardDetailPage() {
                         Authorization: `Bearer ${sessionStorage.getItem('token')}`,
                     },
                     body: JSON.stringify(newComment),
+                    credentials: 'include',
                 });
 
                 if (response.ok) {
@@ -336,6 +351,7 @@ function BoardDetailPage() {
                         content: reply,
                         parentCommentId: replyCommentId,
                     }),
+                    credentials: 'include',
                 });
 
                 if (response.ok) {
@@ -363,6 +379,7 @@ function BoardDetailPage() {
                     'Content-Type': 'application/json',
                     Authorization: `Bearer ${sessionStorage.getItem('token')}`,
                 },
+                credentials: 'include',
             });
             const data = await response.json();
             if (response.ok) {
@@ -374,6 +391,7 @@ function BoardDetailPage() {
                                 'Content-Type': 'application/json',
                                 Authorization: `Bearer ${sessionStorage.getItem('token')}`,
                             },
+                            credentials: 'include',
                         });
                         if (hitResponse.ok) {
                             setReplyHits(replyHits + 1);
@@ -391,6 +409,7 @@ function BoardDetailPage() {
                                 'Content-Type': 'application/json',
                                 Authorization: `Bearer ${sessionStorage.getItem('token')}`,
                             },
+                            credentials: 'include',
                         });
                         if (unhitResponse.ok) {
                             setReplyHits(replyHits - 1);

@@ -183,7 +183,10 @@ function Board() {
 
     const list_num = async () => {
         try {
-            const response = await fetch(Http + `/board?list_num=${limit}`);
+            const response = await fetch(Http + `/board?list_num=${limit}`, {
+                method: 'GET',
+                credentials: 'include',
+            });
             if (response.ok) {
                 const data = await response.json();
             } else {
@@ -211,6 +214,7 @@ function Board() {
                 headers: {
                     'Content-Type': 'application/json',
                 },
+                credentials: 'include',
             });
             if (response.ok) {
                 const data = await response.json();
