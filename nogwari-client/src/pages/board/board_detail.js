@@ -101,7 +101,13 @@ function BoardDetailPage() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const res = await fetch(Http + `/board/${itemId}`);
+                const res = await fetch(Http + `/board/${itemId}`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    credentials: 'include',
+                });
                 if (!res.ok) {
                     throw new Error('Network response was not ok');
                 }
