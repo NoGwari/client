@@ -23,7 +23,7 @@ const Overlay = styled.div`
     left: 0;
     width: 100%;
     height: 100%;
-    border-radius : 50%
+    border-radius: 20%;
     background-color: rgba(0, 0, 0, 0.5);
     display: flex;
     align-items: center;
@@ -63,13 +63,19 @@ function Mypage() {
     const [imagePreview, setImagePreview] = useState(null);
     const [imageUrl, setImageUrl] = useState('');
 
-    const handleImageChange = (e) => {
+    const handleImageChange = async (e) => {
+        console.log('선택');
         const selectedFile = e.target.files[0];
         setImageFile(selectedFile);
         if (selectedFile) {
             const reader = new FileReader();
-            reader.onloadend = () => {
+            reader.onloadend = async () => {
                 setImagePreview(reader.result);
+                await handleImageUpload();
+                setMe((prevMe) => ({
+                    ...prevMe,
+                    img: reader.result,
+                }));
             };
             reader.readAsDataURL(selectedFile);
         } else {
@@ -102,8 +108,6 @@ function Mypage() {
             const newImageUrl = data;
             setImageUrl((prevImageUrl) => [...prevImageUrl, newImageUrl]);
             setImageUrl(newImageUrl);
-            console.log(newImageUrl);
-            console.log('이미지 업로드 완료');
         } catch (error) {
             console.error('이미지 업로드 오류', error.message);
         } finally {
@@ -172,18 +176,33 @@ function Mypage() {
                             <p>이메일: {me.email}</p>
                             <MypageImgContainer>
                                 <MypageImg src={me.img} alt="프로필 이미지" />
-                                <Overlay onClick={handleImageUpload}>프로필 사진 변경</Overlay>
+                                <Overlay>
+                                    프로필 사진 변경
+                                    <input
+                                        type="file"
+                                        accept="image/*"
+                                        style={{
+                                            position: 'absolute',
+                                            top: 0,
+                                            left: 0,
+                                            width: '100%',
+                                            height: '100%',
+                                            opacity: 0,
+                                        }}
+                                        onChange={handleImageChange}
+                                    />
+                                </Overlay>
                             </MypageImgContainer>
 
                             <div>
-                                <input type="file" accept="image/*" onChange={handleImageChange} />
-                                <br />
+                                {/* <input type="file" accept="image/*" onChange={handleImageChange} /> */}
+                                {/* <br />
                                 {imagePreview && (
                                     <img src={imagePreview} alt="미리보기" style={{ maxWidth: '200px' }} />
                                 )}
                                 <button onClick={handleImageUpload} disabled={isUploadingImage}>
                                     {isUploadingImage ? '업로드 중...' : '업로드'}
-                                </button>
+                                </button> */}
                             </div>
                             <div>
                                 <p>닉네임 변경:</p>
