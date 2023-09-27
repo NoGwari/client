@@ -10,12 +10,29 @@ const Mypageword = styled.div`
     text-align: center;
     margin-top: 80px;
 `;
-
 const MypageImg = styled.img`
     border-radius: 50%;
     width: 125px;
     height: 125px;
     border-radius: 50%;
+`;
+
+const Overlay = styled.div`
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius : 50%
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity 0.3s ease;
 `;
 
 const MypageForm = styled.div`
@@ -26,6 +43,15 @@ const MypageForm = styled.div`
     border: 1px solid #ccc;
     background-color: #f9f9f9;
     margin-top: 20px;
+`;
+
+const MypageImgContainer = styled.div`
+    position: relative;
+    display: inline-block;
+
+    &:hover ${Overlay} {
+        opacity: 1;
+    }
 `;
 
 function Mypage() {
@@ -144,7 +170,10 @@ function Mypage() {
                         <MypageForm>
                             <p>사용자 닉네임: {me.nickname}</p>
                             <p>이메일: {me.email}</p>
-                            <MypageImg src={me.img} alt="프로필 이미지" />
+                            <MypageImgContainer>
+                                <MypageImg src={me.img} alt="프로필 이미지" />
+                                <Overlay onClick={handleImageUpload}>프로필 사진 변경</Overlay>
+                            </MypageImgContainer>
 
                             <div>
                                 <input type="file" accept="image/*" onChange={handleImageChange} />
