@@ -65,22 +65,18 @@ function Mypage() {
 
     const handleImageChange = async (e) => {
         console.log('선택');
-        const selectedFile = e.target.files[0];
-        setImageFile(selectedFile);
-        if (selectedFile) {
-            const reader = new FileReader();
-            reader.onloadend = async () => {
-                setImagePreview(reader.result);
-                await handleImageUpload();
-                setMe((prevMe) => ({
-                    ...prevMe,
-                    img: reader.result,
-                }));
-            };
-            reader.readAsDataURL(selectedFile);
+        if (e.target.files[0]) {
+            setImageFile(e.target.files[0]);
         } else {
-            setImagePreview(null);
+            return;
         }
+        const reader = new FileReader();
+        reader.onload = () => {
+            if (reader.readyState === 2) {
+                setImageFile(reader.result);
+            }
+        };
+        reader.readAsDataURL(e.target.files[0]);
     };
 
     const handleImageUpload = async () => {
@@ -109,6 +105,7 @@ function Mypage() {
             const newImageUrl = data;
             setImageUrl((prevImageUrl) => [...prevImageUrl, newImageUrl]);
             setImageUrl(newImageUrl);
+            console.log('url 전송');
         } catch (error) {
             console.error('이미지 업로드 오류', error.message);
         } finally {
