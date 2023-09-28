@@ -84,15 +84,15 @@ function Mypage() {
     };
 
     const handleImageUpload = async () => {
+        console.log('이미지 변경');
         if (!imageFile) {
             return;
         }
         setIsUploadingImage(true);
-
+        console.log('이미지 업로드');
         try {
             const formData = new FormData();
             formData.append('image', imageFile);
-
             const response = await fetch(Http + '/user/upload', {
                 method: 'POST',
                 headers: {
@@ -105,6 +105,7 @@ function Mypage() {
                 throw new Error('Network response was not ok.');
             }
             const data = await response.json();
+            console.log(data);
             const newImageUrl = data;
             setImageUrl((prevImageUrl) => [...prevImageUrl, newImageUrl]);
             setImageUrl(newImageUrl);
@@ -196,21 +197,24 @@ function Mypage() {
 
                             <div>
                                 {/* <input type="file" accept="image/*" onChange={handleImageChange} /> */}
-                                {/* <br />
-                                {imagePreview && (
+                                {/* {imagePreview && (
                                     <img src={imagePreview} alt="미리보기" style={{ maxWidth: '200px' }} />
-                                )}
+                                )} */}
                                 <button onClick={handleImageUpload} disabled={isUploadingImage}>
-                                    {isUploadingImage ? '업로드 중...' : '업로드'}
-                                </button> */}
+                                    {isUploadingImage ? '저장 중...' : '저장'}
+                                </button>
                             </div>
+                            <br />
                             <div>
-                                <p>닉네임 변경:</p>
-                                <input
-                                    type="text"
-                                    value={newNickname}
-                                    onChange={(e) => setNewNickname(e.target.value)}
-                                />
+                                <p>
+                                    닉네임 변경:
+                                    <input
+                                        type="text"
+                                        value={newNickname}
+                                        onChange={(e) => setNewNickname(e.target.value)}
+                                        style={{ marginLeft: '5px' }}
+                                    />
+                                </p>
                                 <button onClick={handleNicknameChange} disabled={isUpdatingNickname}>
                                     {isUpdatingNickname ? '변경 중...' : '변경'}
                                 </button>
