@@ -63,48 +63,51 @@ function Mypage() {
     const [imagePreview, setImagePreview] = useState(null);
     const [imageUrl, setImageUrl] = useState('');
 
-    const handleImageChange = async (e) => {
-        console.log('선택');
+    const handleImageChange = (e) => {
         const selectedFile = e.target.files[0];
         setImageFile(selectedFile);
-
         if (selectedFile) {
             const reader = new FileReader();
-            reader.onloadend = async () => {
+            reader.onloadend = () => {
                 setImagePreview(reader.result);
-
-                try {
-                    const formData = new FormData();
-                    formData.append('image', selectedFile);
-
-                    const response = await fetch(Http + '/user/upload', {
-                        method: 'POST',
-                        headers: {
-                            Authorization: `Bearer ${sessionStorage.getItem('token')}`,
-                        },
-                        body: formData,
-                    });
-
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok.');
-                    }
-
-                    const data = await response.json();
-                    const newImageUrl = data;
-                    console.log('새로운 url', newImageUrl);
-                    setImageUrl((prevImageUrl) => [...prevImageUrl, newImageUrl]);
-                    setImageUrl(newImageUrl);
-                    console.log(newImageUrl);
-                    console.log('이미지 업로드 완료');
-                } catch (error) {
-                    console.error('이미지 업로드 오류', error.message);
-                } finally {
-                    setIsUploadingImage(false);
-                }
             };
             reader.readAsDataURL(selectedFile);
         } else {
-            setImagePreview(null);
+            setImagePreview(selectedFile);
+        }
+    };
+
+    const handleImageUpload = async () => {
+        if (!imageFile) {
+            return;
+        }
+        setIsUploadingImage(true);
+
+        try {
+            const formData = new FormData();
+            formData.append('image', imageFile);
+
+            const response = await fetch(Http + '/user/upload', {
+                method: 'POST',
+                headers: {
+                    Authorization: `Bearer ${sessionStorage.getItem('token')}`,
+                },
+                body: formData,
+            });
+
+            if (!response.ok) {
+                throw new Error('Network response was not ok.');
+            }
+            const data = await response.json();
+            const newImageUrl = data;
+            setImageUrl((prevImageUrl) => [...prevImageUrl, newImageUrl]);
+            setImageUrl(newImageUrl);
+            console.log(newImageUrl);
+            console.log('이미지 업로드 완료');
+        } catch (error) {
+            console.error('이미지 업로드 오류', error.message);
+        } finally {
+            setIsUploadingImage(false);
         }
     };
 
@@ -192,9 +195,9 @@ function Mypage() {
                                 {/* {imagePreview && (
                                     <img src={imagePreview} alt="미리보기" style={{ maxWidth: '200px' }} />
                                 )} */}
-                                {/* <button onClick={handleImageUpload} disabled={isUploadingImage}>
+                                <button onClick={handleImageUpload} disabled={isUploadingImage}>
                                     {isUploadingImage ? '저장 중...' : '저장'}
-                                </button> */}
+                                </button>
                             </div>
                             <br />
                             <div>
