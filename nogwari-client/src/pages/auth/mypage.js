@@ -77,6 +77,7 @@ function Mypage() {
                         method: 'POST',
                         headers: {
                             Authorization: `Bearer ${sessionStorage.getItem('token')}`,
+                            'Cache-Control': 'no-cache',
                         },
                         body: formData,
                     });
@@ -137,6 +138,7 @@ function Mypage() {
                 headers: {
                     'Content-Type': 'application/json',
                     Authorization: `Bearer ${sessionStorage.getItem('token')}`,
+                    'Cache-Control': 'no-cache',
                 },
                 body: JSON.stringify({ nickname: newNickname }),
             });
