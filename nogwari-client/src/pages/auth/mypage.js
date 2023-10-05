@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Http } from 'common';
 import Layout from 'component/layout/Layout';
 import styled from 'styled-components';
-
+import { TiDeleteOutline } from 'react-icons/ti';
 const Mypageword = styled.div`
     color: black;
     font-weight: bold;
@@ -105,6 +105,31 @@ function Mypage() {
         }
     };
 
+    const deleteImage = async () => {
+        try {
+            const response = await fetch(Http + '/user/default', {
+                method: 'GET',
+                headers: {
+                    Authorization: `Bearer ${sessionStorage.getItem('token')}`,
+                    'Cache-Control': 'no-cache',
+                },
+            });
+            const data = await response.json();
+            if (!response.ok) {
+                throw new Error('Network response was not ok.');
+            }
+            console.log(data);
+            setMe((prevMe) => ({
+                ...prevMe,
+                img: data.url,
+            }));
+            console.log('기본 이미지로 변경');
+        } catch (error) {
+            console.error('이미지 업로드 오류', error.message);
+        }
+        window.confirm('기본이미지로 변경');
+    };
+
     useEffect(() => {
         const fetchMyPage = async () => {
             try {
@@ -148,6 +173,10 @@ function Mypage() {
             console.log('res:', response);
             const data = await response.json();
             console.log(data);
+            setMe((prevMe) => ({
+                ...prevMe,
+                nickname: newNickname,
+            }));
         } catch (error) {
             console.error('변경오류', error.message);
         } finally {
@@ -184,13 +213,8 @@ function Mypage() {
                                     />
                                 </Overlay>
                             </MypageImgContainer>
-
-                            <div>
-                                {/* <input type="file" accept="image/*" onChange={handleImageChange} /> */}
-                                {/* {imagePreview && (
-                                    <img src={imagePreview} alt="미리보기" style={{ maxWidth: '200px' }} />
-                                )} */}
-                            </div>
+                            <br />
+                            <TiDeleteOutline onClick={deleteImage} style={{ fontSize: '20px', color: 'red' }} />
                             <br />
                             <div>
                                 <p>
