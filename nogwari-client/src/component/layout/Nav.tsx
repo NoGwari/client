@@ -19,6 +19,7 @@ const NavContainer = styled.div`
     width: 100%;
     height: 60px;
     background-color: whitesmoke;
+    position: relative;
 `;
 
 const GridBox = styled.div`
@@ -48,10 +49,14 @@ const CategoryLink = styled(Link)`
     font-weight: bold;
     color: white;
     transition: background-color 0.3s;
-
+    position: relative;
+    display: inline-block;
     &:hover {
         background-color: skyblue;
         transform: translateY(-2px);
+        .delete-button {
+            opacitiy: 1;
+        }
     }
     &: active {
         background-color: tomato;
@@ -80,7 +85,7 @@ const CategoryButton = styled.div`
         &:hover {
             background-color: skyblue;
             transform: translateY(-2px);
-            .delete-icon {
+            .delete-button {
                 opacity: 1;
             }
         }
@@ -88,6 +93,14 @@ const CategoryButton = styled.div`
             background-color: tomato;
         }
     }
+`;
+const DeleteButton = styled.button`
+    position: absolute;
+    bottom: -30px;
+    right: 40px;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
 `;
 
 const Nav: React.FC = () => {
@@ -187,10 +200,12 @@ const Nav: React.FC = () => {
                 <GridBox>
                     <CategoryLink to={newLink}>전체 글 조회</CategoryLink>
                     {categories.map((category, index) => (
-                        <CategoryLink key={index} to={`/board?category=${category.id}`}>
-                            {category.name}
-                            <TiDeleteOutline onClick={() => deleteCategory(category.id)} />
-                        </CategoryLink>
+                        <div key={index} style={{ position: 'relative' }}>
+                            <CategoryLink to={`/board?category=${category.id}`}>{category.name}</CategoryLink>
+                            <DeleteButton className="delete-button">
+                                <TiDeleteOutline onClick={() => deleteCategory(category.id)} />
+                            </DeleteButton>
+                        </div>
                     ))}
                 </GridBox>
             </NavContainer>
