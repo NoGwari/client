@@ -5,6 +5,7 @@ import { Http } from 'common';
 import { idText } from 'typescript';
 import { GoTriangleDown } from 'react-icons/go';
 import { TextSize } from 'styles/styleds';
+import { TiDeleteOutline } from 'react-icons/ti';
 interface Category {
     id: number;
     name: string;
@@ -79,6 +80,9 @@ const CategoryButton = styled.div`
         &:hover {
             background-color: skyblue;
             transform: translateY(-2px);
+            .delete-icon {
+                opacity: 1;
+            }
         }
         &: active {
             background-color: tomato;
@@ -136,7 +140,7 @@ const Nav: React.FC = () => {
             console.error('에러발생 : ', error);
         }
     };
-    const deleteCategory = async () => {
+    const deleteCategory = async (itemId: Number) => {
         try {
             const response = await fetch(Http + `/category/${itemId}`, {
                 method: 'DELETE',
@@ -185,6 +189,7 @@ const Nav: React.FC = () => {
                     {categories.map((category, index) => (
                         <CategoryLink key={index} to={`/board?category=${category.id}`}>
                             {category.name}
+                            <TiDeleteOutline onClick={() => deleteCategory(category.id)} />
                         </CategoryLink>
                     ))}
                 </GridBox>
