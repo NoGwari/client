@@ -163,13 +163,12 @@ const Nav: React.FC = () => {
                 },
             });
             console.log(response);
-            if (response.ok) {
-                const responseData = await response.json();
+            if (response.status === 200) {
                 const updateResponse = await fetch(Http + `/category`);
-                const updateData = (await updateResponse.json()) as Category[];
+                const updateData = await updateResponse.json();
                 setCategories(updateData);
             } else {
-                throw new Error('카테고리 추가 실패');
+                throw new Error('카테고리 삭제 실패');
             }
         } catch (error) {
             console.error('에러발생 : ', error);
