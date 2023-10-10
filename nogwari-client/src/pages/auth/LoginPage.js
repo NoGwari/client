@@ -74,6 +74,7 @@ function LoginPage() {
 
             const data = await response.json();
             sessionStorage.setItem('token', data.token);
+            sessionStorage.setItem('role', data.role);
             console.log(data);
             navigate('/mypage');
         } catch (error) {

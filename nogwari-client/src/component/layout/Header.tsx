@@ -79,6 +79,7 @@ const Header: React.FC = () => {
 
         if (confirmed) {
             sessionStorage.removeItem('token');
+            sessionStorage.removeItem('role');
             navigate('/login');
         }
     };

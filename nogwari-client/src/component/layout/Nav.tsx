@@ -110,6 +110,8 @@ const Nav: React.FC = () => {
     const [newId, setNewId] = useState<Number>(0);
     const [toggle, setToggle] = useState(false);
     const { itemId } = useParams();
+
+    const isAdmin = sessionStorage.getItem('role') == 'admin';
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -201,35 +203,42 @@ const Nav: React.FC = () => {
                     {categories.map((category, index) => (
                         <div key={index} style={{ position: 'relative' }}>
                             <CategoryLink to={`/board?category=${category.id}`}>{category.name}</CategoryLink>
-                            <DeleteButton className="delete-button">
-                                <TiDeleteOutline onClick={() => deleteCategory(category.id)} />
-                            </DeleteButton>
+                            {isAdmin && (
+                                <DeleteButton className="delete-button">
+                                    <TiDeleteOutline onClick={() => deleteCategory(category.id)} />
+                                </DeleteButton>
+                            )}
                         </div>
                     ))}
                 </GridBox>
             </NavContainer>
             <div style={{ backgroundColor: '#F5F5F5', height: '45px' }}>
-                <CategoryBox>
-                    {toggle && (
-                        <CategoryButton>
-                            <input
-                                type="text"
-                                placeholder="추가할 카테고리 이름"
-                                value={newCategoryName}
-                                onChange={handleCategoryNameChange}
-                            />
-                            <button
-                                onClick={() => {
-                                    addCategory();
-                                    setNewCategoryName('');
-                                }}
-                            >
-                                추가
-                            </button>
-                        </CategoryButton>
-                    )}
-                    <GoTriangleDown onClick={handleToggle} style={{ fontSize: '30px', transform: 'rotate(90deg)' }} />
-                </CategoryBox>
+                {isAdmin && (
+                    <CategoryBox>
+                        {toggle && (
+                            <CategoryButton>
+                                <input
+                                    type="text"
+                                    placeholder="추가할 카테고리 이름"
+                                    value={newCategoryName}
+                                    onChange={handleCategoryNameChange}
+                                />
+                                <button
+                                    onClick={() => {
+                                        addCategory();
+                                        setNewCategoryName('');
+                                    }}
+                                >
+                                    추가
+                                </button>
+                            </CategoryButton>
+                        )}
+                        <GoTriangleDown
+                            onClick={handleToggle}
+                            style={{ fontSize: '30px', transform: 'rotate(90deg)' }}
+                        />
+                    </CategoryBox>
+                )}
             </div>
         </>
     );
