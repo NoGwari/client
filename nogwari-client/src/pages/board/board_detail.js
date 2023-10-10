@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { Http } from 'common';
 import Layout from 'component/layout/Layout';
 import styled from 'styled-components';
@@ -8,6 +8,7 @@ import { FiThumbsUp } from 'react-icons/fi';
 import { AiOutlineEye, AiFillDelete } from 'react-icons/ai';
 import { ImReply } from 'react-icons/im';
 import { RiAlarmWarningFill } from 'react-icons/ri';
+import { Navigate } from 'react-router-dom';
 
 const Container = styled.div`
     margin: 0 100px;
@@ -97,6 +98,8 @@ function BoardDetailPage() {
     const [replyComments, setReplyComments] = useState([]);
     const [reply, setReply] = useState('');
     const [thumbsUpColor, setThumbsUpColor] = useState(localStorage.getItem('thumbsUpColor') || 'initial');
+    const [title, setTitle] = useState('');
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchData = async () => {
@@ -429,6 +432,10 @@ function BoardDetailPage() {
         fetchComments();
     };
 
+    const handleUpdateClick = (itemId) => {
+        navigate(`/updateBoard/${itemId}`);
+    };
+
     if (!board.title || comments === null) {
         return <div>Loading...</div>;
     }
@@ -457,7 +464,10 @@ function BoardDetailPage() {
                 <hr />
                 <div dangerouslySetInnerHTML={{ __html: board.content }}></div>
                 <hr />
+
+                <button onClick={() => handleUpdateClick(board.id)}>게시글 수정</button>
                 <DeleteBoard />
+
                 <hr />
                 <br />
                 <CommentContainer>

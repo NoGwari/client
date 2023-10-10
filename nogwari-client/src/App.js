@@ -53,11 +53,11 @@ function App() {
                 <Route path="/mypage" element={<Mypage />} />
                 <Route path="/board/:itemId" element={<BoardDetailPage />} />
                 <Route path="/updateBoard/:itemId" element={<UpdateBoard />} />
-                <Route path="/createBoard" element={<CreateBoard />}></Route>
-                <Route path="/login" element={<LoginPage />}></Route>
-                <Route path="/signin" element={<SignIn />}></Route>
+                <Route path="/createBoard" element={<CreateBoard />} />
+                <Route path="/login" element={<LoginPage />} />
+                <Route path="/signin" element={<SignIn />} />
 
-                <Route path="/" element={<Board />}></Route>
+                <Route path="/" element={<Board />} />
                 <Route path="*" element={<Error />} />
             </Routes>
             {/*<header>*/}

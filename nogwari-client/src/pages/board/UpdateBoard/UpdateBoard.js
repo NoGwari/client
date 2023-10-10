@@ -1,40 +1,34 @@
-import React, { useState } from 'react';
-import ReactQuill from 'react-quill';
+import React, { useState, useRef, useEffect, useMemo } from 'react';
+import { Http } from '../../../common';
+import styled from 'styled-components';
+import ReactQuill, { Quill } from 'react-quill';
+import { useNavigate } from 'react-router-dom';
 import 'react-quill/dist/quill.snow.css';
-import { Http } from 'common';
-import { useParams } from 'react-router-dom';
+import ImageResize from 'quill-image-resize-module-react';
+Quill.register('modules/imageResize', ImageResize);
 
-const UpdateBoard = () => {
+const Title = styled.div``;
+const Content = styled.textarea``;
+const Container = styled.div`
+    margin: 0 100px;
+`;
+function UpdateBoard() {
+    const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
-    const { itemId } = useParams();
+    const [categories, setCategories] = useState([]);
+    const [categoryId, setCategoryId] = useState('');
+    const [editorHtml, setEditorHtml] = useState('');
+    const [imageFiles, setImageFiles] = useState([]);
+    const [imageUrls, setImageUrls] = useState([]);
+    const [imageUrl, setImageUrl] = useState('');
+    const QuillRef = useRef();
+    const navigate = useNavigate();
 
-    const handleChange = (value) => {
-        setContent(value);
-    };
-
-    const update = async (title, content, hiddenNum, categoryId) => {
-        try {
-            const response = await fetch(Http + `/board/${itemId}`, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                    Authorization: `Bearer ${sessionStorage.getItem('token')}`,
-                },
-                body: JSON.stringify({ title, content, hiddenNum, categoryId }),
-            });
-            console.log(response);
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-
-            const data = await response.json();
-            return data;
-        } catch (error) {
-            console.log('에러');
-        }
-    };
-
-    return <ReactQuill value={content} onChange={handleChange} />;
-};
+    return (
+        <div>
+            <button>게시물 수정</button>
+        </div>
+    );
+}
 
 export default UpdateBoard;
