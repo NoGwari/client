@@ -3,9 +3,10 @@ import { Http } from '../../../common';
 import styled from 'styled-components';
 import Layout from 'component/layout/Layout';
 import ReactQuill, { Quill } from 'react-quill';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import 'react-quill/dist/quill.snow.css';
 import ImageResize from 'quill-image-resize-module-react';
+import { useLocation } from 'react-router-dom';
 Quill.register('modules/imageResize', ImageResize);
 
 const Title = styled.div``;
@@ -13,15 +14,18 @@ const Content = styled.textarea``;
 const Container = styled.div`
     margin: 0 100px;
 `;
+
 function UpdateBoard() {
-    const [title, setTitle] = useState('');
-    const [content, setContent] = useState('');
+    const location = useLocation();
+    const { title: initialTitle, category: initialCategory, content: initialContent } = location.state;
     const [categories, setCategories] = useState([]);
-    const [categoryId, setCategoryId] = useState('');
-    const [editorHtml, setEditorHtml] = useState('');
+    const [title, setTitle] = useState(initialTitle || '');
+    const [category, setCategory] = useState(initialCategory || '');
+    const [editorHtml, setEditorHtml] = useState(initialContent || '');
     const [imageFiles, setImageFiles] = useState([]);
     const [imageUrls, setImageUrls] = useState([]);
     const [imageUrl, setImageUrl] = useState('');
+    const { itemId } = useParams();
     const QuillRef = useRef();
     const navigate = useNavigate();
 
@@ -43,12 +47,7 @@ function UpdateBoard() {
 
     const onChangeCategoryId = (e) => {
         const selectedCategoryId = parseInt(e.target.value);
-        setCategoryId(selectedCategoryId);
-    };
-
-    const onChangeTitle = (e) => {
-        const { value } = e.target;
-        setTitle(value);
+        setCategory(selectedCategoryId);
     };
 
     const handleEditorChange = (html) => {
@@ -105,7 +104,6 @@ function UpdateBoard() {
             }
         };
     };
-
     const modules = useMemo(
         () => ({
             toolbar: {
@@ -153,7 +151,7 @@ function UpdateBoard() {
     ];
 
     const updatePosting = async (title, content, categoryId, imageUrl) => {
-        const url = Http + '/board';
+        const url = Http + `/board/${itemId}`;
 
         try {
             const response = await fetch(url, {
@@ -164,8 +162,6 @@ function UpdateBoard() {
                 },
                 body: JSON.stringify({ title, content, categoryId, imageUrl }),
             });
-            console.log('잘 간다');
-            navigate('/board');
 
             if (!response.ok) {
                 throw new Error('Network response was not ok');
@@ -174,19 +170,20 @@ function UpdateBoard() {
             const data = await response.json();
             return data;
         } catch (error) {
-            console.log('Error creating new Posting', error.message);
+            console.log('Error updating posting', error.message);
             throw error;
         }
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log('눌림');
+
         try {
-            const updatePost = await updatePosting(title, editorHtml, categoryId, imageUrl);
-            console.log('New posting created:', updatePost);
+            const updatePost = await updatePosting(title, editorHtml, category, imageUrl);
+            console.log('Updated posting:', updatePost);
+            navigate('/board');
         } catch (error) {
-            console.error('Error creating new posting:', error.message);
+            console.error('Error updating posting:', error.message);
         }
     };
 
@@ -195,33 +192,50 @@ function UpdateBoard() {
             <Layout></Layout>
             <Container>
                 <Title>
-                    <input value={title} onChange={onChangeTitle} type="text" placeholder="제목" maxLength={20} />
+                    <input
+                        value={title}
+                        onChange={(e) => setTitle(e.target.value)}
+                        type="text"
+                        placeholder="제목"
+                        maxLength={20}
+                    />
                 </Title>
                 <br />
-                <select value={categoryId} onChange={onChangeCategoryId}>
+                <select value={category} onChange={onChangeCategoryId}>
                     <option value="">카테고리 선택</option>
                     {categories.map((item) => (
-                        <>
-                            <option key={item.id} value={item.id}>
-                                {item.name}
-                            </option>
-                        </>
+                        <option key={item.id} value={item.id}>
+                            {item.name}
+                        </option>
                     ))}
                 </select>
                 <ReactQuill
-                    value={editorHtml || ' '}
+                    value={editorHtml || ''}
                     onChange={handleEditorChange}
                     modules={modules}
                     theme="snow"
-                    formats={formats}
+                    formats={[
+                        'header',
+                        'font',
+                        'size',
+                        'bold',
+                        'italic',
+                        'underline',
+                        'strike',
+                        'blockquote',
+                        'list',
+                        'bullet',
+                        'align',
+                        'image',
+                    ]}
                     ImageResize={ImageResize}
                     ref={(element) => {
                         if (element != null) {
-                            QuillRef.current = element;
+                            QuillRef.current = element.getEditor();
                         }
                     }}
                 />
-                <button onClick={handleSubmit}>게시물 작성</button>
+                <button onClick={handleSubmit}>게시물 수정</button>
             </Container>
         </div>
     );

@@ -432,8 +432,14 @@ function BoardDetailPage() {
         fetchComments();
     };
 
-    const handleUpdateClick = (itemId) => {
-        navigate(`/updateBoard/${itemId}`);
+    const handleUpdateClick = () => {
+        navigate(`/updateBoard/${itemId}`, {
+            state: {
+                title: board.title,
+                category: board.categoryName,
+                content: board.content,
+            },
+        });
     };
 
     if (!board.title || comments === null) {
@@ -465,7 +471,7 @@ function BoardDetailPage() {
                 <div dangerouslySetInnerHTML={{ __html: board.content }}></div>
                 <hr />
 
-                <button onClick={() => handleUpdateClick(board.id)}>게시글 수정</button>
+                <button onClick={() => handleUpdateClick()}>게시글 수정</button>
                 <DeleteBoard />
 
                 <hr />
