@@ -110,10 +110,8 @@ function UpdateBoard() {
                 container: [
                     [{ header: [1, 2, 3, 4, 5, 6, false] }],
                     [{ align: [] }],
-                    ['blockquote'],
-                    [('underline', 'strike')],
+                    ['underline', 'strike'],
                     [{ list: 'ordered' }, { list: 'bullet' }, 'link'],
-                    ['image', 'video'],
                 ],
                 handlers: {
                     image: handleImageUpload,
@@ -159,7 +157,7 @@ function UpdateBoard() {
         e.preventDefault();
 
         try {
-            const updatePost = await updatePosting(title, editorHtml, category, imageUrl);
+            const updatePost = await updatePosting(title, editorHtml, 0, category);
             console.log('Updated posting:', updatePost);
             navigate('/board');
         } catch (error) {
@@ -190,28 +188,14 @@ function UpdateBoard() {
                     ))}
                 </select>
                 <ReactQuill
-                    value={editorHtml || ''}
+                    value={editorHtml || ' '}
                     onChange={handleEditorChange}
                     modules={modules}
                     theme="snow"
-                    formats={[
-                        'header',
-                        'font',
-                        'size',
-                        'bold',
-                        'italic',
-                        'underline',
-                        'strike',
-                        'blockquote',
-                        'list',
-                        'bullet',
-                        'align',
-                        'image',
-                    ]}
                     ImageResize={ImageResize}
                     ref={(element) => {
                         if (element != null) {
-                            QuillRef.current = element.getEditor();
+                            QuillRef.current = element;
                         }
                     }}
                 />

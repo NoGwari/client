@@ -111,16 +111,9 @@ function CreateBoard() {
             toolbar: {
                 container: [
                     [{ header: [1, 2, 3, 4, 5, 6, false] }],
-                    [{ font: [] }],
                     [{ align: [] }],
-                    ['bold', 'italic', 'underline', 'strike', 'blockquote'],
+                    ['underline', 'strike'],
                     [{ list: 'ordered' }, { list: 'bullet' }, 'link'],
-                    [
-                        {
-                            color: ['#000000', '#e60000', '#ff9900', 'custom-color'],
-                        },
-                        { background: [] },
-                    ],
                     ['image', 'video'],
                 ],
                 handlers: {
@@ -137,20 +130,6 @@ function CreateBoard() {
         }),
         []
     );
-    const formats = [
-        'header',
-        'font',
-        'size',
-        'bold',
-        'italic',
-        'underline',
-        'strike',
-        'blockquote',
-        'list',
-        'bullet',
-        'align',
-        'image',
-    ];
 
     const createNewPosting = async (title, content, categoryId, imageUrl) => {
         const url = Http + '/board';
@@ -213,7 +192,6 @@ function CreateBoard() {
                     onChange={handleEditorChange}
                     modules={modules}
                     theme="snow"
-                    formats={formats}
                     ImageResize={ImageResize}
                     ref={(element) => {
                         if (element != null) {
