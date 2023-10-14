@@ -28,7 +28,6 @@ function UpdateBoard() {
     const { itemId } = useParams();
     const QuillRef = useRef();
     const navigate = useNavigate();
-
     useEffect(() => {
         const fetchCategories = async () => {
             try {
@@ -38,15 +37,16 @@ function UpdateBoard() {
                 }
                 const data = await response.json();
                 setCategories(data);
+                setCategory(initialCategory);
             } catch (error) {
                 console.log('에러', error.message);
             }
         };
         fetchCategories();
-    }, []);
+    }, [initialCategory]);
 
     const onChangeCategoryId = (e) => {
-        const selectedCategoryId = parseInt(e.target.value);
+        const selectedCategoryId = e.target.value;
         setCategory(selectedCategoryId);
     };
 
@@ -109,16 +109,10 @@ function UpdateBoard() {
             toolbar: {
                 container: [
                     [{ header: [1, 2, 3, 4, 5, 6, false] }],
-                    [{ font: [] }],
                     [{ align: [] }],
-                    ['bold', 'italic', 'underline', 'strike', 'blockquote'],
+                    ['blockquote'],
+                    [('underline', 'strike')],
                     [{ list: 'ordered' }, { list: 'bullet' }, 'link'],
-                    [
-                        {
-                            color: ['#000000', '#e60000', '#ff9900', 'custom-color'],
-                        },
-                        { background: [] },
-                    ],
                     ['image', 'video'],
                 ],
                 handlers: {
@@ -135,22 +129,8 @@ function UpdateBoard() {
         }),
         []
     );
-    const formats = [
-        'header',
-        'font',
-        'size',
-        'bold',
-        'italic',
-        'underline',
-        'strike',
-        'blockquote',
-        'list',
-        'bullet',
-        'align',
-        'image',
-    ];
 
-    const updatePosting = async (title, content, categoryId, imageUrl) => {
+    const updatePosting = async (title, content, hiddenNum, categoryId) => {
         const url = Http + `/board/${itemId}`;
 
         try {
@@ -160,7 +140,7 @@ function UpdateBoard() {
                     'Content-Type': 'application/json',
                     Authorization: `Bearer ${sessionStorage.getItem('token')}`,
                 },
-                body: JSON.stringify({ title, content, categoryId, imageUrl }),
+                body: JSON.stringify({ title, content, hiddenNum, categoryId }),
             });
 
             if (!response.ok) {
