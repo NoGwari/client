@@ -112,6 +112,7 @@ function UpdateBoard() {
                     [{ align: [] }],
                     ['underline', 'strike'],
                     [{ list: 'ordered' }, { list: 'bullet' }, 'link'],
+                    ['image', 'video'],
                 ],
                 handlers: {
                     image: handleImageUpload,
