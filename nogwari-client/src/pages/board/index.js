@@ -234,7 +234,9 @@ function Board() {
         const category = params.get('category');
 
         if (category === null || category === '0') {
-            return '전체게시글';
+            return '전체 게시글';
+        } else if (category === '100') {
+            return '공지 사항';
         } else {
             return `카테고리${category}`;
         }

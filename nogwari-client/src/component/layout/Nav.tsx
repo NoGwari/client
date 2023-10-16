@@ -6,6 +6,7 @@ import { idText } from 'typescript';
 import { GoTriangleDown } from 'react-icons/go';
 import { TextSize } from 'styles/styleds';
 import { TiDeleteOutline } from 'react-icons/ti';
+
 interface Category {
     id: number;
     name: string;
@@ -187,10 +188,10 @@ const Nav: React.FC = () => {
     const currentPath = window.location.pathname;
     const currentSearch = window.location.search;
 
+    let notice = `/board?category=100`;
     let newLink;
-
     if (currentPath === '/board' && currentSearch !== '?category=0') {
-        newLink = `${currentPath}?category=0`;
+        newLink = `/board?category=0`;
     } else {
         newLink = '/board';
     }
@@ -200,6 +201,7 @@ const Nav: React.FC = () => {
             <NavContainer>
                 <GridBox>
                     <CategoryLink to={newLink}>전체 글 조회</CategoryLink>
+                    <CategoryLink to={notice}>공지 사항</CategoryLink>
                     {categories.map((category, index) => (
                         <div key={index} style={{ position: 'relative' }}>
                             <CategoryLink to={`/board?category=${category.id}`}>{category.name}</CategoryLink>

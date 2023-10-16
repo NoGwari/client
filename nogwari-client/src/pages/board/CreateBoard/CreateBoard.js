@@ -24,6 +24,7 @@ function CreateBoard() {
     const [imageUrl, setImageUrl] = useState('');
     const QuillRef = useRef();
     const navigate = useNavigate();
+    const isAdmin = sessionStorage.getItem('role') == 'admin';
 
     useEffect(() => {
         const fetchCategories = async () => {
@@ -42,7 +43,7 @@ function CreateBoard() {
     }, []);
 
     const onChangeCategoryId = (e) => {
-        const selectedCategoryId = parseInt(e.target.value);
+        const selectedCategoryId = e.target.value;
         setCategoryId(selectedCategoryId);
     };
 
@@ -179,6 +180,7 @@ function CreateBoard() {
                 <br />
                 <select value={categoryId} onChange={onChangeCategoryId}>
                     <option value="">카테고리 선택</option>
+                    {isAdmin && <option value="100">공지 사항</option>}
                     {categories.map((item) => (
                         <>
                             <option key={item.id} value={item.id}>
