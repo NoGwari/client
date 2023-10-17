@@ -19,6 +19,7 @@ function UpdateBoard() {
     const location = useLocation();
     const { title: initialTitle, category: initialCategory, content: initialContent } = location.state;
     const [categories, setCategories] = useState([]);
+    const [categoryId, setCategoryId] = useState('');
     const [title, setTitle] = useState(initialTitle || '');
     const [category, setCategory] = useState(initialCategory || '');
     const [editorHtml, setEditorHtml] = useState(initialContent || '');
@@ -28,6 +29,8 @@ function UpdateBoard() {
     const { itemId } = useParams();
     const QuillRef = useRef();
     const navigate = useNavigate();
+    const isAdmin = sessionStorage.getItem('role') == 'admin';
+
     useEffect(() => {
         const fetchCategories = async () => {
             try {
@@ -180,13 +183,17 @@ function UpdateBoard() {
                     />
                 </Title>
                 <br />
-                <select value={category} onChange={onChangeCategoryId}>
+                <select value={categoryId} onChange={onChangeCategoryId}>
                     <option value="">카테고리 선택</option>
-                    {categories.map((item) => (
-                        <option key={item.id} value={item.id}>
-                            {item.name}
-                        </option>
-                    ))}
+                    {isAdmin && <option value="notice">공지 사항</option>}
+                    {categories.map(
+                        (item) =>
+                            item.id !== 100 && (
+                                <option key={item.id} value={item.id}>
+                                    {item.name}
+                                </option>
+                            )
+                    )}
                 </select>
                 <ReactQuill
                     value={editorHtml || ' '}
