@@ -202,16 +202,19 @@ const Nav: React.FC = () => {
                 <GridBox>
                     <CategoryLink to={newLink}>전체 글 조회</CategoryLink>
                     <CategoryLink to={notice}>공지 사항</CategoryLink>
-                    {categories.map((category, index) => (
-                        <div key={index} style={{ position: 'relative' }}>
-                            <CategoryLink to={`/board?category=${category.id}`}>{category.name}</CategoryLink>
-                            {isAdmin && (
-                                <DeleteButton className="delete-button">
-                                    <TiDeleteOutline onClick={() => deleteCategory(category.id)} />
-                                </DeleteButton>
-                            )}
-                        </div>
-                    ))}
+                    {categories.map(
+                        (category, index) =>
+                            category.id !== 100 && (
+                                <div key={index} style={{ position: 'relative' }}>
+                                    <CategoryLink to={`/board?category=${category.id}`}>{category.name}</CategoryLink>
+                                    {isAdmin && (
+                                        <DeleteButton className="delete-button">
+                                            <TiDeleteOutline onClick={() => deleteCategory(category.id)} />
+                                        </DeleteButton>
+                                    )}
+                                </div>
+                            )
+                    )}
                 </GridBox>
             </NavContainer>
             <div style={{ backgroundColor: '#F5F5F5', height: '45px' }}>
