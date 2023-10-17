@@ -180,14 +180,15 @@ function CreateBoard() {
                 <br />
                 <select value={categoryId} onChange={onChangeCategoryId}>
                     <option value="">카테고리 선택</option>
-                    {isAdmin && <option value="100">공지 사항</option>}
-                    {categories.map((item) => (
-                        <>
-                            <option key={item.id} value={item.id}>
-                                {item.name}
-                            </option>
-                        </>
-                    ))}
+                    {isAdmin && <option value="notice">공지 사항</option>}
+                    {categories.map(
+                        (item) =>
+                            item.id !== 100 && (
+                                <option key={item.id} value={item.id}>
+                                    {item.name}
+                                </option>
+                            )
+                    )}
                 </select>
                 <ReactQuill
                     value={editorHtml || ' '}
