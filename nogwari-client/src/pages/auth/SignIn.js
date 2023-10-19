@@ -34,10 +34,17 @@ const VarifyNum = styled.input`
     padding: 10px;
     margin-bottom: 10px;
     box-sizing: border-box;
-    display: ${(props) => (props.show ? 'block' : 'none')};
 `;
 
 const Button = styled.button`
+    width: 100%;
+    padding: 10px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+`;
+const VarifyButton = styled.button`
     width: 100%;
     padding: 10px;
     background-color: #007bff;
@@ -110,6 +117,7 @@ function SignIn() {
                 body: JSON.stringify({ email }),
             });
             console.log('인증번호 보내는증');
+            setShowVarifyNum(true);
 
             if (!response.ok) {
                 const errorData = await response.json();
@@ -118,7 +126,6 @@ function SignIn() {
         } catch (error) {
             console.error('Error during login:', error.message);
         }
-        setShowVarifyNum(true);
     };
 
     return (
@@ -147,8 +154,12 @@ function SignIn() {
                         type="text"
                         placeholder="인증번호"
                     ></VarifyNum>
-                    <br />
-                    <Button>이메일 인증</Button>
+
+                    {showVarifyNum ? (
+                        <VarifyButton>인증코드 입력</VarifyButton>
+                    ) : (
+                        <Button type="submit">이메일 인증</Button>
+                    )}
                 </SignInForm>
             </SignInContainer>
         </>
