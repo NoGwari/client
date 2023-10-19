@@ -29,7 +29,7 @@ const Input = styled.input`
     margin-bottom: 10px;
     box-sizing: border-box;
 `;
-const VarifyNum = styled.input`
+const VerifyNum = styled.input`
     width: 100%;
     padding: 10px;
     margin-bottom: 10px;
@@ -44,7 +44,7 @@ const Button = styled.button`
     border: none;
     cursor: pointer;
 `;
-const VarifyButton = styled.button`
+const VerifyButton = styled.button`
     width: 100%;
     padding: 10px;
     background-color: #007bff;
@@ -55,19 +55,21 @@ const VarifyButton = styled.button`
 
 function SignIn() {
     const [email, setEmail] = useState('');
+    const [verifykey, setVerifykey] = useState('');
     const [password, setPassword] = useState('');
     const [passwordCheck, setPasswordCheck] = useState('');
     const [nickname, setNickname] = useState('');
     const [emailNum, setEmailNum] = useState('');
-    const [showVarifyNum, setShowVarifyNum] = useState(false);
+    const [showVerifyNum, setShowVerifyNum] = useState(false);
 
     const onChangeEmail = (e) => {
         const { value } = e.target;
         setEmail(value);
     };
-    const onChangeemailNum = (e) => {
+
+    const onChangeVerifykey = (e) => {
         const { value } = e.target;
-        setEmailNum(value);
+        setVerifykey(value);
     };
     const onChangePassword = (e) => {
         const { value } = e.target;
@@ -106,7 +108,7 @@ function SignIn() {
         }
     };
 
-    const emailVarify = async (e) => {
+    const emailVerify = async (e) => {
         e.preventDefault();
         try {
             const response = await fetch(Http + '/auth/mailsubmit', {
@@ -117,7 +119,7 @@ function SignIn() {
                 body: JSON.stringify({ email }),
             });
             console.log('인증번호 보내는증');
-            setShowVarifyNum(true);
+            setShowVerifyNum(true);
 
             if (!response.ok) {
                 const errorData = await response.json();
@@ -125,6 +127,27 @@ function SignIn() {
             }
         } catch (error) {
             console.error('Error during login:', error.message);
+        }
+    };
+
+    const Verifykey = async (e) => {
+        e.preventDefault();
+        try {
+            const response = await fetch(Http + '/auth/checkkey', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ email, verifykey: verifykey }),
+            });
+            console.log('인증키 확인', verifykey);
+            
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.message);
+            }
+        } catch (error) {
+            console.error('Error', error.message);
         }
     };
 
@@ -145,18 +168,17 @@ function SignIn() {
             <br /> */}
             <SignInContainer>
                 <SignInword>회원가입</SignInword>
-                <SignInForm onSubmit={emailVarify}>
+                <SignInForm onSubmit={emailVerify}>
                     <Input value={email} onChange={onChangeEmail} type="text" placeholder="E-mail" maxLength={20} />
-                    <VarifyNum
-                        show={showVarifyNum}
-                        value={emailNum}
-                        onChange={onChangeemailNum}
+                    <VerifyNum
+                        show={showVerifyNum}
+                        value={verifykey}
+                        onChange={onChangeVerifykey}
                         type="text"
                         placeholder="인증번호"
-                    ></VarifyNum>
-
-                    {showVarifyNum ? (
-                        <VarifyButton>인증코드 입력</VarifyButton>
+                    ></VerifyNum>
+                    {showVerifyNum ? (
+                        <VerifyButton onClick={Verifykey}>인증코드 입력</VerifyButton>
                     ) : (
                         <Button type="submit">이메일 인증</Button>
                     )}
