@@ -1,15 +1,66 @@
 import React, { useState } from 'react';
 import { Http } from '../../common';
+import styled from 'styled-components';
+import Layout from 'component/layout/Layout';
+
+const SignInContainer = styled.div`
+    text-align: center;
+`;
+const SignInword = styled.div`
+    color: black;
+    font-weight: bold;
+    font-size: 20px;
+    text-align: center;
+    margin-top: 80px;
+`;
+const SignInForm = styled.form`
+    item-align: center;
+    max-width: 300px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    background-color: #f9f9f9;
+    margin-top: 20px;
+`;
+
+const Input = styled.input`
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    box-sizing: border-box;
+`;
+const VarifyNum = styled.input`
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    box-sizing: border-box;
+    display: ${(props) => (props.show ? 'block' : 'none')};
+`;
+
+const Button = styled.button`
+    width: 100%;
+    padding: 10px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+`;
 
 function SignIn() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [passwordCheck, setPasswordCheck] = useState('');
     const [nickname, setNickname] = useState('');
+    const [emailNum, setEmailNum] = useState('');
+    const [showVarifyNum, setShowVarifyNum] = useState(false);
 
     const onChangeEmail = (e) => {
         const { value } = e.target;
         setEmail(value);
+    };
+    const onChangeemailNum = (e) => {
+        const { value } = e.target;
+        setEmailNum(value);
     };
     const onChangePassword = (e) => {
         const { value } = e.target;
@@ -36,12 +87,12 @@ function SignIn() {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ email: email, password, nickname: nickname }), // 로그인 요청 데이터 전송
+                body: JSON.stringify({ email: email, password, nickname: nickname }),
             });
 
             if (!response.ok) {
-                const errorData = await response.json(); // 서버에서 에러 응답을 받으면 에러 데이터를 가져옴
-                throw new Error(errorData.message); // 에러 데이터의 메시지를 에러로 던짐
+                const errorData = await response.json();
+                throw new Error(errorData.message);
             }
         } catch (error) {
             console.error('Error during login:', error.message);
@@ -56,7 +107,7 @@ function SignIn() {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ email: email }), // 이메일 보내기
+                body: JSON.stringify({ email }),
             });
             console.log('인증번호 보내는증');
 
@@ -67,11 +118,13 @@ function SignIn() {
         } catch (error) {
             console.error('Error during login:', error.message);
         }
+        setShowVarifyNum(true);
     };
 
     return (
         <>
-            <input value={email} onChange={onChangeEmail} type="text" placeholder="이메일" />
+            <Layout></Layout>
+            {/* <input value={email} onChange={onChangeEmail} type="text" placeholder="이메일" />
             <button type="submit" onClick={emailVarify}>
                 인증
             </button>
@@ -82,7 +135,22 @@ function SignIn() {
             <button type="submit" onClick={signIn}>
                 로그인
             </button>
-            <br />
+            <br /> */}
+            <SignInContainer>
+                <SignInword>회원가입</SignInword>
+                <SignInForm onSubmit={emailVarify}>
+                    <Input value={email} onChange={onChangeEmail} type="text" placeholder="E-mail" maxLength={20} />
+                    <VarifyNum
+                        show={showVarifyNum}
+                        value={emailNum}
+                        onChange={onChangeemailNum}
+                        type="text"
+                        placeholder="인증번호"
+                    ></VarifyNum>
+                    <br />
+                    <Button>이메일 인증</Button>
+                </SignInForm>
+            </SignInContainer>
         </>
     );
 }
