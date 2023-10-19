@@ -55,11 +55,10 @@ const VerifyButton = styled.button`
 
 function SignIn() {
     const [email, setEmail] = useState('');
-    const [verifykey, setVerifykey] = useState('');
+    const [verifyKey, setVerifyKey] = useState('');
     const [password, setPassword] = useState('');
     const [passwordCheck, setPasswordCheck] = useState('');
     const [nickname, setNickname] = useState('');
-    const [emailNum, setEmailNum] = useState('');
     const [showVerifyNum, setShowVerifyNum] = useState(false);
 
     const onChangeEmail = (e) => {
@@ -69,7 +68,7 @@ function SignIn() {
 
     const onChangeVerifykey = (e) => {
         const { value } = e.target;
-        setVerifykey(value);
+        setVerifyKey(value);
     };
     const onChangePassword = (e) => {
         const { value } = e.target;
@@ -138,10 +137,10 @@ function SignIn() {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ email, verifykey: verifykey }),
+                body: JSON.stringify({ email, verifyKey: verifyKey }),
             });
-            console.log('인증키 확인', verifykey);
-            
+            console.log('인증키 확인', verifyKey);
+
             if (!response.ok) {
                 const errorData = await response.json();
                 throw new Error(errorData.message);
@@ -172,7 +171,7 @@ function SignIn() {
                     <Input value={email} onChange={onChangeEmail} type="text" placeholder="E-mail" maxLength={20} />
                     <VerifyNum
                         show={showVerifyNum}
-                        value={verifykey}
+                        value={verifyKey}
                         onChange={onChangeVerifykey}
                         type="text"
                         placeholder="인증번호"
