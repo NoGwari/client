@@ -156,7 +156,7 @@ function BoardDetailPage() {
                 if (data === false) {
                     try {
                         const hitResponse = await fetch(Http + `/board/hits/${itemId}`, {
-                            method: 'GET',
+                            method: 'POST',
                             headers: {
                                 'Content-Type': 'application/json',
                                 Authorization: `Bearer ${sessionStorage.getItem('token')}`,
@@ -172,7 +172,7 @@ function BoardDetailPage() {
                 } else if (data === true) {
                     try {
                         const unhitResponse = await fetch(Http + `/board/unhits/${itemId}`, {
-                            method: 'GET',
+                            method: 'POST',
                             headers: {
                                 'Content-Type': 'application/json',
                                 Authorization: `Bearer ${sessionStorage.getItem('token')}`,
