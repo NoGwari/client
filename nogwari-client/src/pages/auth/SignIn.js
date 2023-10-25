@@ -1,15 +1,74 @@
 import React, { useState } from 'react';
 import { Http } from '../../common';
+import styled from 'styled-components';
+import Layout from 'component/layout/Layout';
+
+const SignInContainer = styled.div`
+    text-align: center;
+`;
+const SignInword = styled.div`
+    color: black;
+    font-weight: bold;
+    font-size: 20px;
+    text-align: center;
+    margin-top: 80px;
+`;
+const SignInForm = styled.form`
+    item-align: center;
+    max-width: 300px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    background-color: #f9f9f9;
+    margin-top: 20px;
+`;
+
+const Input = styled.input`
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    box-sizing: border-box;
+`;
+const VerifyNum = styled.input`
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    box-sizing: border-box;
+`;
+
+const Button = styled.button`
+    width: 100%;
+    padding: 10px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+`;
+const VerifyButton = styled.button`
+    width: 100%;
+    padding: 10px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+`;
 
 function SignIn() {
     const [email, setEmail] = useState('');
+    const [verifyKey, setVerifyKey] = useState('');
     const [password, setPassword] = useState('');
     const [passwordCheck, setPasswordCheck] = useState('');
     const [nickname, setNickname] = useState('');
+    const [showVerifyNum, setShowVerifyNum] = useState(false);
 
     const onChangeEmail = (e) => {
         const { value } = e.target;
         setEmail(value);
+    };
+
+    const onChangeVerifykey = (e) => {
+        const { value } = e.target;
+        setVerifyKey(value);
     };
     const onChangePassword = (e) => {
         const { value } = e.target;
@@ -36,29 +95,8 @@ function SignIn() {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ email: email, password, nickname: nickname }), // 로그인 요청 데이터 전송
+                body: JSON.stringify({ email: email, password, nickname: nickname }),
             });
-
-            if (!response.ok) {
-                const errorData = await response.json(); // 서버에서 에러 응답을 받으면 에러 데이터를 가져옴
-                throw new Error(errorData.message); // 에러 데이터의 메시지를 에러로 던짐
-            }
-        } catch (error) {
-            console.error('Error during login:', error.message);
-        }
-    };
-
-    const emailVarify = async (e) => {
-        e.preventDefault();
-        try {
-            const response = await fetch(Http + '/auth/mailsubmit', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ email: email }), // 이메일 보내기
-            });
-            console.log('인증번호 보내는증');
 
             if (!response.ok) {
                 const errorData = await response.json();
@@ -69,9 +107,53 @@ function SignIn() {
         }
     };
 
+    const emailVerify = async (e) => {
+        e.preventDefault();
+        try {
+            const response = await fetch(Http + '/auth/mailsubmit', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ email }),
+            });
+            console.log('인증번호 보내는증');
+            setShowVerifyNum(true);
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.message);
+            }
+        } catch (error) {
+            console.error('Error during login:', error.message);
+        }
+    };
+
+    const Verifykey = async (e) => {
+        e.preventDefault();
+        try {
+            const response = await fetch(Http + '/auth/checkkey', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ email, verifyKey: verifyKey }),
+            });
+            console.log('인증키 확인', verifyKey);
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.message);
+            }
+        } catch (error) {
+            console.error('Error', error.message);
+        }
+    };
+
     return (
         <>
-            <input value={email} onChange={onChangeEmail} type="text" placeholder="이메일" />
+            <Layout></Layout>
+            {/* <input value={email} onChange={onChangeEmail} type="text" placeholder="이메일" />
             <button type="submit" onClick={emailVarify}>
                 인증
             </button>
@@ -82,7 +164,25 @@ function SignIn() {
             <button type="submit" onClick={signIn}>
                 로그인
             </button>
-            <br />
+            <br /> */}
+            <SignInContainer>
+                <SignInword>회원가입</SignInword>
+                <SignInForm onSubmit={emailVerify}>
+                    <Input value={email} onChange={onChangeEmail} type="text" placeholder="E-mail" maxLength={20} />
+                    <VerifyNum
+                        show={showVerifyNum}
+                        value={verifyKey}
+                        onChange={onChangeVerifykey}
+                        type="text"
+                        placeholder="인증번호"
+                    ></VerifyNum>
+                    {showVerifyNum ? (
+                        <VerifyButton onClick={Verifykey}>인증코드 입력</VerifyButton>
+                    ) : (
+                        <Button type="submit">이메일 인증</Button>
+                    )}
+                </SignInForm>
+            </SignInContainer>
         </>
     );
 }
