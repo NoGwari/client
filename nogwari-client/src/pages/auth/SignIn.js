@@ -2,6 +2,7 @@ import React, { useState, useCallback } from 'react';
 import { Http } from '../../common';
 import styled from 'styled-components';
 import Layout from 'component/layout/Layout';
+import { Form } from 'react-router-dom';
 
 const SignInContainer = styled.div`
     text-align: center;
@@ -29,21 +30,7 @@ const Input = styled.input`
     margin-bottom: 10px;
     box-sizing: border-box;
 `;
-const VerifyNum = styled.input`
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 10px;
-    box-sizing: border-box;
-`;
 
-const Button = styled.button`
-    width: 100%;
-    padding: 10px;
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    cursor: pointer;
-`;
 const StyledButton = styled.button`
     width: 100%;
     padding: 10px;
@@ -95,18 +82,30 @@ function SignIn() {
     const [passwordCheck, setPasswordCheck] = useState('');
     const [nickname, setNickname] = useState('');
     const [showVerifyNum, setShowVerifyNum] = useState(false);
+
+    const [EmailMessage, setEmailMessage] = useState('');
     const [passwordMessage, setPasswordMessage] = useState('');
     const [passwordConfirmMessage, setPasswordConfirmMessage] = useState('');
     const [NicknameMessage, setNickNameMessage] = useState('');
 
+    const [isEmail, setIsEmail] = useState(false);
     const [isNickName, setIsNickName] = useState(false);
     const [isPassword, setIsPassword] = useState(false);
     const [isPasswordConfirm, setIsPasswordConfirm] = useState(false);
 
-    const onChangeEmail = (e) => {
-        const { value } = e.target;
-        setEmail(value);
-    };
+    const onChangeEmail = useCallback((e) => {
+        const EmailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+        const EmailCurrent = e.target.value;
+        setEmail(EmailCurrent);
+
+        if (!EmailRegex.test(EmailCurrent)) {
+            setEmailMessage('이메일 형식으로 부탁해요!');
+            setIsEmail(false);
+        } else {
+            setEmailMessage('이메일 주소를 확인했어요!');
+            setIsEmail(true);
+        }
+    }, []);
 
     const onChangeVerifykey = (e) => {
         const { value } = e.target;
@@ -131,7 +130,7 @@ function SignIn() {
             const passwordConfirmCurrent = e.target.value;
             setPasswordCheck(passwordConfirmCurrent);
 
-            if (password === passwordConfirmCurrent || passwordConfirmCurrent.length != 0) {
+            if (password === passwordConfirmCurrent) {
                 setPasswordConfirmMessage('비밀번호를 똑같이 입력했어요!');
                 setIsPasswordConfirm(true);
             } else {
@@ -141,8 +140,6 @@ function SignIn() {
         },
         [password]
     );
-
-    const PasswordCheck = useCallback;
 
     const onChangeNickname = useCallback((e) => {
         const nickname = e.target.value;
@@ -226,19 +223,43 @@ function SignIn() {
             <SignInContainer>
                 <SignInword>회원가입</SignInword>
                 <SignInForm onSubmit={emailVerify}>
-                    <Input value={email} onChange={onChangeEmail} type="text" placeholder="E-mail" maxLength={20} />
-                    <VerifyNum
-                        show={showVerifyNum}
-                        value={verifyKey}
-                        onChange={onChangeVerifykey}
-                        type="text"
-                        placeholder="인증번호"
-                    ></VerifyNum>
-                    {showVerifyNum ? (
-                        <VerifyButton onClick={Verifykey}>인증코드 입력</VerifyButton>
-                    ) : (
-                        <Button type="submit">이메일 인증</Button>
-                    )}
+                    <FormBox>
+                        {showVerifyNum ? (
+                            <Input
+                                style={{ fontSize: '14px' }}
+                                show={showVerifyNum}
+                                value={verifyKey}
+                                onChange={onChangeVerifykey}
+                                type="text"
+                                placeholder="인증번호"
+                            />
+                        ) : (
+                            <div>
+                                <Input
+                                    value={email}
+                                    onChange={onChangeEmail}
+                                    type="text"
+                                    placeholder="E-mail"
+                                    maxLength={20}
+                                />
+                                <span
+                                    style={{ fontSize: '13px' }}
+                                    className={`message ${isEmail ? 'success' : 'error'}`}
+                                >
+                                    {EmailMessage}
+                                </span>
+                            </div>
+                        )}
+                    </FormBox>
+                    <FormBox>
+                        {showVerifyNum ? (
+                            <VerifyButton onClick={Verifykey}>인증코드 입력</VerifyButton>
+                        ) : (
+                            <StyledButton type="submit" disabled={!isEmail}>
+                                이메일 인증
+                            </StyledButton>
+                        )}
+                    </FormBox>
                 </SignInForm>
             </SignInContainer>
             <SignInContainer>
