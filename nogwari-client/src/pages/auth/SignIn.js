@@ -64,7 +64,29 @@ const VerifyButton = styled.button`
     border: none;
     cursor: pointer;
 `;
-const TextField = styled.input``;
+
+const FormBox = styled.div`
+    position: relative;
+    margin-bottom: 20px;
+
+    .message {
+        font-weight: 500;
+        font-size: 2.6rem;
+        line-height: 24px;
+        letter-spacing: -1px;
+        position: absolute;
+        bottom: -10px;
+        left: 0;
+
+        &.success {
+            color: #8f8c8b;
+        }
+
+        &.error {
+            color: #ff2727;
+        }
+    }
+`;
 
 function SignIn() {
     const [email, setEmail] = useState('');
@@ -96,10 +118,10 @@ function SignIn() {
         setPassword(passwordCurrent);
 
         if (!passwordRegex.test(passwordCurrent)) {
-            setPasswordMessage('숫자+영문자+특수문자 조합으로 8자리 이상 입력해주세요!');
+            setPasswordMessage('숫자+영문자+특수문자 조합으로 8자리 이상!');
             setIsPassword(false);
         } else {
-            setPasswordMessage('안전한 비밀번호에요 : )');
+            setPasswordMessage('안전한 비밀번호에요!');
             setIsPassword(true);
         }
     }, []);
@@ -109,31 +131,30 @@ function SignIn() {
             const passwordConfirmCurrent = e.target.value;
             setPasswordCheck(passwordConfirmCurrent);
 
-            if (password === passwordConfirmCurrent) {
-                setPasswordConfirmMessage('비밀번호를 똑같이 입력했어요 :)');
+            if (password === passwordConfirmCurrent || passwordConfirmCurrent.length != 0) {
+                setPasswordConfirmMessage('비밀번호를 똑같이 입력했어요!');
                 setIsPasswordConfirm(true);
             } else {
-                setPasswordConfirmMessage('비밀번호가 틀려요. 다시 확인해주세요 :(');
+                setPasswordConfirmMessage('비밀번호가 틀려요. 다시 확인해주세요');
                 setIsPasswordConfirm(false);
             }
         },
         [password]
     );
 
+    const PasswordCheck = useCallback;
+
     const onChangeNickname = useCallback((e) => {
-        setNickname(e.target.value);
-        if (e.target.value.length > 10) {
+        const nickname = e.target.value;
+        setNickname(nickname);
+        if (nickname.length > 10 || nickname.length == 0) {
             setNickNameMessage('닉네임은 10글자 미만으로 작성해 주세요.');
             setIsNickName(false);
         } else {
-            setNickNameMessage('마음에 드는 닉네임입니다! :)');
+            setNickNameMessage('마음에 들어요!');
             setIsNickName(true);
         }
     }, []);
-
-    const checkPasswordMatch = () => {
-        return password === passwordCheck;
-    };
 
     const signIn = async (e) => {
         e.preventDefault();
@@ -222,7 +243,7 @@ function SignIn() {
             </SignInContainer>
             <SignInContainer>
                 <SignInForm>
-                    <div className="formbox">
+                    <FormBox>
                         <Input
                             style={{ fontSize: '14px' }}
                             value={nickname}
@@ -231,14 +252,11 @@ function SignIn() {
                             placeholder="닉네임"
                             maxLength={10}
                         />
-                        <span
-                            style={{ fontSize: '12px' }}
-                            className={`message ${checkPasswordMatch ? 'success' : 'error'}`}
-                        >
+                        <span style={{ fontSize: '13px' }} className={`message ${isNickName ? 'success' : 'error'}`}>
                             {NicknameMessage}
                         </span>
-                    </div>
-                    <div className="formbox">
+                    </FormBox>
+                    <FormBox>
                         <Input
                             style={{ fontSize: '14px' }}
                             value={password}
@@ -247,14 +265,11 @@ function SignIn() {
                             placeholder="비밀번호"
                             maxLength={20}
                         />
-                        <span
-                            style={{ fontSize: '12px' }}
-                            className={`message ${checkPasswordMatch ? 'success' : 'error'}`}
-                        >
+                        <span style={{ fontSize: '13px' }} className={`message ${isPassword ? 'success' : 'error'}`}>
                             {passwordMessage}
                         </span>
-                    </div>
-                    <div className="formbox">
+                    </FormBox>
+                    <FormBox>
                         <Input
                             style={{ fontSize: '14px' }}
                             value={passwordCheck}
@@ -264,12 +279,12 @@ function SignIn() {
                             maxLength={20}
                         />
                         <span
-                            style={{ fontSize: '12px' }}
+                            style={{ fontSize: '13px' }}
                             className={`message ${isPasswordConfirm ? 'success' : 'error'}`}
                         >
                             {passwordConfirmMessage}
                         </span>
-                    </div>
+                    </FormBox>
                     <StyledButton type="submit" disabled={!(isNickName && isPassword && isPasswordConfirm)}>
                         가입하기
                     </StyledButton>
