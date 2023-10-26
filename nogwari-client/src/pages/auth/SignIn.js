@@ -44,6 +44,18 @@ const Button = styled.button`
     border: none;
     cursor: pointer;
 `;
+const StyledButton = styled.button`
+    width: 100%;
+    padding: 10px;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    background-color: #007bff;
+    &:disabled {
+        background-color: #ccc;
+        cursor: not-allowed;
+    }
+`;
 const VerifyButton = styled.button`
     width: 100%;
     padding: 10px;
@@ -65,7 +77,6 @@ function SignIn() {
     const [passwordConfirmMessage, setPasswordConfirmMessage] = useState('');
     const [NicknameMessage, setNickNameMessage] = useState('');
 
-    const [isname, setIsName] = useState(false);
     const [isNickName, setIsNickName] = useState(false);
     const [isPassword, setIsPassword] = useState(false);
     const [isPasswordConfirm, setIsPasswordConfirm] = useState(false);
@@ -113,10 +124,10 @@ function SignIn() {
         setNickname(e.target.value);
         if (e.target.value.length > 10) {
             setNickNameMessage('닉네임은 10글자 미만으로 작성해 주세요.');
-            setIsName(false);
+            setIsNickName(false);
         } else {
             setNickNameMessage('마음에 드는 닉네임입니다! :)');
-            setIsName(true);
+            setIsNickName(true);
         }
     }, []);
 
@@ -259,7 +270,9 @@ function SignIn() {
                             {passwordConfirmMessage}
                         </span>
                     </div>
-                    <Button type="submit">가입하기</Button>
+                    <StyledButton type="submit" disabled={!(isNickName && isPassword && isPasswordConfirm)}>
+                        가입하기
+                    </StyledButton>
                 </SignInForm>
             </SignInContainer>
         </>
