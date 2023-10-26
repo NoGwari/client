@@ -1,8 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { Http } from '../../common';
 import styled from 'styled-components';
 import Layout from 'component/layout/Layout';
-import { useCallback } from 'react';
 
 const SignInContainer = styled.div`
     text-align: center;
@@ -64,8 +63,10 @@ function SignIn() {
     const [showVerifyNum, setShowVerifyNum] = useState(false);
     const [passwordMessage, setPasswordMessage] = useState('');
     const [passwordConfirmMessage, setPasswordConfirmMessage] = useState('');
+    const [NicknameMessage, setNickNameMessage] = useState('');
 
-    const [isName, setIsName] = useState(false);
+    const [isname, setIsName] = useState(false);
+    const [isNickName, setIsNickName] = useState(false);
     const [isPassword, setIsPassword] = useState(false);
     const [isPasswordConfirm, setIsPasswordConfirm] = useState(false);
 
@@ -108,10 +109,17 @@ function SignIn() {
         [password]
     );
 
-    const onChangeNickname = (e) => {
-        const { value } = e.target;
-        setNickname(value);
-    };
+    const onChangeNickname = useCallback((e) => {
+        setNickname(e.target.value);
+        if (e.target.value.length > 10) {
+            setNickNameMessage('닉네임은 10글자 미만으로 작성해 주세요.');
+            setIsName(false);
+        } else {
+            setNickNameMessage('마음에 드는 닉네임입니다! :)');
+            setIsName(true);
+        }
+    }, []);
+
     const checkPasswordMatch = () => {
         return password === passwordCheck;
     };
@@ -183,18 +191,6 @@ function SignIn() {
     return (
         <>
             <Layout></Layout>
-            {/* <input value={email} onChange={onChangeEmail} type="text" placeholder="이메일" />
-            <button type="submit" onClick={emailVarify}>
-                인증
-            </button>
-            <input value={password} onChange={onChangePassword} type="password" placeholder="비밀번호(바꿀거)" />
-            <input value={passwordCheck} onChange={onChangePasswordCheck} type="password" placeholder="비밀번호 확인" />
-            <input value={nickname} onChange={onChangeNickname} placeholder="닉네임" />
-            {!checkPasswordMatch() && <p style={{ color: 'red' }}>비밀번호가 일치하지 않습니다.</p>}
-            <button type="submit" onClick={signIn}>
-                로그인
-            </button>
-            <br /> */}
             <SignInContainer>
                 <SignInword>회원가입</SignInword>
                 <SignInForm onSubmit={emailVerify}>
@@ -214,18 +210,38 @@ function SignIn() {
                 </SignInForm>
             </SignInContainer>
             <SignInContainer>
-                <SignInword>정보등록</SignInword>
                 <SignInForm>
+                    <div className="formbox">
+                        <Input
+                            style={{ fontSize: '14px' }}
+                            value={nickname}
+                            onChange={onChangeNickname}
+                            type="text"
+                            placeholder="닉네임"
+                            maxLength={10}
+                        />
+                        <span
+                            style={{ fontSize: '12px' }}
+                            className={`message ${checkPasswordMatch ? 'success' : 'error'}`}
+                        >
+                            {NicknameMessage}
+                        </span>
+                    </div>
                     <div className="formbox">
                         <Input
                             style={{ fontSize: '14px' }}
                             value={password}
                             onChange={onChangePassword}
                             type="password"
-                            placeholder="영어+숫자+특수기호 포함 8자리이상"
+                            placeholder="비밀번호"
                             maxLength={20}
                         />
-                        <span className={`message ${checkPasswordMatch ? 'success' : 'error'}`}>{passwordMessage}</span>
+                        <span
+                            style={{ fontSize: '12px' }}
+                            className={`message ${checkPasswordMatch ? 'success' : 'error'}`}
+                        >
+                            {passwordMessage}
+                        </span>
                     </div>
                     <div className="formbox">
                         <Input
@@ -233,13 +249,17 @@ function SignIn() {
                             value={passwordCheck}
                             onChange={onChangePasswordCheck}
                             type="password"
-                            placeholder="영어+숫자+특수기호 포함 8자리이상"
+                            placeholder="비밀번호확인"
                             maxLength={20}
                         />
-                        <span className={`message ${isPasswordConfirm ? 'success' : 'error'}`}>
+                        <span
+                            style={{ fontSize: '12px' }}
+                            className={`message ${isPasswordConfirm ? 'success' : 'error'}`}
+                        >
                             {passwordConfirmMessage}
                         </span>
                     </div>
+                    <Button type="submit">가입하기</Button>
                 </SignInForm>
             </SignInContainer>
         </>
