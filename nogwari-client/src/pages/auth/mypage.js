@@ -108,7 +108,7 @@ function Mypage() {
     const deleteImage = async () => {
         try {
             const response = await fetch(Http + '/user/default', {
-                method: 'GET',
+                method: 'PUT',
                 headers: {
                     Authorization: `Bearer ${sessionStorage.getItem('token')}`,
                     'Cache-Control': 'no-cache',
