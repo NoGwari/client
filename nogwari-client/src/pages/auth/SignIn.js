@@ -92,6 +92,7 @@ function SignIn() {
     const [isNickName, setIsNickName] = useState(false);
     const [isPassword, setIsPassword] = useState(false);
     const [isPasswordConfirm, setIsPasswordConfirm] = useState(false);
+    const [isVerifyNumEntered, setIsVerifyNumEntered] = useState(false);
 
     const onChangeEmail = useCallback((e) => {
         const EmailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
@@ -162,7 +163,7 @@ function SignIn() {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ email: email, password, nickname: nickname }),
+                body: JSON.stringify({ email: email, password: password, nickname: nickname }),
             });
 
             if (!response.ok) {
@@ -219,6 +220,75 @@ function SignIn() {
 
     return (
         <>
+            {isVerifyNumEntered ? (
+                <SignInContainer>
+                    <SignInForm>
+                        <FormBox>
+                            <Input
+                                style={{ fontSize: '14px' }}
+                                value={nickname}
+                                onChange={onChangeNickname}
+                                type="text"
+                                placeholder="닉네임"
+                                maxLength={10}
+                            />
+                            <span
+                                style={{ fontSize: '13px' }}
+                                className={`message ${isNickName ? 'success' : 'error'}`}
+                            >
+                                {NicknameMessage}
+                            </span>
+                        </FormBox>
+                        <FormBox>
+                            <Input
+                                style={{ fontSize: '14px' }}
+                                value={password}
+                                onChange={onChangePassword}
+                                type="password"
+                                placeholder="비밀번호"
+                                maxLength={20}
+                            />
+                            <span
+                                style={{ fontSize: '13px' }}
+                                className={`message ${isPassword ? 'success' : 'error'}`}
+                            >
+                                {passwordMessage}
+                            </span>
+                        </FormBox>
+                        <FormBox>
+                            <Input
+                                style={{ fontSize: '14px' }}
+                                value={passwordCheck}
+                                onChange={onChangePasswordCheck}
+                                type="password"
+                                placeholder="비밀번호확인"
+                                maxLength={20}
+                            />
+                            <span
+                                style={{ fontSize: '13px' }}
+                                className={`message ${isPasswordConfirm ? 'success' : 'error'}`}
+                            >
+                                {passwordConfirmMessage}
+                            </span>
+                        </FormBox>
+                    </SignInForm>
+                </SignInContainer>
+            ) : (
+                <SignInContainer>
+                    <SignInForm>
+                        <FormBox>
+                            <Input
+                                style={{ fontSize: '14px' }}
+                                value={verifyKey}
+                                onChange={onChangeVerifykey}
+                                type="text"
+                                placeholder="인증번호"
+                            />
+                        </FormBox>
+                        <VerifyButton onClick={Verifykey}>인증코드 입력</VerifyButton>
+                    </SignInForm>
+                </SignInContainer>
+            )}
             <Layout></Layout>
             <SignInContainer>
                 <SignInword>회원가입</SignInword>
@@ -260,55 +330,6 @@ function SignIn() {
                             </StyledButton>
                         )}
                     </FormBox>
-                </SignInForm>
-            </SignInContainer>
-            <SignInContainer>
-                <SignInForm>
-                    <FormBox>
-                        <Input
-                            style={{ fontSize: '14px' }}
-                            value={nickname}
-                            onChange={onChangeNickname}
-                            type="text"
-                            placeholder="닉네임"
-                            maxLength={10}
-                        />
-                        <span style={{ fontSize: '13px' }} className={`message ${isNickName ? 'success' : 'error'}`}>
-                            {NicknameMessage}
-                        </span>
-                    </FormBox>
-                    <FormBox>
-                        <Input
-                            style={{ fontSize: '14px' }}
-                            value={password}
-                            onChange={onChangePassword}
-                            type="password"
-                            placeholder="비밀번호"
-                            maxLength={20}
-                        />
-                        <span style={{ fontSize: '13px' }} className={`message ${isPassword ? 'success' : 'error'}`}>
-                            {passwordMessage}
-                        </span>
-                    </FormBox>
-                    <FormBox>
-                        <Input
-                            style={{ fontSize: '14px' }}
-                            value={passwordCheck}
-                            onChange={onChangePasswordCheck}
-                            type="password"
-                            placeholder="비밀번호확인"
-                            maxLength={20}
-                        />
-                        <span
-                            style={{ fontSize: '13px' }}
-                            className={`message ${isPasswordConfirm ? 'success' : 'error'}`}
-                        >
-                            {passwordConfirmMessage}
-                        </span>
-                    </FormBox>
-                    <StyledButton type="submit" disabled={!(isNickName && isPassword && isPasswordConfirm)}>
-                        가입하기
-                    </StyledButton>
                 </SignInForm>
             </SignInContainer>
         </>
