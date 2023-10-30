@@ -232,7 +232,7 @@ function BoardDetailPage() {
                 if (data === false) {
                     try {
                         const hitResponse = await fetch(Http + `/comment/hits/${commentId}`, {
-                            method: 'GET',
+                            method: 'POST',
                             headers: {
                                 'Content-Type': 'application/json',
                                 Authorization: `Bearer ${sessionStorage.getItem('token')}`,
@@ -248,7 +248,7 @@ function BoardDetailPage() {
                 } else if (data === true) {
                     try {
                         const unhitResponse = await fetch(Http + `/comment/unhits/${commentId}`, {
-                            method: 'GET',
+                            method: 'POST',
                             headers: {
                                 'Content-Type': 'application/json',
                                 Authorization: `Bearer ${sessionStorage.getItem('token')}`,
@@ -383,7 +383,7 @@ function BoardDetailPage() {
                 if (data === false) {
                     try {
                         const hitResponse = await fetch(Http + `/comment/hits/${commentId}`, {
-                            method: 'GET',
+                            method: 'POST',
                             headers: {
                                 'Content-Type': 'application/json',
                                 Authorization: `Bearer ${sessionStorage.getItem('token')}`,
@@ -401,7 +401,7 @@ function BoardDetailPage() {
                 } else if (data === true) {
                     try {
                         const unhitResponse = await fetch(Http + `/comment/unhits/${commentId}`, {
-                            method: 'GET',
+                            method: 'POST',
                             headers: {
                                 'Content-Type': 'application/json',
                                 Authorization: `Bearer ${sessionStorage.getItem('token')}`,
