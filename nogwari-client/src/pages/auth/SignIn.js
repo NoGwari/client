@@ -87,12 +87,14 @@ function SignIn() {
     const [passwordMessage, setPasswordMessage] = useState('');
     const [passwordConfirmMessage, setPasswordConfirmMessage] = useState('');
     const [NicknameMessage, setNickNameMessage] = useState('');
+    const [checkKeyMessage, setCheckkeyMessage] = useState('');
 
     const [isEmail, setIsEmail] = useState(false);
     const [isNickName, setIsNickName] = useState(false);
     const [isPassword, setIsPassword] = useState(false);
     const [isPasswordConfirm, setIsPasswordConfirm] = useState(false);
     const [isVerifyNumEntered, setIsVerifyNumEntered] = useState(false);
+    const [ischeckKey, setIscheckKey] = useState(false);
 
     const onChangeEmail = useCallback((e) => {
         const EmailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
@@ -154,9 +156,8 @@ function SignIn() {
         }
     }, []);
 
-    const signIn = async (e) => {
+    const signUP = async (e) => {
         e.preventDefault();
-        console.log('ehlsi?');
         try {
             const response = await fetch(Http + '/auth/signup', {
                 method: 'POST',
@@ -209,7 +210,15 @@ function SignIn() {
             });
             console.log('인증키 확인', verifyKey);
 
-            if (!response.ok) {
+            if (response.ok) {
+                setIscheckKey(true);
+                console.log('인증 확인');
+                setIsVerifyNumEntered(true);
+            } else if (response.status === 404) {
+                setIscheckKey(false);
+                console.log('코드 불일치');
+                window.confirm('인증코드를 ')
+            } else {
                 const errorData = await response.json();
                 throw new Error(errorData.message);
             }
@@ -275,16 +284,16 @@ function SignIn() {
                         </FormBox>
                         <StyledButton
                             type="submit"
-                            onClick={signIn}
+                            onClick={signUP}
                             disabled={!(isNickName && isPassword && isPasswordConfirm)}
                         >
-                            가입하기
+                            정보입력완료
                         </StyledButton>
                     </SignInForm>
                 </SignInContainer>
             ) : (
                 <SignInContainer>
-                    <SignInword>회원가입</SignInword>
+                    <SignInword type="submit">회원가입</SignInword>
                     <SignInForm onSubmit={emailVerify}>
                         <FormBox>
                             {showVerifyNum ? (
