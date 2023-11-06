@@ -3,6 +3,7 @@ import { Http } from '../../common';
 import styled from 'styled-components';
 import Layout from 'component/layout/Layout';
 import { Form } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const SignInContainer = styled.div`
     text-align: center;
@@ -87,7 +88,6 @@ function SignIn() {
     const [passwordMessage, setPasswordMessage] = useState('');
     const [passwordConfirmMessage, setPasswordConfirmMessage] = useState('');
     const [NicknameMessage, setNickNameMessage] = useState('');
-    const [checkKeyMessage, setCheckkeyMessage] = useState('');
 
     const [isEmail, setIsEmail] = useState(false);
     const [isNickName, setIsNickName] = useState(false);
@@ -95,6 +95,8 @@ function SignIn() {
     const [isPasswordConfirm, setIsPasswordConfirm] = useState(false);
     const [isVerifyNumEntered, setIsVerifyNumEntered] = useState(false);
     const [ischeckKey, setIscheckKey] = useState(false);
+
+    const navigate = useNavigate();
 
     const onChangeEmail = useCallback((e) => {
         const EmailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
@@ -166,10 +168,14 @@ function SignIn() {
                 },
                 body: JSON.stringify({ email: email, password: password, nickname: nickname }),
             });
+            window.confirm('회원가입을 완료했습니다.');
+            navigate('/board');
 
             if (!response.ok) {
                 const errorData = await response.json();
                 throw new Error(errorData.message);
+            } else if (response.status === 409) {
+                window.confirm('이미 가입된 정보가 있습니다.');
             }
         } catch (error) {
             console.error('Error during login:', error.message);
@@ -186,10 +192,14 @@ function SignIn() {
                 },
                 body: JSON.stringify({ email }),
             });
-            console.log('인증번호 보내는증');
-            setShowVerifyNum(true);
-
-            if (!response.ok) {
+            if (response.ok) {
+                console.log('인증번호 보내는증');
+                setShowVerifyNum(true);
+            } else if (response.status === 409) {
+                window.confirm('이미 가입된 정보가 있습니다.');
+                setShowVerifyNum(false);
+                setEmail('');
+            } else {
                 const errorData = await response.json();
                 throw new Error(errorData.message);
             }
@@ -217,7 +227,7 @@ function SignIn() {
             } else if (response.status === 404) {
                 setIscheckKey(false);
                 console.log('코드 불일치');
-                window.confirm('인증코드를 ')
+                window.confirm('인증코드를 제대로 입력해주세요.');
             } else {
                 const errorData = await response.json();
                 throw new Error(errorData.message);
@@ -287,7 +297,7 @@ function SignIn() {
                             onClick={signUP}
                             disabled={!(isNickName && isPassword && isPasswordConfirm)}
                         >
-                            정보입력완료
+                            회원가입
                         </StyledButton>
                     </SignInForm>
                 </SignInContainer>
