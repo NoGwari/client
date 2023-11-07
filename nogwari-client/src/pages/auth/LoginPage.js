@@ -41,6 +41,15 @@ const Button = styled.button`
     cursor: pointer;
 `;
 
+const Forgot = styled.p`
+    font-size: 13px;
+    margin-top: 8px;
+    text-align: end;
+    cursor: pointer;
+    &:hover {
+        text-decoration: underline;
+    }
+`;
 function LoginPage() {
     const [id, setId] = useState('');
     const [password, setPassword] = useState('');
@@ -82,6 +91,27 @@ function LoginPage() {
         }
     };
 
+    const ForgotPassword = async (e) => {
+        e.preventDefault();
+        try {
+            const response = await fetch(Http + '/user/initpassword', {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${sessionStorage.getItem('token')}`,
+                },
+            });
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.message);
+            }
+            const data = await response.json();
+            console.log(data);
+        } catch {
+            console.error('비밀번호 재설정 오류', error.message);
+        }
+    };
+
     return (
         <>
             <Layout />
@@ -91,6 +121,7 @@ function LoginPage() {
                     <Input value={id} onChange={onChangeId} type="text" placeholder="아이디" maxLength={20} />
                     <Input value={password} onChange={onChangePassword} type="password" placeholder="패스워드" />
                     <Button type="submit">로그인</Button>
+                    <Forgot onClick={ForgotPassword}>비밀번호를 잊어버렸어요</Forgot>
                     &nbsp;
                     <GoogleLoginButton />
                 </LoginForm>
