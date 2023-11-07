@@ -184,6 +184,26 @@ function Mypage() {
         }
     };
 
+    const withdrawal = async () => {
+        window.confirm('정말 탈퇴하시겠습니까? 탈퇴하면 모든 정보가 사라집니다.');
+        try {
+            const response = await fetch(Http + '/user/withdrawal', {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${sessionStorage.getItem('token')}`,
+                    'Cache-Control': 'no-cache',
+                },
+            });
+            if (!response.ok) {
+                throw new Error('Network response was not ok.');
+            }
+            console.log('회원탈퇴');
+        } catch (error) {
+            console.error('탈퇴오류', error.message);
+        }
+    };
+
     return (
         <>
             <Layout></Layout>
@@ -229,6 +249,20 @@ function Mypage() {
                                 <button onClick={handleNicknameChange} disabled={isUpdatingNickname}>
                                     {isUpdatingNickname ? '변경 중...' : '변경'}
                                 </button>
+                            </div>
+                            <div
+                                onClick={withdrawal}
+                                style={{
+                                    marginTop: 30,
+                                    width: '30%',
+                                    backgroundColor: 'red',
+                                    fontSize: '14px',
+                                    textAlign: 'center',
+                                    float: 'right',
+                                    cursor: 'pointer',
+                                }}
+                            >
+                                회원 탈퇴
                             </div>
                         </MypageForm>
                         <br />
