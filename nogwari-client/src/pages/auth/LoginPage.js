@@ -53,6 +53,7 @@ const Forgot = styled.p`
 function LoginPage() {
     const [id, setId] = useState('');
     const [password, setPassword] = useState('');
+    const [email, setEmail] = useState('');
     const navigate = useNavigate();
 
     const onChangeId = (e) => {
@@ -63,6 +64,11 @@ function LoginPage() {
     const onChangePassword = (e) => {
         const { value } = e.target;
         setPassword(value);
+    };
+
+    const onChangeEmail = (e) => {
+        const { value } = e.target;
+        setEmail(value);
     };
 
     const handleLogin = async (e) => {
@@ -94,11 +100,13 @@ function LoginPage() {
     const ForgotPassword = async (e) => {
         e.preventDefault();
         try {
-            const response = await fetch(Http + '/user/initpassword', {
-                method: 'PUT',
+            const response = await fetch(Http + '/user/mailSubmitForInitPassword', {
+                method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: `Bearer ${sessionStorage.getItem('token')}`,
+                },
+                body: {
+                    email: email,
                 },
             });
             if (!response.ok) {
@@ -108,7 +116,7 @@ function LoginPage() {
             const data = await response.json();
             console.log(data);
         } catch {
-            console.error('비밀번호 재설정 오류', error.message);
+            console.error('비밀번호 코드 오류');
         }
     };
 
