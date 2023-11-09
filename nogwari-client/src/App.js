@@ -15,6 +15,7 @@ import SignIn from 'pages/auth/SignIn.js';
 import BoardDetailPage from '../src/pages/board/board_detail.js';
 import UpdateBoard from './pages/board/UpdateBoard/UpdateBoard.js';
 import Mypage from 'pages/auth/mypage.js';
+import ForgotPassword from 'pages/auth/ForgotPassword.js';
 
 const BoardPages = lazy(() => import('./pages/board'));
 
@@ -56,7 +57,7 @@ function App() {
                 <Route path="/createBoard" element={<CreateBoard />} />
                 <Route path="/login" element={<LoginPage />} />
                 <Route path="/signin" element={<SignIn />} />
-
+                <Route path="/forgotpassword" element={<ForgotPassword />} />
                 <Route path="/" element={<Board />} />
                 <Route path="*" element={<Error />} />
             </Routes>

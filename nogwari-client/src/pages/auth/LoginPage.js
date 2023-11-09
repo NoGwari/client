@@ -97,27 +97,8 @@ function LoginPage() {
         }
     };
 
-    const ForgotPassword = async (e) => {
-        e.preventDefault();
-        try {
-            const response = await fetch(Http + '/user/mailSubmitForInitPassword', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: {
-                    email: email,
-                },
-            });
-            if (!response.ok) {
-                const errorData = await response.json();
-                throw new Error(errorData.message);
-            }
-            const data = await response.json();
-            console.log(data);
-        } catch {
-            console.error('비밀번호 코드 오류');
-        }
+    const Forget = (e) => {
+        navigate('/forgotpassword');
     };
 
     return (
@@ -129,7 +110,7 @@ function LoginPage() {
                     <Input value={id} onChange={onChangeId} type="text" placeholder="아이디" maxLength={20} />
                     <Input value={password} onChange={onChangePassword} type="password" placeholder="패스워드" />
                     <Button type="submit">로그인</Button>
-                    <Forgot onClick={ForgotPassword}>비밀번호를 잊어버렸어요</Forgot>
+                    <Forgot onClick={Forget}>비밀번호를 잊어버렸어요</Forgot>
                     &nbsp;
                     <GoogleLoginButton />
                 </LoginForm>
