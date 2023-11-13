@@ -4,17 +4,17 @@ import styled from 'styled-components';
 import Layout from 'component/layout/Layout';
 import { Form } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
-const LoginContainer = styled.div`
+const ForgotContainer = styled.div`
     text-align: center;
 `;
-const Loginword = styled.div`
+const Forgotword = styled.div`
     color: black;
     font-weight: bold;
     font-size: 20px;
     text-align: center;
     margin-top: 80px;
 `;
-const LoginForm = styled.form`
+const ForgotForm = styled.form`
     item-align: center;
     max-width: 300px;
     margin: 0 auto;
@@ -130,27 +130,37 @@ function ForgotPassword() {
                     'Content-Type': 'application/json',
                     accept: '*/*',
                 },
-                body: {
-                    email: email,
-                },
+                body: JSON.stringify({ email: email }),
             });
-            if (!response.ok) {
+            //     if (!response.ok) {
+            //         const errorData = await response.json();
+            //         throw new Error(errorData.message);
+            //     }
+            //     const data = await response.json();
+            //     console.log(data);
+            // } catch {
+            //     console.error('비밀번호 코드 오류');
+            // }
+            if (response.ok) {
+                console.log('인증 확인');
+            } else if (response.status === 404) {
+                console.log('없는 이메일');
+                window.confirm('가입되지 않은 이메일입니다.');
+            } else {
                 const errorData = await response.json();
                 throw new Error(errorData.message);
             }
-            const data = await response.json();
-            console.log(data);
-        } catch {
-            console.error('비밀번호 코드 오류');
+        } catch (error) {
+            console.error('Error', error.message);
         }
     };
 
     return (
         <>
             <Layout />
-            <LoginContainer>
-                <Loginword>비밀번호찾기</Loginword>
-                <LoginForm onSubmit={ForgotPassword}>
+            <ForgotContainer>
+                <Forgotword>비밀번호찾기</Forgotword>
+                <ForgotForm onSubmit={ForgotPassword}>
                     <FormBox>
                         <div>
                             <Input
@@ -158,7 +168,7 @@ function ForgotPassword() {
                                 onChange={onChangeEmail}
                                 type="text"
                                 placeholder="E-mail"
-                                maxLength={20}
+                                maxLength={40}
                             />
                             <span style={{ fontSize: '13px' }} className={`message ${isEmail ? 'success' : 'error'}`}>
                                 {EmailMessage}
@@ -167,8 +177,8 @@ function ForgotPassword() {
                     </FormBox>
                     <Button type="submit">인증코드 전송</Button>
                     &nbsp;
-                </LoginForm>
-            </LoginContainer>
+                </ForgotForm>
+            </ForgotContainer>
         </>
     );
 }

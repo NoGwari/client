@@ -322,7 +322,7 @@ function SignIn() {
                                         onChange={onChangeEmail}
                                         type="text"
                                         placeholder="E-mail"
-                                        maxLength={20}
+                                        maxLength={40}
                                     />
                                     <span
                                         style={{ fontSize: '13px' }}
