@@ -105,18 +105,11 @@ const FormBox = styled.div`
 function ForgotPassword() {
     const [email, setEmail] = useState('');
     const [verifyKey, setVerifyKey] = useState('');
-    const [password, setPassword] = useState('');
-    const [passwordCheck, setPasswordCheck] = useState('');
     const [showVerifyNum, setShowVerifyNum] = useState(false);
 
     const [EmailMessage, setEmailMessage] = useState('');
-    const [passwordMessage, setPasswordMessage] = useState('');
-    const [passwordConfirmMessage, setPasswordConfirmMessage] = useState('');
 
     const [isEmail, setIsEmail] = useState(false);
-    const [isPassword, setIsPassword] = useState(false);
-    const [isPasswordConfirm, setIsPasswordConfirm] = useState(false);
-    const [isVerifyNumEntered, setIsVerifyNumEntered] = useState(false);
     const [ischeckKey, setIscheckKey] = useState(false);
 
     const onChangeEmail = useCallback((e) => {
@@ -132,39 +125,11 @@ function ForgotPassword() {
             setIsEmail(true);
         }
     }, []);
+
     const onChangeVerifykey = (e) => {
         const { value } = e.target;
         setVerifyKey(value);
     };
-    const onChangePassword = useCallback((e) => {
-        const passwordRegex = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,25}$/;
-        const passwordCurrent = e.target.value;
-        setPassword(passwordCurrent);
-
-        if (!passwordRegex.test(passwordCurrent)) {
-            setPasswordMessage('숫자+영문자+특수문자 조합으로 8자리 이상!');
-            setIsPassword(false);
-        } else {
-            setPasswordMessage('안전한 비밀번호에요!');
-            setIsPassword(true);
-        }
-    }, []);
-
-    const onChangePasswordCheck = useCallback(
-        (e) => {
-            const passwordConfirmCurrent = e.target.value;
-            setPasswordCheck(passwordConfirmCurrent);
-
-            if (password === passwordConfirmCurrent) {
-                setPasswordConfirmMessage('비밀번호를 똑같이 입력했어요!');
-                setIsPasswordConfirm(true);
-            } else {
-                setPasswordConfirmMessage('비밀번호가 틀려요. 다시 확인해주세요');
-                setIsPasswordConfirm(false);
-            }
-        },
-        [password]
-    );
 
     const ForgotPassword = async (e) => {
         e.preventDefault();
@@ -203,10 +168,10 @@ function ForgotPassword() {
                 },
                 body: JSON.stringify({ email, verifyKey: verifyKey }),
             });
-            console.log('인증키 확인', verifyKey);
             if (response.ok) {
-                console.log('인증확인');
-                setIsVerifyNumEntered(true);
+                const responseData = await response.json();
+                const randomPassword = responseData.randomPassword;
+                console.log('랜덤 비빌번호 :', randomPassword);
             } else if (response.status === 404) {
                 setIscheckKey(false);
                 console.log('코드 불일치');
