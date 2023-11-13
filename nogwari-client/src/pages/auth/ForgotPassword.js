@@ -4,7 +4,41 @@ import styled from 'styled-components';
 import Layout from 'component/layout/Layout';
 import { Form } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
+const LoginContainer = styled.div`
+    text-align: center;
+`;
+const Loginword = styled.div`
+    color: black;
+    font-weight: bold;
+    font-size: 20px;
+    text-align: center;
+    margin-top: 80px;
+`;
+const LoginForm = styled.form`
+    item-align: center;
+    max-width: 300px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    background-color: #f9f9f9;
+    margin-top: 20px;
+`;
 
+const Input = styled.input`
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    box-sizing: border-box;
+`;
+
+const Button = styled.button`
+    width: 100%;
+    padding: 10px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+`;
 const SignInContainer = styled.div`
     text-align: center;
 `;
@@ -24,14 +58,6 @@ const SignInForm = styled.form`
     background-color: #f9f9f9;
     margin-top: 20px;
 `;
-
-const Input = styled.input`
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 10px;
-    box-sizing: border-box;
-`;
-
 const StyledButton = styled.button`
     width: 100%;
     padding: 10px;
@@ -99,8 +125,10 @@ function ForgotPassword() {
         try {
             const response = await fetch(Http + '/user/mailSubmitForInitPassword', {
                 method: 'POST',
+                credentials: 'include',
                 headers: {
                     'Content-Type': 'application/json',
+                    accept: '*/*',
                 },
                 body: {
                     email: email,
@@ -116,19 +144,29 @@ function ForgotPassword() {
             console.error('비밀번호 코드 오류');
         }
     };
-    
+
     return (
         <>
             <Layout />
             <LoginContainer>
-                <Loginword>로그인하기</Loginword>
-                <LoginForm onSubmit={handleLogin}>
-                    <Input value={id} onChange={onChangeId} type="text" placeholder="아이디" maxLength={20} />
-                    <Input value={password} onChange={onChangePassword} type="password" placeholder="패스워드" />
-                    <Button type="submit">로그인</Button>
-                    <Forgot onClick={Forget}>비밀번호를 잊어버렸어요</Forgot>
+                <Loginword>비밀번호찾기</Loginword>
+                <LoginForm onSubmit={ForgotPassword}>
+                    <FormBox>
+                        <div>
+                            <Input
+                                value={email}
+                                onChange={onChangeEmail}
+                                type="text"
+                                placeholder="E-mail"
+                                maxLength={20}
+                            />
+                            <span style={{ fontSize: '13px' }} className={`message ${isEmail ? 'success' : 'error'}`}>
+                                {EmailMessage}
+                            </span>
+                        </div>
+                    </FormBox>
+                    <Button type="submit">인증코드 전송</Button>
                     &nbsp;
-                    <GoogleLoginButton />
                 </LoginForm>
             </LoginContainer>
         </>
