@@ -303,7 +303,7 @@ function SignIn() {
                 </SignInContainer>
             ) : (
                 <SignInContainer>
-                    <SignInword type="submit">회원가입</SignInword>
+                    <SignInword>회원가입</SignInword>
                     <SignInForm onSubmit={emailVerify}>
                         <FormBox>
                             {showVerifyNum ? (
