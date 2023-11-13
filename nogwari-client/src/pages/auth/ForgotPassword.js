@@ -192,20 +192,20 @@ function ForgotPassword() {
             console.error('Error', error.message);
         }
     };
-    
-    const InitPassword = async(e) => {
+
+    const InitPassword = async (e) => {
         e.preventDefault();
-        try{
-            const response = await fetch(Http+ '/user/initpassword',{
-                method : 'PUT',
+        try {
+            const response = await fetch(Http + '/user/initpassword', {
+                method: 'PUT',
                 headers: {
-                    'Content-Type' : 'application/json',
+                    'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({ email, verifyKey: verifyKey }),
             });
             console.log('인증키 확인', verifyKey);
-            if(response.ok){
-                console.log('인증확인')
+            if (response.ok) {
+                console.log('인증확인');
                 setIsVerifyNumEntered(true);
             } else if (response.status === 404) {
                 setIscheckKey(false);
@@ -226,20 +226,42 @@ function ForgotPassword() {
                 <Forgotword>비밀번호찾기</Forgotword>
                 <ForgotForm onSubmit={ForgotPassword}>
                     <FormBox>
-                        <div>
+                        {showVerifyNum ? (
                             <Input
-                                value={email}
-                                onChange={onChangeEmail}
+                                style={{ fontSize: '14px' }}
+                                show={showVerifyNum}
+                                value={verifyKey}
+                                onChange={onChangeVerifykey}
                                 type="text"
-                                placeholder="E-mail"
-                                maxLength={40}
+                                placeholder="인증번호"
                             />
-                            <span style={{ fontSize: '13px' }} className={`message ${isEmail ? 'success' : 'error'}`}>
-                                {EmailMessage}
-                            </span>
-                        </div>
+                        ) : (
+                            <div>
+                                <Input
+                                    value={email}
+                                    onChange={onChangeEmail}
+                                    type="text"
+                                    placeholder="E-mail"
+                                    maxLength={40}
+                                />
+                                <span
+                                    style={{ fontSize: '13px' }}
+                                    className={`message ${isEmail ? 'success' : 'error'}`}
+                                >
+                                    {EmailMessage}
+                                </span>
+                            </div>
+                        )}
                     </FormBox>
-                    <Button type="submit">인증코드 전송</Button>
+                    <FormBox>
+                        {showVerifyNum ? (
+                            <VerifyButton onClick={InitPassword}>인증코드 입력</VerifyButton>
+                        ) : (
+                            <StyledButton type="submit" disabled={!isEmail}>
+                                이메일 인증
+                            </StyledButton>
+                        )}
+                    </FormBox>
                     &nbsp;
                 </ForgotForm>
             </ForgotContainer>
