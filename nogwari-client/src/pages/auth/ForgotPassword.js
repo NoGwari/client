@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useRef } from 'react';
 import { Http } from '../../common';
 import styled from 'styled-components';
 import Layout from 'component/layout/Layout';
@@ -75,10 +75,25 @@ const FormBox = styled.div`
 `;
 
 const TemporaryPassword = styled.div`
-    width: 100%;
+    width: 80%;
+    padding: 10px;
+    height : 100%
+    margin-bottom: 10px;
+    box-sizing: border-box;
+    display: inline-block;
+    border: 1px solid #ccc;
+`;
+
+const LinkButton = styled.div`
+    display: inline-block;
+    width: 20%;
+    text-align: center;
     padding: 10px;
     margin-bottom: 10px;
     box-sizing: border-box;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    height: 100%;
 `;
 
 function ForgotPassword() {
@@ -92,6 +107,8 @@ function ForgotPassword() {
 
     const [isEmail, setIsEmail] = useState(false);
     const [isVerifyNumEntered, setIsVerifyNumEntered] = useState(false);
+    const [isCopied, setIsCopied] = useState(false);
+    const textRef = useRef(null);
 
     const onChangeEmail = useCallback((e) => {
         const EmailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
@@ -166,8 +183,21 @@ function ForgotPassword() {
             console.error('Error', error.message);
         }
     };
+    const toClipboard = async () => {
+        try {
+            await navigator.clipboard.writeText(randomPassword);
+            setIsCopied(true);
+        } catch (err) {
+            console.error('클립보드 복사 실패:', err);
+        }
+    };
+    const copyPassword = (e) => {
+        e.preventDefault();
+        toClipboard();
+    };
 
     const gotologin = (e) => {
+        e.preventDefault();
         navigate('/login');
     };
     return (
@@ -179,6 +209,8 @@ function ForgotPassword() {
                     <ForgotForm>
                         <FormBox>
                             <TemporaryPassword>{randomPassword}</TemporaryPassword>
+                            <LinkButton onClick={(e) => copyPassword(e)}>복사</LinkButton>
+                            {isCopied && <h2>복사되었습니다!</h2>}
                         </FormBox>
                         <FormBox>
                             <VerifyButton onClick={gotologin}>로그인하러가기</VerifyButton>
