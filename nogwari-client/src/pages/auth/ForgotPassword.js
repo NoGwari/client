@@ -4,6 +4,8 @@ import styled from 'styled-components';
 import Layout from 'component/layout/Layout';
 import { Form } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
+import { MdContentCopy } from 'react-icons/md';
+import { FaCheck } from 'react-icons/fa';
 const ForgotContainer = styled.div`
     text-align: center;
 `;
@@ -82,18 +84,6 @@ const TemporaryPassword = styled.div`
     box-sizing: border-box;
     display: inline-block;
     border: 1px solid #ccc;
-`;
-
-const LinkButton = styled.div`
-    display: inline-block;
-    width: 20%;
-    text-align: center;
-    padding: 10px;
-    margin-bottom: 10px;
-    box-sizing: border-box;
-    font-size: 14px;
-    border: 1px solid #ccc;
-    height: 100%;
 `;
 
 function ForgotPassword() {
@@ -208,9 +198,13 @@ function ForgotPassword() {
                     <Forgotword>임시 비밀번호</Forgotword>
                     <ForgotForm>
                         <FormBox>
-                            <TemporaryPassword>{randomPassword}</TemporaryPassword>
-                            <LinkButton onClick={(e) => copyPassword(e)}>복사</LinkButton>
-                            {isCopied && <h2>복사되었습니다!</h2>}
+                            <TemporaryPassword>
+                                {randomPassword} &nbsp;
+                                <span onClick={(e) => copyPassword(e)} style={{ cursor: 'pointer' }}>
+                                    {isCopied ? <FaCheck /> : <MdContentCopy />}
+                                </span>
+                            </TemporaryPassword>
+                            {isCopied && <p style={{ fontSize: '12px' }}>복사되었습니다!</p>}
                         </FormBox>
                         <FormBox>
                             <VerifyButton onClick={gotologin}>로그인하러가기</VerifyButton>
