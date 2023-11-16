@@ -136,7 +136,7 @@ function ForgotPassword() {
                 setShowVerifyNum(true);
             } else if (response.status === 404) {
                 console.log('없는 이메일');
-                window.confirm('가입되지 않은 이메일입니다.');
+               alert('가입되지 않은 이메일입니다.');
             } else {
                 const errorData = await response.json();
                 throw new Error(errorData.message);
@@ -164,7 +164,7 @@ function ForgotPassword() {
                 setIsVerifyNumEntered(true);
             } else if (response.status === 404) {
                 console.log('코드 불일치');
-                window.confirm('인증코드를 제대로 입력해주세요.');
+               alert('인증코드를 제대로 입력해주세요.');
             } else {
                 const errorData = await response.json();
                 throw new Error(errorData.message);

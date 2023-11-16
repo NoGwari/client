@@ -168,14 +168,14 @@ function SignIn() {
                 },
                 body: JSON.stringify({ email: email, password: password, nickname: nickname }),
             });
-            window.confirm('회원가입을 완료했습니다.');
+            alert('회원가입을 완료했습니다.');
             navigate('/board');
 
             if (!response.ok) {
                 const errorData = await response.json();
                 throw new Error(errorData.message);
             } else if (response.status === 409) {
-                window.confirm('이미 가입된 정보가 있습니다.');
+                alert('이미 가입된 정보가 있습니다.');
             }
         } catch (error) {
             console.error('Error during login:', error.message);
@@ -196,7 +196,7 @@ function SignIn() {
                 console.log('인증번호 보내는증');
                 setShowVerifyNum(true);
             } else if (response.status === 409) {
-                window.confirm('이미 가입된 정보가 있습니다.');
+                alert('이미 가입된 정보가 있습니다.');
                 setShowVerifyNum(false);
                 setEmail('');
             } else {
@@ -227,7 +227,7 @@ function SignIn() {
             } else if (response.status === 404) {
                 setIscheckKey(false);
                 console.log('코드 불일치');
-                window.confirm('인증코드를 제대로 입력해주세요.');
+                alert('인증코드를 제대로 입력해주세요.');
             } else {
                 const errorData = await response.json();
                 throw new Error(errorData.message);
