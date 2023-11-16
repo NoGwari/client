@@ -207,22 +207,24 @@ function Mypage() {
     };
 
     const withdrawal = async () => {
-        window.confirm('정말 탈퇴하시겠습니까? 탈퇴하면 모든 정보가 사라집니다.');
-        try {
-            const response = await fetch(Http + '/user/withdrawal', {
-                method: 'DELETE',
-                headers: {
-                    'Content-Type': 'application/json',
-                    Authorization: `Bearer ${sessionStorage.getItem('token')}`,
-                    'Cache-Control': 'no-cache',
-                },
-            });
-            if (!response.ok) {
-                throw new Error('Network response was not ok.');
+        const shouldwithdrawal = window.confirm('정말 탈퇴하시겠습니까? 삭제한 이후 복구능 불가능 합니다.');
+        if (shouldwithdrawal) {
+            try {
+                const response = await fetch(Http + '/user/withdrawal', {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Authorization: `Bearer ${sessionStorage.getItem('token')}`,
+                        'Cache-Control': 'no-cache',
+                    },
+                });
+                if (!response.ok) {
+                    throw new Error('Network response was not ok.');
+                }
+                console.log('회원탈퇴');
+            } catch (error) {
+                console.error('탈퇴오류', error.message);
             }
-            console.log('회원탈퇴');
-        } catch (error) {
-            console.error('탈퇴오류', error.message);
         }
     };
 
