@@ -60,6 +60,8 @@ function Mypage() {
     const [isUpdatingNickname, setIsUpdatingNickname] = useState(false);
     const [imageFile, setImageFile] = useState(null);
     const [imagePreview, setImagePreview] = useState(null);
+    const [password, setPassword] = useState('');
+    const [passwordCheck, setPasswordCheck] = useState('');
 
     const handleImageChange = async (e) => {
         const selectedFile = e.target.files[0];
@@ -181,6 +183,26 @@ function Mypage() {
             console.error('변경오류', error.message);
         } finally {
             setIsUpdatingNickname(false);
+        }
+    };
+    const changepw = async () => {
+        try {
+            const response = await fetch(Http + '/user/updatepassword', {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    accept: 'application/json',
+                    Authorization: `Bearer ${sessionStorage.getItem('token')}`,
+                },
+                body: JSON.stringify({ password: passwordCheck }),
+            });
+            if (response.status === 401) {
+                alert('비밀번호 변경 실패');
+            } else {
+                alert('비밀번호 변경 성공');
+            }
+        } catch (error) {
+            console.log('변경 실패', error.message);
         }
     };
 
