@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { Http } from '../../common';
 import { useNavigate } from 'react-router-dom';
 import GoogleLoginButton from './GoogleLogin';
@@ -53,8 +53,9 @@ const Forgot = styled.p`
 function LoginPage() {
     const [id, setId] = useState('');
     const [password, setPassword] = useState('');
-    const [email, setEmail] = useState('');
+
     const navigate = useNavigate();
+    const inputE1 = useRef(null);
 
     const onChangeId = (e) => {
         const { value } = e.target;
@@ -64,11 +65,6 @@ function LoginPage() {
     const onChangePassword = (e) => {
         const { value } = e.target;
         setPassword(value);
-    };
-
-    const onChangeEmail = (e) => {
-        const { value } = e.target;
-        setEmail(value);
     };
 
     const handleLogin = async (e) => {
@@ -82,16 +78,17 @@ function LoginPage() {
                 body: JSON.stringify({ email: id, password }),
             });
 
-            if (!response.ok) {
-                const errorData = await response.json();
-                throw new Error(errorData.message);
+            if (response.status === 401) {
+                alert('아이디 및 비밀번호를 확인해주세요!');
+                setId('');
+                setPassword('');
+                return inputE1.current.focus();
+            } else {
+                const data = await response.json();
+                sessionStorage.setItem('token', data.token);
+                sessionStorage.setItem('role', data.role);
+                navigate('/mypage');
             }
-
-            const data = await response.json();
-            sessionStorage.setItem('token', data.token);
-            sessionStorage.setItem('role', data.role);
-            console.log(data);
-            navigate('/mypage');
         } catch (error) {
             console.error('Error during login:', error.message);
         }
@@ -107,7 +104,14 @@ function LoginPage() {
             <LoginContainer>
                 <Loginword>로그인하기</Loginword>
                 <LoginForm onSubmit={handleLogin}>
-                    <Input value={id} onChange={onChangeId} type="text" placeholder="아이디" maxLength={20} />
+                    <Input
+                        value={id}
+                        onChange={onChangeId}
+                        type="text"
+                        placeholder="아이디"
+                        maxLength={20}
+                        ref={inputE1}
+                    />
                     <Input value={password} onChange={onChangePassword} type="password" placeholder="패스워드" />
                     <Button type="submit">로그인</Button>
                     <Forgot onClick={Forget}>비밀번호를 잊어버렸어요</Forgot>
