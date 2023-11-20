@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { Http } from 'common';
 import Layout from 'component/layout/Layout';
 import styled from 'styled-components';
@@ -54,6 +54,36 @@ const MypageImgContainer = styled.div`
     }
 `;
 
+const Input = styled.input`
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    box-sizing: border-box;
+`;
+
+const FormBox = styled.div`
+    position: relative;
+    margin-bottom: 20px;
+
+    .message {
+        font-weight: 500;
+        font-size: 2.6rem;
+        line-height: 24px;
+        letter-spacing: -1px;
+        position: absolute;
+        bottom: -10px;
+        left: 0;
+
+        &.success {
+            color: #8f8c8b;
+        }
+
+        &.error {
+            color: #ff2727;
+        }
+    }
+`;
+
 function Mypage() {
     const [me, setMe] = useState(null);
     const [newNickname, setNewNickname] = useState('');
@@ -62,6 +92,12 @@ function Mypage() {
     const [imagePreview, setImagePreview] = useState(null);
     const [password, setPassword] = useState('');
     const [passwordCheck, setPasswordCheck] = useState('');
+
+    const [passwordMessage, setPasswordMessage] = useState('');
+    const [passwordConfirmMessage, setPasswordConfirmMessage] = useState('');
+
+    const [isPassword, setIsPassword] = useState(false);
+    const [isPasswordConfirm, setIsPasswordConfirm] = useState(false);
 
     const handleImageChange = async (e) => {
         const selectedFile = e.target.files[0];
@@ -205,6 +241,36 @@ function Mypage() {
             console.log('변경 실패', error.message);
         }
     };
+
+    const onChangePassword = useCallback((e) => {
+        const passwordRegex = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,25}$/;
+        const passwordCurrent = e.target.value;
+        setPassword(passwordCurrent);
+
+        if (!passwordRegex.test(passwordCurrent)) {
+            setPasswordMessage('숫자+영문자+특수문자 조합으로 8자리 이상!');
+            setIsPassword(false);
+        } else {
+            setPasswordMessage('안전한 비밀번호에요!');
+            setIsPassword(true);
+        }
+    }, []);
+
+    const onChangePasswordCheck = useCallback(
+        (e) => {
+            const passwordConfirmCurrent = e.target.value;
+            setPasswordCheck(passwordConfirmCurrent);
+
+            if (password === passwordConfirmCurrent) {
+                setPasswordConfirmMessage('비밀번호를 똑같이 입력했어요!');
+                setIsPasswordConfirm(true);
+            } else {
+                setPasswordConfirmMessage('비밀번호가 틀려요. 다시 확인해주세요');
+                setIsPasswordConfirm(false);
+            }
+        },
+        [password]
+    );
 
     const withdrawal = async () => {
         const shouldwithdrawal = window.confirm('정말 탈퇴하시겠습니까? 삭제한 이후 복구능 불가능 합니다.');
