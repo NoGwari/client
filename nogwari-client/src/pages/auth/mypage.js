@@ -55,7 +55,7 @@ const MypageImgContainer = styled.div`
 `;
 
 const Input = styled.input`
-    width: 100%;
+    width: 80%;
     padding: 10px;
     margin-bottom: 10px;
     box-sizing: border-box;
@@ -82,6 +82,16 @@ const FormBox = styled.div`
             color: #ff2727;
         }
     }
+`;
+
+const VerifyButton = styled.button`
+    width: 20%;
+    height: 42px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 0.2rem;
+    cursor: pointer;
 `;
 
 function Mypage() {
@@ -194,6 +204,7 @@ function Mypage() {
             return;
         }
         setIsUpdatingNickname(true);
+        setNewNickname('');
 
         try {
             const response = await fetch(Http + '/user/updatenick', {
@@ -326,20 +337,57 @@ function Mypage() {
                             <br />
                             <TiDeleteOutline onClick={deleteImage} style={{ fontSize: '20px', color: 'red' }} />
                             <br />
-                            <div>
-                                <p>
-                                    닉네임 변경:
-                                    <input
-                                        type="text"
-                                        value={newNickname}
-                                        onChange={(e) => setNewNickname(e.target.value)}
-                                        style={{ marginLeft: '5px' }}
-                                    />
-                                </p>
-                                <button onClick={handleNicknameChange} disabled={isUpdatingNickname}>
+                            <br />
+                            <FormBox style={{ display: 'flex', flexDirection: 'row' }}>
+                                <Input
+                                    style={{ fontSize: '14px' }}
+                                    type="text"
+                                    value={newNickname}
+                                    placeholder="변경할 닉네임을 입력해주세요."
+                                    onChange={(e) => setNewNickname(e.target.value)}
+                                />
+                                <VerifyButton onClick={handleNicknameChange} disabled={isUpdatingNickname}>
                                     {isUpdatingNickname ? '변경 중...' : '변경'}
-                                </button>
+                                </VerifyButton>
+                            </FormBox>
+                            <br />
+                            <br />
+                            <div style={{ display: 'flex', flexDirection: 'row', width: '80%' }}>
+                                <FormBox>
+                                    <Input
+                                        style={{ fontSize: '14px', width: '100%' }}
+                                        value={password}
+                                        onChange={onChangePassword}
+                                        type="password"
+                                        placeholder="비밀번호"
+                                        maxLength={20}
+                                    />
+                                    <br />
+                                    <span
+                                        style={{ fontSize: '13px' }}
+                                        className={`message ${isPassword ? 'success' : 'error'}`}
+                                    >
+                                        {passwordMessage}
+                                    </span>
+                                </FormBox>
+                                <FormBox>
+                                    <Input
+                                        style={{ fontSize: '14px', width: '100%' }}
+                                        value={passwordCheck}
+                                        onChange={onChangePasswordCheck}
+                                        type="password"
+                                        placeholder="비밀번호확인"
+                                        maxLength={20}
+                                    />
+                                    <span
+                                        style={{ fontSize: '13px' }}
+                                        className={`message ${isPasswordConfirm ? 'success' : 'error'}`}
+                                    >
+                                        {passwordConfirmMessage}
+                                    </span>
+                                </FormBox>
                             </div>
+
                             <div
                                 onClick={withdrawal}
                                 style={{
