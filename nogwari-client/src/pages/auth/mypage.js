@@ -86,12 +86,15 @@ const FormBox = styled.div`
 
 const VerifyButton = styled.button`
     width: 20%;
-    height: 42px;
+    height: 40px;
     background-color: #007bff;
     color: #fff;
     border: none;
-    border-radius: 0.2rem;
     cursor: pointer;
+    &:disabled {
+        background-color: #ccc;
+        cursor: not-allowed;
+    }
 `;
 
 function Mypage() {
@@ -313,8 +316,9 @@ function Mypage() {
                     <>
                         <Mypageword>마이페이지</Mypageword>
                         <MypageForm>
-                            <p>사용자 닉네임: {me.nickname}</p>
-                            <p>이메일: {me.email}</p>
+                            <p style={{ fontSize: '16px', marginBottom: '8px' }}>사용자 닉네임: {me.nickname}</p>
+                            <p style={{ fontSize: '16px', color: '#555', marginBottom: '16px' }}>이메일: {me.email}</p>
+                            <hr />
                             <MypageImgContainer>
                                 <MypageImg src={me.img} alt="프로필 이미지" />
                                 <Overlay>
@@ -350,43 +354,48 @@ function Mypage() {
                                     {isUpdatingNickname ? '변경 중...' : '변경'}
                                 </VerifyButton>
                             </FormBox>
-                            <br />
-                            <br />
-                            <div style={{ display: 'flex', flexDirection: 'row', width: '80%' }}>
-                                <FormBox>
-                                    <Input
-                                        style={{ fontSize: '14px', width: '100%' }}
-                                        value={password}
-                                        onChange={onChangePassword}
-                                        type="password"
-                                        placeholder="비밀번호"
-                                        maxLength={20}
-                                    />
-                                    <br />
-                                    <span
-                                        style={{ fontSize: '13px' }}
-                                        className={`message ${isPassword ? 'success' : 'error'}`}
-                                    >
-                                        {passwordMessage}
-                                    </span>
-                                </FormBox>
-                                <FormBox>
-                                    <Input
-                                        style={{ fontSize: '14px', width: '100%' }}
-                                        value={passwordCheck}
-                                        onChange={onChangePasswordCheck}
-                                        type="password"
-                                        placeholder="비밀번호확인"
-                                        maxLength={20}
-                                    />
-                                    <span
-                                        style={{ fontSize: '13px' }}
-                                        className={`message ${isPasswordConfirm ? 'success' : 'error'}`}
-                                    >
-                                        {passwordConfirmMessage}
-                                    </span>
-                                </FormBox>
-                            </div>
+                            <hr />
+                            <FormBox>
+                                <Input
+                                    style={{ fontSize: '14px', width: '100%' }}
+                                    value={password}
+                                    onChange={onChangePassword}
+                                    type="password"
+                                    placeholder="비밀번호"
+                                    maxLength={20}
+                                />
+                                <br />
+                                <span
+                                    style={{ fontSize: '13px' }}
+                                    className={`message ${isPassword ? 'success' : 'error'}`}
+                                >
+                                    {passwordMessage}
+                                </span>
+                            </FormBox>
+                            <FormBox>
+                                <Input
+                                    style={{
+                                        fontSize: '14px',
+                                        width: '80%',
+                                        display: 'inline-block',
+                                        verticalAlign: 'top',
+                                    }}
+                                    value={passwordCheck}
+                                    onChange={onChangePasswordCheck}
+                                    type="password"
+                                    placeholder="비밀번호확인"
+                                    maxLength={20}
+                                />
+                                <VerifyButton onClick={changepw} disabled={!isPasswordConfirm}>
+                                    변경
+                                </VerifyButton>
+                                <span
+                                    style={{ fontSize: '13px' }}
+                                    className={`message ${isPasswordConfirm ? 'success' : 'error'}`}
+                                >
+                                    {passwordConfirmMessage}
+                                </span>
+                            </FormBox>
 
                             <div
                                 onClick={withdrawal}
