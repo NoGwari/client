@@ -3,6 +3,8 @@ import { Http } from 'common';
 import Layout from 'component/layout/Layout';
 import styled from 'styled-components';
 import { TiDeleteOutline } from 'react-icons/ti';
+import { RiLockPasswordLine } from 'react-icons/ri';
+import { RiLockPasswordFill } from 'react-icons/ri';
 const Mypageword = styled.div`
     color: black;
     font-weight: bold;
@@ -111,6 +113,7 @@ function Mypage() {
 
     const [isPassword, setIsPassword] = useState(false);
     const [isPasswordConfirm, setIsPasswordConfirm] = useState(false);
+    const [isshowPassword, setIsshowPassword] = useState(false);
 
     const handleImageChange = async (e) => {
         const selectedFile = e.target.files[0];
@@ -255,6 +258,9 @@ function Mypage() {
             console.log('변경 실패', error.message);
         }
     };
+    const togglePasswordVisibility = () => {
+        setIsshowPassword(!isshowPassword);
+    };
 
     const onChangePassword = useCallback((e) => {
         const passwordRegex = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,25}$/;
@@ -357,13 +363,18 @@ function Mypage() {
                             <hr />
                             <FormBox>
                                 <Input
+                                    type={isshowPassword ? 'text' : 'password'}
                                     style={{ fontSize: '14px', width: '100%' }}
                                     value={password}
                                     onChange={onChangePassword}
-                                    type="password"
                                     placeholder="비밀번호"
                                     maxLength={20}
                                 />
+                                {isshowPassword ? (
+                                    <RiLockPasswordFill onClick={togglePasswordVisibility} />
+                                ) : (
+                                    <RiLockPasswordLine onClick={togglePasswordVisibility} />
+                                )}
                                 <br />
                                 <span
                                     style={{ fontSize: '13px' }}
