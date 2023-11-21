@@ -262,7 +262,7 @@ function Mypage() {
         setIsshowPassword(!isshowPassword);
     };
 
-    const onChangePassword = useCallback((e) => {
+    const onChangePassword = (e) => {
         const passwordRegex = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,25}$/;
         const passwordCurrent = e.target.value;
         setPassword(passwordCurrent);
@@ -274,23 +274,20 @@ function Mypage() {
             setPasswordMessage('안전한 비밀번호에요!');
             setIsPassword(true);
         }
-    }, []);
+    };
 
-    const onChangePasswordCheck = useCallback(
-        (e) => {
-            const passwordConfirmCurrent = e.target.value;
-            setPasswordCheck(passwordConfirmCurrent);
+    const onChangePasswordCheck = (e) => {
+        const passwordConfirmCurrent = e.target.value;
+        setPasswordCheck(passwordConfirmCurrent);
 
-            if (password === passwordConfirmCurrent) {
-                setPasswordConfirmMessage('비밀번호를 똑같이 입력했어요!');
-                setIsPasswordConfirm(true);
-            } else {
-                setPasswordConfirmMessage('비밀번호가 틀려요. 다시 확인해주세요');
-                setIsPasswordConfirm(false);
-            }
-        },
-        [password]
-    );
+        if (password === passwordConfirmCurrent) {
+            setPasswordConfirmMessage('비밀번호를 똑같이 입력했어요!');
+            setIsPasswordConfirm(true);
+        } else {
+            setPasswordConfirmMessage('비밀번호가 틀려요. 다시 확인해주세요');
+            setIsPasswordConfirm(false);
+        }
+    };
 
     const withdrawal = async () => {
         const shouldwithdrawal = window.confirm('정말 탈퇴하시겠습니까? 삭제한 이후 복구능 불가능 합니다.');
