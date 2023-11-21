@@ -363,18 +363,13 @@ function Mypage() {
                             <hr />
                             <FormBox>
                                 <Input
-                                    type={isshowPassword ? 'text' : 'password'}
+                                    type="password"
                                     style={{ fontSize: '14px', width: '100%' }}
                                     value={password}
                                     onChange={onChangePassword}
                                     placeholder="비밀번호"
                                     maxLength={20}
                                 />
-                                {isshowPassword ? (
-                                    <RiLockPasswordFill onClick={togglePasswordVisibility} />
-                                ) : (
-                                    <RiLockPasswordLine onClick={togglePasswordVisibility} />
-                                )}
                                 <br />
                                 <span
                                     style={{ fontSize: '13px' }}
@@ -393,11 +388,32 @@ function Mypage() {
                                     }}
                                     value={passwordCheck}
                                     onChange={onChangePasswordCheck}
-                                    type="password"
+                                    type={isshowPassword ? 'text' : 'password'}
                                     placeholder="비밀번호확인"
                                     maxLength={20}
                                 />
-                                <VerifyButton onClick={changepw} disabled={!isPasswordConfirm}>
+                                {isshowPassword ? (
+                                    <RiLockPasswordFill
+                                        onClick={togglePasswordVisibility}
+                                        style={{
+                                            position: 'absolute',
+                                            top: '40%',
+                                            right: '90px',
+                                            transform: 'translateY(-50%)',
+                                        }}
+                                    />
+                                ) : (
+                                    <RiLockPasswordLine
+                                        onClick={togglePasswordVisibility}
+                                        style={{
+                                            position: 'absolute',
+                                            top: '40%',
+                                            right: '90px',
+                                            transform: 'translateY(-50%)',
+                                        }}
+                                    />
+                                )}
+                                <VerifyButton onClick={changepw} disabled={!isPasswordConfirm && !isPassword}>
                                     변경
                                 </VerifyButton>
                                 <span
