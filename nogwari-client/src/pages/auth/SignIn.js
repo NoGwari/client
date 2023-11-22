@@ -4,6 +4,8 @@ import styled from 'styled-components';
 import Layout from 'component/layout/Layout';
 import { Form } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
+import { RiLockPasswordLine } from 'react-icons/ri';
+import { RiLockPasswordFill } from 'react-icons/ri';
 
 const SignInContainer = styled.div`
     text-align: center;
@@ -95,6 +97,7 @@ function SignIn() {
     const [isPasswordConfirm, setIsPasswordConfirm] = useState(false);
     const [isVerifyNumEntered, setIsVerifyNumEntered] = useState(false);
     const [ischeckKey, setIscheckKey] = useState(false);
+    const [isshowPassword, setIsshowPassword] = useState(false);
 
     const navigate = useNavigate();
 
@@ -145,6 +148,10 @@ function SignIn() {
         },
         [password]
     );
+
+    const togglePasswordVisibility = () => {
+        setIsshowPassword(!isshowPassword);
+    };
 
     const onChangeNickname = useCallback((e) => {
         const nickname = e.target.value;
@@ -281,10 +288,31 @@ function SignIn() {
                                 style={{ fontSize: '14px' }}
                                 value={passwordCheck}
                                 onChange={onChangePasswordCheck}
-                                type="password"
+                                type={isshowPassword ? 'text' : 'password'}
                                 placeholder="비밀번호확인"
                                 maxLength={20}
                             />
+                            {isshowPassword ? (
+                                <RiLockPasswordFill
+                                    onClick={togglePasswordVisibility}
+                                    style={{
+                                        position: 'absolute',
+                                        top: '40%',
+                                        right: '90px',
+                                        transform: 'translateY(-50%)',
+                                    }}
+                                />
+                            ) : (
+                                <RiLockPasswordLine
+                                    onClick={togglePasswordVisibility}
+                                    style={{
+                                        position: 'absolute',
+                                        top: '40%',
+                                        right: '90px',
+                                        transform: 'translateY(-50%)',
+                                    }}
+                                />
+                            )}
                             <span
                                 style={{ fontSize: '13px' }}
                                 className={`message ${isPasswordConfirm ? 'success' : 'error'}`}
