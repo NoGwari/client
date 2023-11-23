@@ -22,7 +22,6 @@ const Container = styled.div`
 const List = styled.div`
     margin-top: 50px;
     font-size: 20px;
-    margin-left: 20px;
     font-weight: bold;
 `;
 
@@ -31,17 +30,20 @@ const BoardListContainer = styled.div`
     height: auto;
     flex-wrap: wrap;
     justify-content: center;
+    align-items: center;
 `;
 
 const BoardItemContainer = styled.div`
-    width: 100%;
+    width: 60%;
+    height: auto;
     margin: 3px;
-    padding: 16px;
+    padding: 5px;
     background-color: #f9f9f9;
-    border-radius: 8px;
+    border-radius: 10px;
     display: flex;
     flex-direction: row;
     border: 1px solid #323232;
+    margin: auto;
 `;
 
 const CategoryTitle = styled.button`
@@ -100,8 +102,6 @@ const Write = styled.button`
     border-radius: 4px;
 `;
 
-const Page = styled.button``;
-
 const SearchButton = styled.div`
     display: flex;
     align-items: center;
@@ -119,6 +119,14 @@ const SearchButton = styled.div`
         box-sizing: border-box;
         text-align: center;
     }
+`;
+
+const SearchContainer = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 50px;
 `;
 
 function CreateTime(timestamp) {
@@ -248,39 +256,8 @@ function Board() {
             <Container>
                 <List>{title}</List>
                 <BoardListContainer>
-                    <Page />
-                    표시할 페이지의 개수 : &nbsp;
-                    <select
-                        type="number"
-                        value={limit}
-                        onChange={({ target: { value } }) => {
-                            setLimit(Number(value));
-                            setPage(1);
-                        }}
-                    >
-                        <option value="5">5</option>
-                        <option value="10">10</option>
-                        <option value="20">20</option>
-                    </select>
-                    &nbsp;
-                    <div style={{ border: '1px solid #ccc', display: 'felx', width: 'fit-content' }}>
-                        <SearchButton>
-                            <select type="text" value={selectOption} onChange={(e) => setSelectOption(e.target.value)}>
-                                <option value="title">제목</option>
-                                <option value="nickname">작성자</option>
-                            </select>
-                            <input
-                                className="search-bar"
-                                type="text"
-                                value={searchvalue}
-                                onChange={handleSearchValue}
-                                placeholder="검색할 내용을 입력하세요"
-                            />
-                            <AiOutlineSearch onClick={search} />
-                        </SearchButton>
-                    </div>
                     <br />
-                    <hr />
+                    <hr style={{ width: '80%' }} />
                     {board.map((item) => (
                         <Link to={`/board/${item.id}`} key={item.id}>
                             <BoardItemContainer>
@@ -316,7 +293,41 @@ function Board() {
                         <Link to={`/createBoard`}>글쓰기</Link>
                     </Write>
                 </WriteContainer>
-                <hr />
+                <hr style={{ width: '80%' }} />
+                <SearchContainer>
+                    <div>
+                        표시할 페이지의 개수 &nbsp;
+                        <select
+                            type="number"
+                            value={limit}
+                            onChange={({ target: { value } }) => {
+                                setLimit(Number(value));
+                                setPage(1);
+                            }}
+                        >
+                            <option value="5">5</option>
+                            <option value="10">10</option>
+                            <option value="20">20</option>
+                        </select>
+                    </div>
+                    &nbsp;
+                    <div style={{ border: '1px solid #ccc', display: 'flex', width: 'fit-content' }}>
+                        <SearchButton>
+                            <select type="text" value={selectOption} onChange={(e) => setSelectOption(e.target.value)}>
+                                <option value="title">제목</option>
+                                <option value="nickname">작성자</option>
+                            </select>
+                            <input
+                                className="search-bar"
+                                type="text"
+                                value={searchvalue}
+                                onChange={handleSearchValue}
+                                placeholder="검색할 내용을 입력하세요"
+                            />
+                            <AiOutlineSearch onClick={search} />
+                        </SearchButton>
+                    </div>
+                </SearchContainer>
                 <footer>
                     <Pagination total={totalPages} limit={limit} page={page} setPage={setPage} value={limit} />
                 </footer>
