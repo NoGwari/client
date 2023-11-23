@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState, useCallback, useRef } from 'react';
 import { Http } from 'common';
 import Layout from 'component/layout/Layout';
 import styled from 'styled-components';
@@ -114,6 +114,7 @@ function Mypage() {
     const [isPassword, setIsPassword] = useState(false);
     const [isPasswordConfirm, setIsPasswordConfirm] = useState(false);
     const [isshowPassword, setIsshowPassword] = useState(false);
+    const focus = useRef(null);
 
     const handleImageChange = async (e) => {
         const selectedFile = e.target.files[0];
@@ -266,6 +267,8 @@ function Mypage() {
         const passwordRegex = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,25}$/;
         const passwordCurrent = e.target.value;
         setPassword(passwordCurrent);
+        setPasswordCheck('');
+        setPasswordConfirmMessage('');
 
         if (!passwordRegex.test(passwordCurrent)) {
             setPasswordMessage('숫자+영문자+특수문자 조합으로 8자리 이상!');
