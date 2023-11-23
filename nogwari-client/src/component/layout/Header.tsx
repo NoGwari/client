@@ -86,7 +86,7 @@ const Header: React.FC = () => {
     return (
         <HeaderContainer>
             <ServiceWrap>
-                <HeaderLogo>
+                <HeaderLogo style={{ marginLeft: '196px' }}>
                     <Link to={'/board'}>
                         <img alt="노과리" src="/img/logo.PNG" />
                     </Link>
