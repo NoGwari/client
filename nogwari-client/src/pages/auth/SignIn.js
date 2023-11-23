@@ -308,7 +308,7 @@ function SignIn() {
                                     style={{
                                         position: 'absolute',
                                         top: '40%',
-                                        right: '90px',
+                                        right: '20px',
                                         transform: 'translateY(-50%)',
                                     }}
                                 />
