@@ -315,7 +315,7 @@ function Board() {
                     <div>
                         표시할 페이지의 개수 &nbsp;
                         <select
-                            style={{ cursor: 'pointer' }}
+                            style={{ cursor: 'pointer', padding: '1px', fontSize: '15px', marginBottom: '3px' }}
                             type="number"
                             value={limit}
                             onChange={({ target: { value } }) => {
