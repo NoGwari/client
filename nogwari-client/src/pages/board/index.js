@@ -9,6 +9,11 @@ import Pagination from './pagination';
 import { updateLanguageServiceSourceFile } from 'typescript';
 import { FiImage } from 'react-icons/fi';
 import { AiOutlineSearch } from 'react-icons/ai';
+import FormControl from '@mui/material/FormControl';
+import NativeSelect from '@mui/material/NativeSelect';
+import TextField from '@mui/material/TextField';
+import Box from '@mui/material/Box';
+import InputAdornment from '@mui/material/InputAdornment';
 
 const defaultImageSrc = FiImage;
 
@@ -310,6 +315,7 @@ function Board() {
                     <div>
                         표시할 페이지의 개수 &nbsp;
                         <select
+                            style={{ cursor: 'pointer' }}
                             type="number"
                             value={limit}
                             onChange={({ target: { value } }) => {
@@ -322,22 +328,43 @@ function Board() {
                             <option value="20">20</option>
                         </select>
                     </div>
-                    &nbsp;
-                    <div style={{ border: '1px solid #ccc', display: 'flex', width: 'fit-content' }}>
-                        <SearchButton>
-                            <select type="text" value={selectOption} onChange={(e) => setSelectOption(e.target.value)}>
-                                <option value="title">제목</option>
-                                <option value="nickname">작성자</option>
-                            </select>
-                            <input
-                                className="search-bar"
-                                type="text"
-                                value={searchvalue}
-                                onChange={handleSearchValue}
-                                placeholder="검색할 내용을 입력하세요"
-                            />
-                            <AiOutlineSearch onClick={search} />
-                        </SearchButton>
+                    <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+                        <Box
+                            component="form"
+                            sx={{ '& .MuiTextField-rppt': { m: 1, width: '40ch' }, height: '50px' }}
+                            noValidate
+                            autoComplete="off"
+                        >
+                            <FormControl
+                                sx={{
+                                    m: 1,
+                                    minWidth: 120,
+                                    display: 'flex',
+                                    flexDirection: 'row',
+                                    alignItems: 'center',
+                                }}
+                            >
+                                <NativeSelect value={selectOption} onChange={(e) => setSelectOption(e.target.value)}>
+                                    <option value="title">제목</option>
+                                    <option value="nickname">작성자</option>
+                                </NativeSelect>
+                                &nbsp;
+                                <TextField
+                                    variant="standard"
+                                    type="text"
+                                    value={searchvalue}
+                                    onChange={handleSearchValue}
+                                    placeholder="검색할 내용을 입력하세요"
+                                    InputProps={{
+                                        endAdornment: (
+                                            <InputAdornment position="end">
+                                                <AiOutlineSearch style={{ cursor: 'pointer' }} onClick={search} />
+                                            </InputAdornment>
+                                        ),
+                                    }}
+                                />
+                            </FormControl>
+                        </Box>
                     </div>
                 </SearchContainer>
                 <footer>
