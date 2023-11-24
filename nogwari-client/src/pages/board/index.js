@@ -20,9 +20,10 @@ const Container = styled.div`
 `;
 
 const List = styled.div`
-    margin-top: 50px;
+    margin-top: 30px;
     font-size: 20px;
     font-weight: bold;
+    margin-left: 100px;
 `;
 
 const BoardListContainer = styled.div`
@@ -34,10 +35,10 @@ const BoardListContainer = styled.div`
 `;
 
 const BoardItemContainer = styled.div`
-    width: 60%;
+    width: 70%;
     height: auto;
     margin: 3px;
-    padding: 5px;
+    padding: 2px;
     background-color: #f9f9f9;
     border-radius: 10px;
     display: flex;
@@ -49,7 +50,7 @@ const BoardItemContainer = styled.div`
 const CategoryTitle = styled.button`
     border: 1px solid black;
     border-radius: 2px;
-    padding: 3px;
+    padding: 5px;
     background-color: #e2e2e2;
     margin-left: 2px;
     margin-right: 2px;
@@ -61,6 +62,7 @@ const BoardTitle = styled.h4`
     font-size: 15px;
     margin-bottom: 2px;
     margin-left: 2px;
+    padding: 3px;
 `;
 
 const BoardContent = styled.p`
@@ -69,6 +71,7 @@ const BoardContent = styled.p`
     margin-top: 3px;
     display: flex;
     flex-direction: row;
+    padding: 2px;
 `;
 
 const BoardImage = styled.div`
@@ -96,16 +99,26 @@ const BoardContainer = styled.div`
 const WriteContainer = styled.div`
     display: flex;
     justify-content: flex-end;
+    margin-right: 100px;
 `;
 
 const Write = styled.button`
-    border-radius: 4px;
+    color: white;
+    border-radius: 3px;
+    background: skyblue;
+    font-size: 15px;
+    border: none;
+    &:hover {
+        background: tomato;
+        cursor: pointer;
+        transform: translateY(-2px);
+    }
 `;
 
 const SearchButton = styled.div`
     display: flex;
     align-items: center;
-
+    cursor: pointer;
     input[type='text'] {
         height: 30px;
         border: 1px solid white;
@@ -256,8 +269,6 @@ function Board() {
             <Container>
                 <List>{title}</List>
                 <BoardListContainer>
-                    <br />
-                    <hr style={{ width: '80%' }} />
                     {board.map((item) => (
                         <Link to={`/board/${item.id}`} key={item.id}>
                             <BoardItemContainer>
@@ -288,12 +299,13 @@ function Board() {
                         </Link>
                     ))}
                 </BoardListContainer>
+                <br />
+                <hr style={{ width: '80%' }} />
                 <WriteContainer>
                     <Write>
                         <Link to={`/createBoard`}>글쓰기</Link>
                     </Write>
                 </WriteContainer>
-                <hr style={{ width: '80%' }} />
                 <SearchContainer>
                     <div>
                         표시할 페이지의 개수 &nbsp;
