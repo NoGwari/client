@@ -18,15 +18,16 @@ const BoardTitleContainer = styled.div`
     margin-top: 10px;
 `;
 const BoardTitle = styled.h1`
-    font-size: 18px;
+    font-size: 25px;
+    margin-left: 30px;
 `;
 
 const CategoryTitle = styled.button`
-    border: 1px solid black;
-    border-radius: 2px;
-    padding: 3px;
+    border: none;
+    border-radius: 5px;
+    padding: 5px;
     background-color: #e2e2e2;
-    font-size: 11px;
+    font-size: 25px;
 `;
 const BoardContent = styled.p`
     font-size: 14px;
@@ -446,6 +447,7 @@ function BoardDetailPage() {
             <Container>
                 <BoardTitleContainer>
                     <CategoryTitle>{board.categoryName}</CategoryTitle>
+
                     <BoardTitle>{board.title}</BoardTitle>
                 </BoardTitleContainer>
                 <BoardContent>

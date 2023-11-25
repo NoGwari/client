@@ -26,7 +26,7 @@ const Container = styled.div`
 
 const List = styled.div`
     margin-top: 30px;
-    font-size: 20px;
+    font-size: 120px;
     font-weight: bold;
     margin-left: 100px;
 `;
