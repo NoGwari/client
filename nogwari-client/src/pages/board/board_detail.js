@@ -9,6 +9,7 @@ import { AiOutlineEye, AiFillDelete } from 'react-icons/ai';
 import { ImReply } from 'react-icons/im';
 import { RiAlarmWarningFill } from 'react-icons/ri';
 import { Navigate } from 'react-router-dom';
+import { Checkbox } from '@mui/material';
 
 const Container = styled.div`
     margin: 0 100px;
@@ -35,6 +36,7 @@ const BoardContent = styled.p`
     margin-top: 3px;
     display: flex;
     flex-direction: row;
+    align-items: center;
 `;
 const CommentContainer = styled.div`
     width: 100%;
@@ -86,6 +88,21 @@ const ReplyContent = styled.div`
     width: 80%;
 `;
 
+const CheckboxContainer = styled.div`
+    display: flex;
+    align-items: center;
+`;
+
+const StyledCheckbox = styled.div`
+    width: 20px;
+    height: 20px;
+    border: 2px solid #3498db;
+    border-radius: 5px;
+    display: inline-block;
+    cursor: pointer;
+    background-color: ${(props) => (props.ishidden ? '#3498db' : 'transparent')};
+`;
+
 function BoardDetailPage() {
     const [board, setBoard] = useState({});
     const { itemId } = useParams();
@@ -98,6 +115,7 @@ function BoardDetailPage() {
     const [replyCommentId, setReplyCommentId] = useState(null);
     const [replyComments, setReplyComments] = useState([]);
     const [reply, setReply] = useState('');
+    const [ishidden, setIshidden] = useState(false);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -437,6 +455,34 @@ function BoardDetailPage() {
         });
     };
 
+    const handleHidden = async () => {
+        try {
+            const response = await fetch(Http + `/board/hidden/${itemId}`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${sessionStorage.getItem('token')}`,
+                },
+                credentials: 'include',
+            });
+
+            if (response.status === 401) {
+                alert('권한이 없습니다.');
+            }
+
+            if (response.status === 200) {
+                const userConfirmed = window.confirm(
+                    ishidden === 'false' ? '게시글을 숨김 처리 하시겠습니까?' : '게시글 숨김 처리를 취소하겠습니까?'
+                );
+                if (userConfirmed) {
+                    setIshidden(!ishidden);
+                }
+            }
+        } catch (error) {
+            console.error('에러 확인: ', error);
+        }
+    };
+
     if (!board.title || comments === null) {
         return <div>Loading...</div>;
     }
@@ -461,6 +507,10 @@ function BoardDetailPage() {
                         }}
                     />
                     {board.hits}
+                    <CheckboxContainer style={{ marginLeft: 'auto' }}>
+                        게시글 숨김 &nbsp;
+                        <StyledCheckbox ishidden={ishidden} onClick={handleHidden} />
+                    </CheckboxContainer>
                 </BoardContent>
                 <hr />
                 <div dangerouslySetInnerHTML={{ __html: board.content }}></div>
