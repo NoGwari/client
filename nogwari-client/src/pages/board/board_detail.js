@@ -471,11 +471,10 @@ function BoardDetailPage() {
             }
 
             if (response.status === 200) {
-                const userConfirmed = window.confirm(
-                    ishidden === 'false' ? '게시글을 숨김 처리 하시겠습니까?' : '게시글 숨김 처리를 취소하겠습니까?'
-                );
+                const userConfirmed = window.confirm('게시물 숨김처리 ON/OFF');
                 if (userConfirmed) {
                     setIshidden(!ishidden);
+                    localStorage.setItem('checkboxstate', !ishidden ? 'true' : 'false');
                 }
             }
         } catch (error) {
