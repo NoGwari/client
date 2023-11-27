@@ -26,9 +26,9 @@ const Container = styled.div`
 
 const List = styled.div`
     margin-top: 30px;
-    font-size: 120px;
+    font-size: 30px;
     font-weight: bold;
-    margin-left: 100px;
+    margin-left: 140px;
 `;
 
 const BoardListContainer = styled.div`
