@@ -10,7 +10,7 @@ const Mypageword = styled.div`
     font-weight: bold;
     font-size: 20px;
     text-align: center;
-    margin-top: 80px;
+    margin-top: 50px;
 `;
 const MypageImg = styled.img`
     border-radius: 50%;
@@ -97,6 +97,29 @@ const VerifyButton = styled.button`
         background-color: #ccc;
         cursor: not-allowed;
     }
+`;
+const MypageList = styled.div`
+    display: flex;
+    flex-direction: row;
+    width: 60%;
+    margin: auto;
+    margin-top: 30px;
+`;
+const Mypagebutton = styled.button`
+    width: 180px;
+    height: 40px;
+    background-color: white;
+    &: hover {
+        background-color: #e2e2e2;
+    }
+    display: flex;
+    flex: 1;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    margin: 1px;
+    text-align: center;
+    border: 2px solid #e2e2e2;
 `;
 
 function Mypage() {
@@ -320,7 +343,12 @@ function Mypage() {
             <div>
                 {me && (
                     <>
-                        <Mypageword>마이페이지</Mypageword>
+                        <MypageList>
+                            <Mypagebutton>정보 변경</Mypagebutton>
+                            <Mypagebutton>내가 쓴 글</Mypagebutton>
+                            <Mypagebutton>내가 단 댓글</Mypagebutton>
+                        </MypageList>
+                        <Mypageword>정보 변경</Mypageword>
                         <MypageForm>
                             <p style={{ fontSize: '16px', marginBottom: '8px' }}>사용자 닉네임: {me.nickname}</p>
                             <p style={{ fontSize: '16px', color: '#555', marginBottom: '16px' }}>이메일: {me.email}</p>
