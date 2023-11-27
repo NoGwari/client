@@ -1,5 +1,6 @@
-import React, { useEffect, useState, useCallback, useRef } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { Http } from 'common';
+import { useNavigate } from 'react-router-dom';
 import Layout from 'component/layout/Layout';
 import styled from 'styled-components';
 import { TiDeleteOutline } from 'react-icons/ti';
@@ -138,6 +139,7 @@ function Mypage() {
     const [isPasswordConfirm, setIsPasswordConfirm] = useState(false);
     const [isshowPassword, setIsshowPassword] = useState(false);
     const focus = useRef(null);
+    const navigate = useNavigate();
 
     const handleImageChange = async (e) => {
         const selectedFile = e.target.files[0];
@@ -344,9 +346,9 @@ function Mypage() {
                 {me && (
                     <>
                         <MypageList>
-                            <Mypagebutton>정보 변경</Mypagebutton>
-                            <Mypagebutton>내가 쓴 글</Mypagebutton>
-                            <Mypagebutton>내가 단 댓글</Mypagebutton>
+                            <Mypagebutton onClick={() => navigate('/mypage')}>정보 변경</Mypagebutton>
+                            <Mypagebutton onClick={() => navigate('/mypage/mypost')}>내가 쓴 글</Mypagebutton>
+                            <Mypagebutton onClick={() => navigate('/mypage/mycomment')}>내가 단 댓글</Mypagebutton>
                         </MypageList>
                         <Mypageword>정보 변경</Mypageword>
                         <MypageForm>
