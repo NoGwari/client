@@ -16,6 +16,8 @@ import BoardDetailPage from '../src/pages/board/board_detail.js';
 import UpdateBoard from './pages/board/UpdateBoard/UpdateBoard.js';
 import Mypage from 'pages/auth/mypage.js';
 import ForgotPassword from 'pages/auth/ForgotPassword.js';
+import Mycomment from 'pages/auth/mycomment.js';
+import Mypost from 'pages/auth/mypost.js';
 
 const BoardPages = lazy(() => import('./pages/board'));
 
@@ -51,7 +53,10 @@ function App() {
                         </Suspense>
                     }
                 />
-                <Route path="/mypage" element={<Mypage />} />
+                <Route path="/mypage" element={<Mypage />}>
+                    <Route path="mypost" element={<Mypost />} />
+                    <Route path="mycomment" element={<Mycomment />} />
+                </Route>
                 <Route path="/board/:itemId" element={<BoardDetailPage />} />
                 <Route path="/updateBoard/:itemId" element={<UpdateBoard />} />
                 <Route path="/createBoard" element={<CreateBoard />} />

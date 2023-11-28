@@ -3,6 +3,8 @@ import { Http } from 'common';
 import { useNavigate } from 'react-router-dom';
 import Layout from 'component/layout/Layout';
 import styled from 'styled-components';
+import Mypost from './mypost';
+import Mycomment from './mycomment';
 import { TiDeleteOutline } from 'react-icons/ti';
 import { RiLockPasswordLine } from 'react-icons/ri';
 import { RiLockPasswordFill } from 'react-icons/ri';
