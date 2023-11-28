@@ -53,10 +53,9 @@ function App() {
                         </Suspense>
                     }
                 />
-                <Route path="/mypage" element={<Mypage />}>
-                    <Route path="mypost" element={<Mypost />} />
-                    <Route path="mycomment" element={<Mycomment />} />
-                </Route>
+                <Route path="/mypage" element={<Mypage />} />
+                <Route path="/mypage/mypost" element={<Mypost />} />
+                <Route path="/mypage/mycomment" element={<Mycomment />} />
                 <Route path="/board/:itemId" element={<BoardDetailPage />} />
                 <Route path="/updateBoard/:itemId" element={<UpdateBoard />} />
                 <Route path="/createBoard" element={<CreateBoard />} />
