@@ -86,14 +86,7 @@ function Mypost() {
                     <Mypagebutton onClick={() => navigate('/mypage/mycomment')}>내가 단 댓글</Mypagebutton>
                 </MypageList>
                 <Mypageword>내가 쓴 글</Mypageword>
-                <MypageForm>
-                    {post.map((item) => (
-                        <div key={item.id}>
-                            <p>{item.title}</p>
-                            <p>{item.body}</p>
-                        </div>
-                    ))}
-                </MypageForm>
+                <MypageForm>{post}</MypageForm>
             </div>
         </>
     );
