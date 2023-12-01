@@ -38,14 +38,58 @@ const Mypagebutton = styled.button`
 `;
 
 const MypageForm = styled.div`
-    text-align: center;
-    width: 60%;
+    max-width: 600px;
     margin: 0 auto;
     padding: 20px;
     border: 1px solid #ccc;
     background-color: #f9f9f9;
     margin-top: 20px;
 `;
+
+const Posts = styled.div`
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    overflow: hidden;
+`;
+
+const Title = styled.p`
+    max-width: 280px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    &: hover {
+        cursor: pointer;
+    }
+`;
+
+function CreateTime(timestamp) {
+    if (!timestamp) {
+        return '알수없음';
+    }
+
+    const now = new Date();
+    const past = new Date(timestamp);
+    const timeDiff = now.getTime() - past.getTime();
+    const seconds = Math.floor(timeDiff / 1000);
+    const minutes = Math.floor(seconds / 60);
+    const hours = Math.floor(minutes / 60);
+    const days = Math.floor(hours / 24);
+
+    if (days >= 7) {
+        const Month = past.getMonth() + 1;
+        const Day = past.getDate();
+        return `${Month}월 ${Day}일`;
+    } else if (days >= 1) {
+        return `${days}일 전`;
+    } else if (hours >= 1) {
+        return `${hours}시간 전`;
+    } else if (minutes >= 1) {
+        return `${minutes}분 전`;
+    }
+
+    return '방금 전';
+}
 
 function Mypost() {
     const navigate = useNavigate();
@@ -89,8 +133,11 @@ function Mypost() {
                 <MypageForm>
                     {post.map((item, index) => (
                         <div key={index}>
-                            <p>Title: {item.title}</p>
-                            <p>Updated At: {item.updatedAt}</p>
+                            <Posts>
+                                <Title>{item.title}</Title>
+                                <p style={{ fontSize: '12px' }}>{CreateTime(item.createdAt)}</p>
+                            </Posts>
+                            <hr style={{ background: '#e2e2e2', height: '1px', border: '0' }} />
                         </div>
                     ))}
                 </MypageForm>
