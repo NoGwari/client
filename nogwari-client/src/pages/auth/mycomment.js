@@ -134,7 +134,7 @@ function Mycomment() {
                     {comment.map((item, index) => (
                         <div key={index}>
                             <Comments>
-                                <Title to={`/board/${item.id}`}>{item.content}</Title>
+                                <Title to={`/board/${item.boardId}`}>{item.content}</Title>
                                 <p style={{ fontSize: '12px' }}>{CreateTime(item.createdAt)}</p>
                             </Comments>
                             <hr style={{ background: '#e2e2e2', height: '1px', border: '0' }} />
