@@ -28,7 +28,8 @@ const List = styled.div`
     margin-top: 30px;
     font-size: 30px;
     font-weight: bold;
-    margin-left: 140px;
+    position: relative;
+    margin-left: 10vh;
 `;
 
 const BoardListContainer = styled.div`
@@ -117,25 +118,6 @@ const Write = styled.button`
         background: tomato;
         cursor: pointer;
         transform: translateY(-2px);
-    }
-`;
-
-const SearchButton = styled.div`
-    display: flex;
-    align-items: center;
-    cursor: pointer;
-    input[type='text'] {
-        height: 30px;
-        border: 1px solid white;
-        padding: 5px;
-        box-sizing: border-box;
-    }
-
-    select {
-        height: 30px;
-        border: 1px solid #ccc;
-        box-sizing: border-box;
-        text-align: center;
     }
 `;
 
