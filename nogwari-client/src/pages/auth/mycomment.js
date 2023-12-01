@@ -1,5 +1,6 @@
+import React, { useEffect, useState, useRef } from 'react';
 import { Http } from 'common';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import Layout from 'component/layout/Layout';
 import styled from 'styled-components';
 
@@ -37,8 +38,7 @@ const Mypagebutton = styled.button`
 `;
 
 const MypageForm = styled.div`
-    text-align: center;
-    width: 60%;
+    max-width: 600px;
     margin: 0 auto;
     padding: 20px;
     border: 1px solid #ccc;
@@ -46,8 +46,80 @@ const MypageForm = styled.div`
     margin-top: 20px;
 `;
 
+const Comments = styled.div`
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    overflow: hidden;
+`;
+
+const Title = styled(Link)`
+    max-width: 280px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    &: hover {
+        cursor: pointer;
+        font-weight: bold;
+    }
+`;
+
+function CreateTime(timestamp) {
+    if (!timestamp) {
+        return '알수없음';
+    }
+
+    const now = new Date();
+    const past = new Date(timestamp);
+    const timeDiff = now.getTime() - past.getTime();
+    const seconds = Math.floor(timeDiff / 1000);
+    const minutes = Math.floor(seconds / 60);
+    const hours = Math.floor(minutes / 60);
+    const days = Math.floor(hours / 24);
+
+    if (days >= 7) {
+        const Month = past.getMonth() + 1;
+        const Day = past.getDate();
+        return `${Month}월 ${Day}일`;
+    } else if (days >= 1) {
+        return `${days}일 전`;
+    } else if (hours >= 1) {
+        return `${hours}시간 전`;
+    } else if (minutes >= 1) {
+        return `${minutes}분 전`;
+    }
+
+    return '방금 전';
+}
+
 function Mycomment() {
     const navigate = useNavigate();
+
+    const [comment, setComment] = useState([]);
+
+    useEffect(() => {
+        const mycomment = async () => {
+            try {
+                const response = await fetch(Http + `/user/mycomment`, {
+                    method: 'GET',
+                    headers: {
+                        Authorization: `Bearer ${sessionStorage.getItem('token')}`,
+                        'Cache-Control': 'no-cache',
+                    },
+                });
+                if (response.ok) {
+                    const result = await response.json();
+                    console.log(result);
+                    setComment(result.rows);
+                } else {
+                    console.log('불러오기 실패');
+                }
+            } catch (error) {
+                console.error('내가 쓴 글 불러오기 실패', error.message);
+            }
+        };
+        mycomment();
+    }, []);
     return (
         <>
             <div>
@@ -58,7 +130,17 @@ function Mycomment() {
                     <Mypagebutton onClick={() => navigate('/mypage/mycomment')}>내가 단 댓글</Mypagebutton>
                 </MypageList>
                 <Mypageword>내가 단 댓글</Mypageword>
-                <MypageForm>어어</MypageForm>
+                <MypageForm>
+                    {comment.map((item, index) => (
+                        <div key={index}>
+                            <Comments>
+                                <Title to={`/board/${item.id}`}>{item.content}</Title>
+                                <p style={{ fontSize: '12px' }}>{CreateTime(item.createdAt)}</p>
+                            </Comments>
+                            <hr style={{ background: '#e2e2e2', height: '1px', border: '0' }} />
+                        </div>
+                    ))}
+                </MypageForm>
             </div>
         </>
     );
