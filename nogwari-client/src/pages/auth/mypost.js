@@ -64,8 +64,8 @@ function Mypost() {
                 });
                 if (response.ok) {
                     const result = await response.json();
-                    setPost(result);
                     console.log(result);
+                    setPost(result.rows);
                 } else {
                     console.log('불러오기 실패');
                 }
@@ -86,7 +86,14 @@ function Mypost() {
                     <Mypagebutton onClick={() => navigate('/mypage/mycomment')}>내가 단 댓글</Mypagebutton>
                 </MypageList>
                 <Mypageword>내가 쓴 글</Mypageword>
-                <MypageForm>{post}</MypageForm>
+                <MypageForm>
+                    {post.map((item, index) => (
+                        <div key={index}>
+                            <p>Title: {item.title}</p>
+                            <p>Updated At: {item.updatedAt}</p>
+                        </div>
+                    ))}
+                </MypageForm>
             </div>
         </>
     );
