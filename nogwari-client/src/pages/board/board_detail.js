@@ -476,12 +476,8 @@ function BoardDetailPage() {
                 if (userConfirmed) {
                     console.log(data);
                     console.log(data.hidden);
-                    if (data.hidden == 0) {
-                        setIshidden(true);
-                    } else {
-                        setIshidden(false);
-                    }
-                    localStorage.setItem('checkboxstate', !ishidden ? '#3498db' : 'transparent');
+                    setIshidden((prevIsHidden) => !prevIsHidden);
+                    localStorage.setItem('checkboxstate', ishidden ? '#3498db' : 'transparent');
                 }
             }
         } catch (error) {
