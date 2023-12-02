@@ -100,7 +100,7 @@ const StyledCheckbox = styled.div`
     border-radius: 5px;
     display: inline-block;
     cursor: pointer;
-    background-color: ${(props) => (props.ishidden === '1' ? '#3498db' : 'transparent')};
+    background-color: ${(props) => (props.ishidden ? '#3498db' : 'transparent')};
 `;
 
 function BoardDetailPage() {
@@ -115,7 +115,7 @@ function BoardDetailPage() {
     const [replyCommentId, setReplyCommentId] = useState(null);
     const [replyComments, setReplyComments] = useState([]);
     const [reply, setReply] = useState('');
-    const [ishidden, setIshidden] = useState(0);
+    const [ishidden, setIshidden] = useState(false);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -475,8 +475,13 @@ function BoardDetailPage() {
                 const userConfirmed = window.confirm('게시물 숨김처리 ON/OFF');
                 if (userConfirmed) {
                     console.log(data);
-                    setIshidden(data.hidden === 1);
                     console.log(data.hidden);
+                    if (data.hidden == 0) {
+                        setIshidden(true);
+                    } else {
+                        setIshidden(false);
+                    }
+                    localStorage.setItem('checkboxstate', !ishidden ? '#3498db' : 'transparent');
                 }
             }
         } catch (error) {
