@@ -135,7 +135,7 @@ function Mypost() {
                     {post.map((item, index) => (
                         <div key={index}>
                             <Posts>
-                                <Title to={`/post/${item.id}`}>{item.title}</Title>
+                                <Title to={`/board/${item.id}`}>{item.title}</Title>
                                 <p style={{ fontSize: '12px' }}>{CreateTime(item.createdAt)}</p>
                             </Posts>
                             <hr style={{ background: '#e2e2e2', height: '1px', border: '0' }} />
