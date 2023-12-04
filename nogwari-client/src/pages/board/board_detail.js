@@ -99,7 +99,7 @@ const StyledCheckbox = styled.div`
     border-radius: 5px;
     display: inline-block;
     cursor: pointer;
-    background-color: ${(props) => (props.ishidden ? '#3498db' : 'transparent')};
+    background-color: ${(props) => (props.hiddenStatus === 1 ? '#3498db' : 'transparent')};
 `;
 
 function BoardDetailPage() {
@@ -114,7 +114,9 @@ function BoardDetailPage() {
     const [replyCommentId, setReplyCommentId] = useState(null);
     const [replyComments, setReplyComments] = useState([]);
     const [reply, setReply] = useState('');
-    const [ishidden, setIshidden] = useState(false);
+    const [isreport, setIsReport] = useState(false);
+    const [reportmsg, setReportmsg] = useState('');
+    const [hiddenStatus, setHiddenStatus] = useState(0);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -138,6 +140,11 @@ function BoardDetailPage() {
         };
         fetchData();
         fetchComments();
+
+        const initialHiddenStatus = localStorage.getItem('hiddenStatus');
+        if (initialHiddenStatus) {
+            setHiddenStatus(parseInt(initialHiddenStatus));
+        }
     }, [itemId]);
 
     const boardData = async () => {
@@ -473,16 +480,29 @@ function BoardDetailPage() {
                 const data = await response.json();
                 const userConfirmed = window.confirm('게시물 숨김처리 ON/OFF');
                 if (userConfirmed) {
-                    console.log(data);
-                    console.log(data.hidden);
-                    setIshidden((prevIsHidden) => !prevIsHidden);
-                    localStorage.setItem('checkboxstate', ishidden ? '#3498db' : 'transparent');
+                    setHiddenStatus((prevHiddenStatus) => (prevHiddenStatus === 1 ? 0 : 1));
+                    localStorage.setItem('hiddenStatus', (hiddenStatus === 1 ? 0 : 1).toString());
                 }
             }
         } catch (error) {
             console.error('에러 확인: ', error);
         }
     };
+
+    // const handleReport = async() => {
+    //     try{
+    //         const response = await fetch(Http + `/board/report/${itemId}`,{
+    //             method : 'POST',
+    //             headers: {
+    //                 'Content-Type': 'application/json',
+    //                 Authorization: `Bearer ${sessionStorage.getItem('token')}`,
+    //             },
+    //             body:{
+    //                 string :
+    //             }
+    //         })
+    //     }
+    // }
 
     if (!board.title || comments === null) {
         return <div>Loading...</div>;
@@ -512,7 +532,7 @@ function BoardDetailPage() {
                     <MdOutlineReportProblem />
                     <CheckboxContainer style={{ marginLeft: 'auto' }}>
                         게시글 숨김 &nbsp;
-                        <StyledCheckbox ishidden={ishidden} onClick={handleHidden} />
+                        <StyledCheckbox hiddenStatus={hiddenStatus} onClick={handleHidden} />
                     </CheckboxContainer>
                 </BoardContent>
                 <hr />
