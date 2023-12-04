@@ -491,17 +491,33 @@ function BoardDetailPage() {
 
     const handleReport = async () => {
         try {
-            const response = await fetch(Http + `/board/report/${itemId}`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    Authorization: `Bearer ${sessionStorage.getItem('token')}`,
-                },
-                body: {
-                    string: reportmsg,
-                },
-            });
-        } catch {}
+            const userMsg = window.prompt('신고 이유를 알려주세요.');
+
+            if (userMsg !== null) {
+                const response = await fetch(Http + `/board/report/${itemId}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Authorization: `Bearer ${sessionStorage.getItem('token')}`,
+                    },
+                    body: JSON.stringify({
+                        string: reportmsg,
+                    }),
+                });
+
+                if (response.status === 401) {
+                    alert('권한이 없습니다.');
+                }
+                if (response.status === 201) {
+                    alert('신고가 정상적으로 접수되었습니다.');
+                }
+                if (response.status === 400) {
+                    alert('신고는 한번만 가능합니다.');
+                }
+            }
+        } catch (error) {
+            console.error('에러확인: ', error);
+        }
     };
 
     if (!board.title || comments === null) {
@@ -529,7 +545,7 @@ function BoardDetailPage() {
                     />
                     {board.hits}
                     &nbsp;&middot; 신고
-                    <MdOutlineReportProblem />
+                    <MdOutlineReportProblem onClick={handleReport} />
                     <CheckboxContainer style={{ marginLeft: 'auto' }}>
                         게시글 숨김 &nbsp;
                         <StyledCheckbox hiddenStatus={hiddenStatus} onClick={handleHidden} />
