@@ -480,8 +480,8 @@ function BoardDetailPage() {
                 const data = await response.json();
                 const userConfirmed = window.confirm('게시물 숨김처리 ON/OFF');
                 if (userConfirmed) {
-                    setHiddenStatus((prevHiddenStatus) => (prevHiddenStatus === 1 ? 0 : 1));
-                    localStorage.setItem('hiddenStatus', (hiddenStatus === 1 ? 0 : 1).toString());
+                    setHiddenStatus(data.hidden);
+                    localStorage.setItem('hiddenStatus', data.hidden.toString());
                 }
             }
         } catch (error) {
@@ -489,20 +489,20 @@ function BoardDetailPage() {
         }
     };
 
-    // const handleReport = async() => {
-    //     try{
-    //         const response = await fetch(Http + `/board/report/${itemId}`,{
-    //             method : 'POST',
-    //             headers: {
-    //                 'Content-Type': 'application/json',
-    //                 Authorization: `Bearer ${sessionStorage.getItem('token')}`,
-    //             },
-    //             body:{
-    //                 string :
-    //             }
-    //         })
-    //     }
-    // }
+    const handleReport = async () => {
+        try {
+            const response = await fetch(Http + `/board/report/${itemId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${sessionStorage.getItem('token')}`,
+                },
+                body: {
+                    string: reportmsg,
+                },
+            });
+        } catch {}
+    };
 
     if (!board.title || comments === null) {
         return <div>Loading...</div>;
