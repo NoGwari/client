@@ -8,8 +8,7 @@ import { FiThumbsUp } from 'react-icons/fi';
 import { AiOutlineEye, AiFillDelete } from 'react-icons/ai';
 import { ImReply } from 'react-icons/im';
 import { RiAlarmWarningFill } from 'react-icons/ri';
-import { Navigate } from 'react-router-dom';
-import { Checkbox } from '@mui/material';
+import { MdOutlineReportProblem } from 'react-icons/md';
 
 const Container = styled.div`
     margin: 0 100px;
@@ -509,6 +508,8 @@ function BoardDetailPage() {
                         }}
                     />
                     {board.hits}
+                    &nbsp;&middot; 신고
+                    <MdOutlineReportProblem />
                     <CheckboxContainer style={{ marginLeft: 'auto' }}>
                         게시글 숨김 &nbsp;
                         <StyledCheckbox ishidden={ishidden} onClick={handleHidden} />
