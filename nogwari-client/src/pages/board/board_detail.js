@@ -545,7 +545,7 @@ function BoardDetailPage() {
                     />
                     {board.hits}
                     &nbsp;&middot; 신고
-                    <MdOutlineReportProblem onClick={handleReport} />
+                    <MdOutlineReportProblem onClick={handleReport} style={{ cursor: 'pointer' }} />
                     <CheckboxContainer style={{ marginLeft: 'auto' }}>
                         게시글 숨김 &nbsp;
                         <StyledCheckbox hiddenStatus={hiddenStatus} onClick={handleHidden} />
