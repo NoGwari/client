@@ -499,10 +499,9 @@ function BoardDetailPage() {
                         Authorization: `Bearer ${sessionStorage.getItem('token')}`,
                     },
                     body: JSON.stringify({
-                        string: userMsg,
+                        reason: userMsg,
                     }),
                 });
-
                 if (response.status === 401) {
                     alert('권한이 없습니다.');
                 }
