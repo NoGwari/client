@@ -159,6 +159,7 @@ function CreateTime(timestamp) {
 
 function Board() {
     const [board, setBoard] = useState([]);
+    const [notice, setNotice] = useState([]);
     const [limit, setLimit] = useState(10);
     const [page, setPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
@@ -171,10 +172,19 @@ function Board() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await fetch(Http + `/board?page=${page}&list_num=${limit}&category=${categoryId}`, {
+                let url;
+
+                if (categoryId !== 100) {
+                    url = Http + `/board?page=${page}&list_num=${limit}&category=${categoryId}`;
+                } else {
+                    url = Http + `/board?page=${page}&list_num=${limit}`;
+                }
+
+                const response = await fetch(url, {
                     method: 'GET',
                     credentials: 'include',
                 });
+
                 if (response.ok) {
                     const result = await response.json();
                     setBoard(result.data);
@@ -186,7 +196,27 @@ function Board() {
                 console.error('에러 발생', error);
             }
         };
+
+        const noticeData = async () => {
+            try {
+                const response = await fetch(Http + `/board?page=${page}&list_num=${limit}&category=100`, {
+                    method: 'GET',
+                    credentials: 'include',
+                });
+
+                if (response.ok) {
+                    const result = await response.json();
+                    setNotice(result.data);
+                } else {
+                    console.error('불러오기 실패');
+                }
+            } catch (error) {
+                console.error('에러 발생', error);
+            }
+        };
+
         fetchData();
+        noticeData();
     }, [limit, page, categoryId]);
 
     const list_num = async () => {
@@ -255,6 +285,26 @@ function Board() {
             <Layout></Layout>
             <Container>
                 <List>{title}</List>
+                <BoardListContainer>
+                    {notice.map((item) => (
+                        <Link to={`/board/${item.id}`} key={item.id}>
+                            <BoardItemContainer style={{ background: '#bbb' }}>
+                                <BoardContainer>
+                                    <BoardTitleContainer style={{ display: 'flex', flexDirection: 'row' }}>
+                                        <CategoryTitle>{item.categoryName}</CategoryTitle>
+                                        <BoardTitle>{item.title}</BoardTitle>
+                                        {item.userNickname} &middot; {CreateTime(item.createdAt)}
+                                        &nbsp; <AiOutlineEye />
+                                        {item.views} &middot;&nbsp; <FiThumbsUp />
+                                        {item.hits}
+                                    </BoardTitleContainer>
+                                    <BoardContent></BoardContent>
+                                </BoardContainer>
+                            </BoardItemContainer>
+                        </Link>
+                    ))}
+                </BoardListContainer>
+
                 <BoardListContainer>
                     {board.map((item) => (
                         <Link to={`/board/${item.id}`} key={item.id}>

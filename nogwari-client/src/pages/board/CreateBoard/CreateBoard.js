@@ -180,7 +180,7 @@ function CreateBoard() {
                 <br />
                 <select value={categoryId} onChange={onChangeCategoryId}>
                     <option value="">카테고리 선택</option>
-                    {isAdmin && <option value="notice">공지 사항</option>}
+                    {isAdmin && <option value="100">공지 사항</option>}
                     {categories.map(
                         (item) =>
                             item.id !== 100 && (
