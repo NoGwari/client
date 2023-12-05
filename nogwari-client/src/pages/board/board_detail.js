@@ -114,8 +114,6 @@ function BoardDetailPage() {
     const [replyCommentId, setReplyCommentId] = useState(null);
     const [replyComments, setReplyComments] = useState([]);
     const [reply, setReply] = useState('');
-    const [isreport, setIsReport] = useState(false);
-    const [reportmsg, setReportmsg] = useState('');
     const [hiddenStatus, setHiddenStatus] = useState(0);
     const navigate = useNavigate();
 
@@ -501,7 +499,7 @@ function BoardDetailPage() {
                         Authorization: `Bearer ${sessionStorage.getItem('token')}`,
                     },
                     body: JSON.stringify({
-                        string: reportmsg,
+                        string: userMsg,
                     }),
                 });
 
