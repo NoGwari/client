@@ -174,23 +174,23 @@ function Board() {
             try {
                 let url;
 
-                if (categoryId !== 100) {
+                if (categoryId !== '100') {
                     url = Http + `/board?page=${page}&list_num=${limit}&category=${categoryId}`;
-                } else {
-                    url = Http + `/board?page=${page}&list_num=${limit}`;
-                }
 
-                const response = await fetch(url, {
-                    method: 'GET',
-                    credentials: 'include',
-                });
+                    const response = await fetch(url, {
+                        method: 'GET',
+                        credentials: 'include',
+                    });
 
-                if (response.ok) {
-                    const result = await response.json();
-                    setBoard(result.data);
-                    setTotalPages(Math.ceil(result.count));
-                } else {
-                    console.error('불러오기 실패');
+                    if (response.ok) {
+                        const result = await response.json();
+                        const filteredData = result.data.filter((item) => item.categoryId !== 100);
+
+                        setBoard(filteredData);
+                        setTotalPages(Math.ceil(filteredData.length));
+                    } else {
+                        console.error('불러오기 실패');
+                    }
                 }
             } catch (error) {
                 console.error('에러 발생', error);
