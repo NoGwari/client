@@ -160,6 +160,7 @@ function CreateTime(timestamp) {
 function Board() {
     const [board, setBoard] = useState([]);
     const [notice, setNotice] = useState([]);
+    const [popular, setPopular] = useState([]);
     const [limit, setLimit] = useState(10);
     const [page, setPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
@@ -215,8 +216,26 @@ function Board() {
             }
         };
 
+        const popularData = async () => {
+            try {
+                const response = await fetch(Http + `/board/popular`, {
+                    method: 'GET',
+                    credentials: 'include',
+                });
+                if (response.ok) {
+                    const result = await response.json();
+                    setPopular(result.data);
+                } else {
+                    console.error('불러오기 실패');
+                }
+            } catch (error) {
+                console.error('에러 발생', error);
+            }
+        };
+
         fetchData();
         noticeData();
+        popularData();
     }, [limit, page, categoryId]);
 
     const list_num = async () => {
@@ -345,6 +364,35 @@ function Board() {
                         </Link>
                     ))}
                     <br />
+                    {popular.map((item) => (
+                        <Link to={`/board/${item.id}`} key={item.id}>
+                            <BoardItemContainer>
+                                <BoardImage>
+                                    {item.thumbnail ? (
+                                        <img
+                                            src={item.thumbnail}
+                                            alt="Thumbnail"
+                                            style={{ height: '48px', width: '48px' }}
+                                        />
+                                    ) : (
+                                        <FiImage style={{ height: '48px', width: '48px' }} />
+                                    )}
+                                </BoardImage>
+                                <BoardContainer>
+                                    <BoardTitleContainer>
+                                        <CategoryTitle>인기글</CategoryTitle>
+                                        <BoardTitle>{item.title}</BoardTitle>
+                                    </BoardTitleContainer>
+                                    <BoardContent>
+                                        {item.userNickname} &middot; {CreateTime(item.createdAt)}
+                                        &nbsp; <AiOutlineEye />
+                                        {item.views} &middot;&nbsp; <FiThumbsUp />
+                                        {item.hits}
+                                    </BoardContent>
+                                </BoardContainer>
+                            </BoardItemContainer>
+                        </Link>
+                    ))}
                     {board.map((item) => (
                         <Link to={`/board/${item.id}`} key={item.id}>
                             <BoardItemContainer>
