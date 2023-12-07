@@ -289,40 +289,62 @@ function Board() {
                     {notice.map((item) => (
                         <Link to={`/board/${item.id}`} key={item.id}>
                             <BoardItemContainer
-                                style={{ background: '#e0e0e0', border: '1px solid #ccc', padding: '4px' }}
+                                style={{
+                                    background: '#e0e0e0',
+                                    border: '1px solid #ccc',
+                                    padding: '4px',
+                                    display: 'flex',
+                                    flexDirection: 'row',
+                                }}
                             >
-                                <BoardContainer>
+                                <BoardContainer
+                                    style={{
+                                        display: 'flex',
+                                        flexDirection: 'column',
+                                        width: '100%',
+                                    }}
+                                >
                                     <BoardTitleContainer
                                         style={{
                                             display: 'flex',
                                             flexDirection: 'row',
                                             alignItems: 'center',
-                                            widh: '100%',
+                                            justifyContent: 'space-between',
+                                            width: '100%',
                                         }}
                                     >
-                                        <CategoryTitle
-                                            style={{ backgroundColor: '#3498db', color: 'white', marginRight: '5px' }}
-                                        >
-                                            {item.categoryName}
-                                        </CategoryTitle>
-                                        <BoardTitle style={{ fontSize: '18px', padding: '0', marginRight: '50px' }}>
-                                            {item.title}
-                                        </BoardTitle>
+                                        <div style={{ display: 'flex', alignItems: 'center' }}>
+                                            <CategoryTitle
+                                                style={{
+                                                    backgroundColor: '#3498db',
+                                                    color: 'white',
+                                                    marginRight: '5px',
+                                                }}
+                                            >
+                                                {item.categoryName}
+                                            </CategoryTitle>
+                                            <BoardTitle style={{ fontSize: '18px', padding: '0', marginRight: '10px' }}>
+                                                {item.title}
+                                            </BoardTitle>
+                                        </div>
                                         <BoardContent
-                                            style={{ fontSize: '14px', color: '#666666', marginLeft: '450px' }}
+                                            style={{
+                                                fontSize: '14px',
+                                                color: '#666666',
+                                                display: 'flex',
+                                                alignItems: 'center',
+                                                justifyContent: 'flex-end',
+                                            }}
                                         >
-                                            {item.userNickname} &middot; {CreateTime(item.createdAt)} &nbsp;{' '}
-                                            <AiOutlineEye />
-                                            {item.views} &middot;&nbsp; <FiThumbsUp />
-                                            {item.hits}
+                                            {item.userNickname} &middot; {CreateTime(item.createdAt)} &nbsp;
+                                            <AiOutlineEye /> {item.views} &middot;&nbsp; <FiThumbsUp /> {item.hits}
                                         </BoardContent>
                                     </BoardTitleContainer>
                                 </BoardContainer>
                             </BoardItemContainer>
                         </Link>
                     ))}
-                </BoardListContainer>
-                <BoardListContainer>
+                    <br />
                     {board.map((item) => (
                         <Link to={`/board/${item.id}`} key={item.id}>
                             <BoardItemContainer>
