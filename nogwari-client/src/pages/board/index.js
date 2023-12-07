@@ -224,7 +224,8 @@ function Board() {
                 });
                 if (response.ok) {
                     const result = await response.json();
-                    setPopular(result.data);
+                    console.log(result);
+                    setPopular(result);
                 } else {
                     console.error('불러오기 실패');
                 }
@@ -364,35 +365,44 @@ function Board() {
                         </Link>
                     ))}
                     <br />
-                    {popular.map((item) => (
-                        <Link to={`/board/${item.id}`} key={item.id}>
-                            <BoardItemContainer>
-                                <BoardImage>
-                                    {item.thumbnail ? (
-                                        <img
-                                            src={item.thumbnail}
-                                            alt="Thumbnail"
-                                            style={{ height: '48px', width: '48px' }}
-                                        />
-                                    ) : (
-                                        <FiImage style={{ height: '48px', width: '48px' }} />
-                                    )}
-                                </BoardImage>
-                                <BoardContainer>
-                                    <BoardTitleContainer>
-                                        <CategoryTitle>인기글</CategoryTitle>
-                                        <BoardTitle>{item.title}</BoardTitle>
-                                    </BoardTitleContainer>
-                                    <BoardContent>
-                                        {item.userNickname} &middot; {CreateTime(item.createdAt)}
-                                        &nbsp; <AiOutlineEye />
-                                        {item.views} &middot;&nbsp; <FiThumbsUp />
-                                        {item.hits}
-                                    </BoardContent>
-                                </BoardContainer>
-                            </BoardItemContainer>
-                        </Link>
-                    ))}
+                    {popular &&
+                        popular.map((item) => (
+                            <Link to={`/board/${item.id}`} key={item.id}>
+                                <BoardItemContainer>
+                                    <BoardImage>
+                                        {item.thumbnail ? (
+                                            <img
+                                                src={item.thumbnail}
+                                                alt="Thumbnail"
+                                                style={{ height: '48px', width: '48px' }}
+                                            />
+                                        ) : (
+                                            <FiImage style={{ height: '48px', width: '48px' }} />
+                                        )}
+                                    </BoardImage>
+                                    <BoardContainer>
+                                        <BoardTitleContainer>
+                                            <CategoryTitle
+                                                style={{
+                                                    backgroundColor: '#5fa2dd',
+                                                    color: 'white',
+                                                    marginRight: '5px',
+                                                }}
+                                            >
+                                                인기글
+                                            </CategoryTitle>
+                                            <BoardTitle>{item.title}</BoardTitle>
+                                        </BoardTitleContainer>
+                                        <BoardContent>
+                                            {item.userNickname} &middot; {CreateTime(item.createdAt)}
+                                            &nbsp; <AiOutlineEye />
+                                            {item.views} &middot;&nbsp; <FiThumbsUp />
+                                            {item.hits}
+                                        </BoardContent>
+                                    </BoardContainer>
+                                </BoardItemContainer>
+                            </Link>
+                        ))}
                     {board.map((item) => (
                         <Link to={`/board/${item.id}`} key={item.id}>
                             <BoardItemContainer>
