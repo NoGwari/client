@@ -368,7 +368,7 @@ function Board() {
                     {popular &&
                         popular.map((item) => (
                             <Link to={`/board/${item.id}`} key={item.id}>
-                                <BoardItemContainer>
+                                <BoardItemContainer style={{ background: '#e0e0e0' }}>
                                     <BoardImage>
                                         {item.thumbnail ? (
                                             <img
