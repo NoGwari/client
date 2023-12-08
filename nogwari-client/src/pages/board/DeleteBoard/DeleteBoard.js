@@ -2,6 +2,20 @@ import React from 'react';
 import { Http } from '../../../common';
 import { useParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
+
+const DeleteButton = styled.button`
+    background-color: #ff6347;
+    color: white;
+    border: none;
+    padding: 3px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+`;
 
 function DeleteBoard() {
     const params = useParams().itemId;
@@ -42,7 +56,7 @@ function DeleteBoard() {
 
     return (
         <form onSubmit={handleSubmit}>
-            <button type="submit">게시물 삭제</button>
+            <DeleteButton>게시물 삭제</DeleteButton>
         </form>
     );
 }
