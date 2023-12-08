@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 const DeleteButton = styled.button`
-    background-color: #ff6347;
+    background-color: black;
     color: white;
     border: none;
     padding: 3px;
@@ -15,6 +15,9 @@ const DeleteButton = styled.button`
     font-size: 16px;
     cursor: pointer;
     border-radius: 5px;
+    &: hover {
+        background-color: #ff6347;
+    }
 `;
 
 function DeleteBoard() {

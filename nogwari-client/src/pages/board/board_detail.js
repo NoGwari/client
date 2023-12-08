@@ -103,7 +103,7 @@ const StyledCheckbox = styled.div`
 `;
 
 const UpdateButton = styled.button`
-    background-color: #ffd700;
+    background-color: black;
     color: white;
     border: none;
     padding: 3px;
@@ -113,6 +113,9 @@ const UpdateButton = styled.button`
     font-size: 16px;
     cursor: pointer;
     border-radius: 5px;
+    &: hover {
+        background-color: skyblue;
+    }
 `;
 
 const DeleteButton = styled.button`
