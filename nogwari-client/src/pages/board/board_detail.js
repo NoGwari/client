@@ -102,6 +102,32 @@ const StyledCheckbox = styled.div`
     background-color: ${(props) => (props.hiddenStatus === 1 ? '#3498db' : 'transparent')};
 `;
 
+const UpdateButton = styled.button`
+    background-color: #ffd700;
+    color: white;
+    border: none;
+    padding: 3px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+`;
+
+const DeleteButton = styled.button`
+    background-color: #ff6347; /* Tomato */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+`;
+
 function BoardDetailPage() {
     const [board, setBoard] = useState({});
     const { itemId } = useParams();
@@ -552,7 +578,7 @@ function BoardDetailPage() {
                 <div dangerouslySetInnerHTML={{ __html: board.content }}></div>
                 <hr />
 
-                <button onClick={() => handleUpdateClick()}>게시글 수정</button>
+                <UpdateButton onClick={() => handleUpdateClick()}>게시글 수정</UpdateButton>
                 <DeleteBoard />
 
                 <hr />
