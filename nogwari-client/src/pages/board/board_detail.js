@@ -118,17 +118,10 @@ const UpdateButton = styled.button`
     }
 `;
 
-const DeleteButton = styled.button`
-    background-color: #ff6347; /* Tomato */
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    cursor: pointer;
-    border-radius: 5px;
+const ButtonContainer = styled.div`
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 10px; /* 필요에 따라 여백 조절 */
 `;
 
 function BoardDetailPage() {
@@ -580,9 +573,10 @@ function BoardDetailPage() {
                 <hr />
                 <div dangerouslySetInnerHTML={{ __html: board.content }}></div>
                 <hr />
-
-                <UpdateButton onClick={() => handleUpdateClick()}>게시글 수정</UpdateButton>
-                <DeleteBoard />
+                <ButtonContainer>
+                    <UpdateButton onClick={() => handleUpdateClick()}>게시글 수정</UpdateButton>
+                    <DeleteBoard />
+                </ButtonContainer>
 
                 <hr />
                 <br />
