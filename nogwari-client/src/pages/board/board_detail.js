@@ -62,10 +62,19 @@ const CommentForm = styled.div`
     flex-direction: column;
 `;
 
-const CommentTextarea = styled.textarea`
-    width: 100%;
-    padding: 5px;
-    margin-right: 10px;
+const CommentTextarea = styled.input`
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    resize: vertical;
+    font-size: 14px;
+    line-height: 1.5;
+    transition: border-color 0.3s ease;
+
+    &:focus {
+        outline: none;
+        border-color: #007bff;
+    }
 `;
 const CommentSubmit = styled.button`
     background-color: #007bff;
