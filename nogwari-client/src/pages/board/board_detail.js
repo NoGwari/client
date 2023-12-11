@@ -79,12 +79,21 @@ const CommentTextarea = styled.input`
 const CommentSubmit = styled.button`
     background-color: #007bff;
     color: #fff;
-    padding: 12px 24px;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
     cursor: pointer;
-    font-size: 13px;
-    white-space: nowrap;
-`;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
 
+    &:hover {
+        background-color: #0056b3;
+    }
+
+    &:focus {
+        outline: none;
+    }
+`;
 const ReplyContent = styled.div`
     margin-top: 1px;
     margin-bottom: 1px;
