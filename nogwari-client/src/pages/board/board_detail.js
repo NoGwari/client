@@ -139,7 +139,26 @@ const UpdateButton = styled.button`
 const ButtonContainer = styled.div`
     display: flex;
     justify-content: flex-end;
-    margin-top: 10px; /* 필요에 따라 여백 조절 */
+    margin-top: 10px;
+`;
+
+const ReplyButton = styled.button`
+    background-color: #007bff;
+    color: #fff;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+
+    &:hover {
+        background-color: #0056b3;
+    }
+
+    &:focus {
+        outline: none;
+    }
 `;
 
 function BoardDetailPage() {
@@ -606,7 +625,7 @@ function BoardDetailPage() {
                                     <div>
                                         {comment.userNickname} : {comment.content}
                                         &nbsp;&nbsp;&nbsp;
-                                        <button onClick={() => toggleReply(comment.id)}>답글 달기</button>
+                                        <ReplyButton onClick={() => toggleReply(comment.id)}>답글 달기</ReplyButton>
                                         {isReplying && replyCommentId === comment.id && (
                                             <div>
                                                 <textarea
