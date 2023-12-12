@@ -161,6 +161,47 @@ const ReplyButton = styled.button`
     }
 `;
 
+const ReplyContainer = styled.div`
+    display: flex;
+    margin-top: 10px;
+`;
+
+const ReplyInput = styled.input`
+    flex: 1;
+    width: calc(100% - 20px);
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    resize: vertical;
+    font-size: 14px;
+    transition: border-color 0.3s ease;
+
+    &:focus {
+        outline: none;
+        border-color: #007bff;
+    }
+`;
+
+const ReplyButton2 = styled.button`
+    line-height: 1;
+    background-color: #007bff;
+    color: #fff;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+
+    &:hover {
+        background-color: #0056b3;
+    }
+
+    &:focus {
+        outline: none;
+    }
+`;
+
 function BoardDetailPage() {
     const [board, setBoard] = useState({});
     const { itemId } = useParams();
@@ -627,14 +668,14 @@ function BoardDetailPage() {
                                         &nbsp;&nbsp;&nbsp;
                                         <ReplyButton onClick={() => toggleReply(comment.id)}>답글 달기</ReplyButton>
                                         {isReplying && replyCommentId === comment.id && (
-                                            <div>
-                                                <textarea
+                                            <ReplyContainer>
+                                                <ReplyInput
                                                     placeholder="답글 내용을 입력하세요"
                                                     value={reply}
                                                     onChange={(e) => setReply(e.target.value)}
                                                 />
-                                                <button onClick={() => ReplyComment(reply)}>전송</button>
-                                            </div>
+                                                <ReplyButton2 onClick={() => ReplyComment(reply)}>전송</ReplyButton2>
+                                            </ReplyContainer>
                                         )}
                                     </div>
                                     <div>
