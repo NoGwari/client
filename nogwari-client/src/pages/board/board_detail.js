@@ -649,14 +649,12 @@ function BoardDetailPage() {
                     </CheckboxContainer>
                 </BoardContent>
                 <hr />
-                <div dangerouslySetInnerHTML={{ __html: board.content }}></div>
+                <div dangerouslySetInnerHTML={{ __html: board.content }} style={{ marginBottom: '130px' }}></div>
                 <hr />
                 <ButtonContainer>
                     <UpdateButton onClick={() => handleUpdateClick()}>게시글 수정</UpdateButton>
                     <DeleteBoard />
                 </ButtonContainer>
-
-                <hr />
                 <br />
                 <CommentContainer>
                     {comments.map((comment) => {
