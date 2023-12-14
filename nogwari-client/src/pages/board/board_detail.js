@@ -649,7 +649,10 @@ function BoardDetailPage() {
                     </CheckboxContainer>
                 </BoardContent>
                 <hr />
-                <div dangerouslySetInnerHTML={{ __html: board.content }} style={{ marginBottom: '130px' }}></div>
+                <div
+                    dangerouslySetInnerHTML={{ __html: board.content }}
+                    style={{ marginBottom: '130px', marginTop: '30px' }}
+                ></div>
                 <hr />
                 <ButtonContainer>
                     <UpdateButton onClick={() => handleUpdateClick()}>게시글 수정</UpdateButton>
