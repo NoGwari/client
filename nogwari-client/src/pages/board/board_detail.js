@@ -682,7 +682,7 @@ function BoardDetailPage() {
                                     <div>
                                         <FiThumbsUp
                                             onClick={() => ishitComment(comment.id)}
-                                            style={{ cursor: 'pointer' /*color:  ? 'red' : 'black'*/ }}
+                                            style={{ cursor: 'pointer' }}
                                         />
                                         {comment.hits}
                                         &nbsp;&nbsp; &nbsp;&nbsp;
@@ -706,7 +706,6 @@ function BoardDetailPage() {
                                                     onClick={() => ishitReply(reply.id)}
                                                     style={{
                                                         cursor: 'pointer',
-                                                        //color: isLikedReply ? 'red' : 'black',
                                                     }}
                                                 />
                                                 {reply.hits}
