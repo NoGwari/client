@@ -17,13 +17,6 @@ import InputAdornment from '@mui/material/InputAdornment';
 
 const defaultImageSrc = FiImage;
 
-const Container = styled.div`
-    margin: 0 100px;
-    :: -webkit-scrollbar {
-        display: none;
-    }
-`;
-
 const List = styled.div`
     margin-top: 30px;
     font-size: 30px;
@@ -34,10 +27,14 @@ const List = styled.div`
 
 const BoardListContainer = styled.div`
     margin-top: 50px;
+    box-sizing: border-box;
     height: auto;
     flex-wrap: wrap;
     justify-content: center;
     align-items: center;
+    width: 70%;
+    margin-left: auto;
+    margin-right: auto;
 `;
 
 const BoardItemContainer = styled.div`
@@ -105,7 +102,7 @@ const BoardContainer = styled.div`
 const WriteContainer = styled.div`
     display: flex;
     justify-content: flex-end;
-    margin-right: 100px;
+    margin-right: 10%;
 `;
 
 const Write = styled.button`
@@ -303,109 +300,72 @@ function Board() {
     return (
         <div>
             <Layout></Layout>
-            <Container>
-                <List>{title}</List>
-                <BoardListContainer>
-                    {notice.map((item) => (
-                        <Link to={`/board/${item.id}`} key={item.id}>
-                            <BoardItemContainer
+
+            <List>{title}</List>
+            <BoardListContainer>
+                {notice.map((item) => (
+                    <Link to={`/board/${item.id}`} key={item.id}>
+                        <BoardItemContainer
+                            style={{
+                                background: '#e0e0e0',
+                                border: '1px solid #ccc',
+                                padding: '4px',
+                                display: 'flex',
+                                flexDirection: 'row',
+                            }}
+                        >
+                            <BoardContainer
                                 style={{
-                                    background: '#e0e0e0',
-                                    border: '1px solid #ccc',
-                                    padding: '4px',
                                     display: 'flex',
-                                    flexDirection: 'row',
+                                    flexDirection: 'column',
+                                    width: '100%',
                                 }}
                             >
-                                <BoardContainer
+                                <BoardTitleContainer
                                     style={{
                                         display: 'flex',
-                                        flexDirection: 'column',
+                                        flexDirection: 'row',
+                                        alignItems: 'center',
+                                        justifyContent: 'space-between',
                                         width: '100%',
                                     }}
                                 >
-                                    <BoardTitleContainer
-                                        style={{
-                                            display: 'flex',
-                                            flexDirection: 'row',
-                                            alignItems: 'center',
-                                            justifyContent: 'space-between',
-                                            width: '100%',
-                                        }}
-                                    >
-                                        <div style={{ display: 'flex', alignItems: 'center' }}>
-                                            <CategoryTitle
-                                                style={{
-                                                    backgroundColor: '#3498db',
-                                                    color: 'white',
-                                                    marginRight: '5px',
-                                                }}
-                                            >
-                                                {item.categoryName}
-                                            </CategoryTitle>
-                                            <BoardTitle style={{ fontSize: '18px', padding: '0', marginRight: '10px' }}>
-                                                {item.title}
-                                            </BoardTitle>
-                                        </div>
-                                        <BoardContent
+                                    <div style={{ display: 'flex', alignItems: 'center' }}>
+                                        <CategoryTitle
                                             style={{
-                                                fontSize: '14px',
-                                                color: '#666666',
-                                                display: 'flex',
-                                                alignItems: 'center',
-                                                justifyContent: 'flex-end',
+                                                backgroundColor: '#3498db',
+                                                color: 'white',
+                                                marginRight: '5px',
                                             }}
                                         >
-                                            {item.userNickname} &middot; {CreateTime(item.createdAt)} &nbsp;
-                                            <AiOutlineEye /> {item.views} &middot;&nbsp; <FiThumbsUp /> {item.hits}
-                                        </BoardContent>
-                                    </BoardTitleContainer>
-                                </BoardContainer>
-                            </BoardItemContainer>
-                        </Link>
-                    ))}
-                    <br />
-                    {popular &&
-                        popular.map((item) => (
-                            <Link to={`/board/${item.id}`} key={item.id}>
-                                <BoardItemContainer style={{ background: '#e0e0e0' }}>
-                                    <BoardImage>
-                                        {item.thumbnail ? (
-                                            <img
-                                                src={item.thumbnail}
-                                                alt="Thumbnail"
-                                                style={{ height: '48px', width: '48px' }}
-                                            />
-                                        ) : (
-                                            <FiImage style={{ height: '48px', width: '48px' }} />
-                                        )}
-                                    </BoardImage>
-                                    <BoardContainer>
-                                        <BoardTitleContainer>
-                                            <CategoryTitle
-                                                style={{
-                                                    backgroundColor: '#5fa2dd',
-                                                    color: 'white',
-                                                    marginRight: '5px',
-                                                }}
-                                            >
-                                                인기글
-                                            </CategoryTitle>
-                                            <BoardTitle>{item.title}</BoardTitle>
-                                        </BoardTitleContainer>
-                                        <BoardContent>
-                                            {item.userNickname} &middot; {CreateTime(item.createdAt)}
-                                            &nbsp; <AiOutlineEye />
-                                            {item.views} &middot;&nbsp; <FiThumbsUp />
-                                            {item.hits}
-                                        </BoardContent>
-                                    </BoardContainer>
-                                </BoardItemContainer>
-                            </Link>
-                        ))}
-                    {board.map((item) => (
+                                            {item.categoryName}
+                                        </CategoryTitle>
+                                        <BoardTitle style={{ fontSize: '18px', padding: '0', marginRight: '10px' }}>
+                                            {item.title}
+                                        </BoardTitle>
+                                    </div>
+                                    <BoardContent
+                                        style={{
+                                            fontSize: '14px',
+                                            color: '#666666',
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            justifyContent: 'flex-end',
+                                        }}
+                                    >
+                                        {item.userNickname} &middot; {CreateTime(item.createdAt)} &nbsp;
+                                        <AiOutlineEye /> {item.views} &middot;&nbsp; <FiThumbsUp /> {item.hits}
+                                    </BoardContent>
+                                </BoardTitleContainer>
+                            </BoardContainer>
+                        </BoardItemContainer>
+                    </Link>
+                ))}
+                <br />
+                {popular &&
+                    popular.map((item) => (
                         <Link to={`/board/${item.id}`} key={item.id}>
-                            <BoardItemContainer>
+                            <BoardItemContainer style={{ background: '#e0e0e0' }}>
                                 <BoardImage>
                                     {item.thumbnail ? (
                                         <img
@@ -419,7 +379,15 @@ function Board() {
                                 </BoardImage>
                                 <BoardContainer>
                                     <BoardTitleContainer>
-                                        <CategoryTitle>{item.categoryName}</CategoryTitle>
+                                        <CategoryTitle
+                                            style={{
+                                                backgroundColor: '#5fa2dd',
+                                                color: 'white',
+                                                marginRight: '5px',
+                                            }}
+                                        >
+                                            인기글
+                                        </CategoryTitle>
                                         <BoardTitle>{item.title}</BoardTitle>
                                     </BoardTitleContainer>
                                     <BoardContent>
@@ -432,80 +400,108 @@ function Board() {
                             </BoardItemContainer>
                         </Link>
                     ))}
-                </BoardListContainer>
-                <br />
-                <hr style={{ width: '80%' }} />
-                <WriteContainer>
-                    <Write>
-                        <Link to={`/createBoard`}>글쓰기</Link>
-                    </Write>
-                </WriteContainer>
-                <SearchContainer>
-                    <div>
-                        표시할 페이지의 개수 &nbsp;
-                        <select
-                            style={{ cursor: 'pointer', padding: '1px', fontSize: '15px', marginBottom: '3px' }}
-                            type="number"
-                            value={limit}
-                            onChange={({ target: { value } }) => {
-                                setLimit(Number(value));
-                                setPage(1);
+                {board.map((item) => (
+                    <Link to={`/board/${item.id}`} key={item.id}>
+                        <BoardItemContainer>
+                            <BoardImage>
+                                {item.thumbnail ? (
+                                    <img
+                                        src={item.thumbnail}
+                                        alt="Thumbnail"
+                                        style={{ height: '48px', width: '48px' }}
+                                    />
+                                ) : (
+                                    <FiImage style={{ height: '48px', width: '48px' }} />
+                                )}
+                            </BoardImage>
+                            <BoardContainer>
+                                <BoardTitleContainer>
+                                    <CategoryTitle>{item.categoryName}</CategoryTitle>
+                                    <BoardTitle>{item.title}</BoardTitle>
+                                </BoardTitleContainer>
+                                <BoardContent>
+                                    {item.userNickname} &middot; {CreateTime(item.createdAt)}
+                                    &nbsp; <AiOutlineEye />
+                                    {item.views} &middot;&nbsp; <FiThumbsUp />
+                                    {item.hits}
+                                </BoardContent>
+                            </BoardContainer>
+                        </BoardItemContainer>
+                    </Link>
+                ))}
+            </BoardListContainer>
+            <br />
+            <hr style={{ width: '80%' }} />
+            <WriteContainer>
+                <Write>
+                    <Link to={`/createBoard`}>글쓰기</Link>
+                </Write>
+            </WriteContainer>
+            <SearchContainer>
+                <div>
+                    표시할 페이지의 개수 &nbsp;
+                    <select
+                        style={{ cursor: 'pointer', padding: '1px', fontSize: '15px', marginBottom: '3px' }}
+                        type="number"
+                        value={limit}
+                        onChange={({ target: { value } }) => {
+                            setLimit(Number(value));
+                            setPage(1);
+                        }}
+                    >
+                        <option value="5">5</option>
+                        <option value="10">10</option>
+                        <option value="20">20</option>
+                    </select>
+                </div>
+                <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+                    <Box
+                        component="form"
+                        sx={{ '& .MuiTextField-rppt': { m: 1, width: '40ch' }, height: '50px' }}
+                        noValidate
+                        autoComplete="off"
+                    >
+                        <FormControl
+                            sx={{
+                                m: 1,
+                                minWidth: 120,
+                                display: 'flex',
+                                flexDirection: 'row',
+                                alignItems: 'center',
                             }}
                         >
-                            <option value="5">5</option>
-                            <option value="10">10</option>
-                            <option value="20">20</option>
-                        </select>
-                    </div>
-                    <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
-                        <Box
-                            component="form"
-                            sx={{ '& .MuiTextField-rppt': { m: 1, width: '40ch' }, height: '50px' }}
-                            noValidate
-                            autoComplete="off"
-                        >
-                            <FormControl
-                                sx={{
-                                    m: 1,
-                                    minWidth: 120,
-                                    display: 'flex',
-                                    flexDirection: 'row',
-                                    alignItems: 'center',
+                            <NativeSelect value={selectOption} onChange={(e) => setSelectOption(e.target.value)}>
+                                <option value="title">제목</option>
+                                <option value="nickname">작성자</option>
+                            </NativeSelect>
+                            &nbsp;
+                            <TextField
+                                variant="standard"
+                                type="text"
+                                value={searchvalue}
+                                onChange={handleSearchValue}
+                                placeholder="검색할 내용을 입력하세요"
+                                onKeyDown={(e) => {
+                                    if (e.key === 'Enter') {
+                                        e.preventDefault();
+                                        search();
+                                    }
                                 }}
-                            >
-                                <NativeSelect value={selectOption} onChange={(e) => setSelectOption(e.target.value)}>
-                                    <option value="title">제목</option>
-                                    <option value="nickname">작성자</option>
-                                </NativeSelect>
-                                &nbsp;
-                                <TextField
-                                    variant="standard"
-                                    type="text"
-                                    value={searchvalue}
-                                    onChange={handleSearchValue}
-                                    placeholder="검색할 내용을 입력하세요"
-                                    onKeyDown={(e) => {
-                                        if (e.key === 'Enter') {
-                                            e.preventDefault();
-                                            search();
-                                        }
-                                    }}
-                                    InputProps={{
-                                        endAdornment: (
-                                            <InputAdornment position="end">
-                                                <AiOutlineSearch style={{ cursor: 'pointer' }} onClick={search} />
-                                            </InputAdornment>
-                                        ),
-                                    }}
-                                />
-                            </FormControl>
-                        </Box>
-                    </div>
-                </SearchContainer>
-                <footer>
-                    <Pagination total={totalPages} limit={limit} page={page} setPage={setPage} value={limit} />
-                </footer>
-            </Container>
+                                InputProps={{
+                                    endAdornment: (
+                                        <InputAdornment position="end">
+                                            <AiOutlineSearch style={{ cursor: 'pointer' }} onClick={search} />
+                                        </InputAdornment>
+                                    ),
+                                }}
+                            />
+                        </FormControl>
+                    </Box>
+                </div>
+            </SearchContainer>
+            <footer>
+                <Pagination total={totalPages} limit={limit} page={page} setPage={setPage} value={limit} />
+            </footer>
         </div>
     );
 }
