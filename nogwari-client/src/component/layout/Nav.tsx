@@ -201,7 +201,6 @@ const Nav: React.FC = () => {
             <NavContainer>
                 <GridBox>
                     <CategoryLink to={newLink}>전체 글 조회</CategoryLink>
-                    <CategoryLink to={notice}>공지 사항</CategoryLink>
                     {categories.map(
                         (category, index) =>
                             category.id !== 100 && (
