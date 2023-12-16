@@ -484,6 +484,12 @@ function Board() {
                                     value={searchvalue}
                                     onChange={handleSearchValue}
                                     placeholder="검색할 내용을 입력하세요"
+                                    onKeyDown={(e) => {
+                                        if (e.key === 'Enter') {
+                                            e.preventDefault();
+                                            search();
+                                        }
+                                    }}
                                     InputProps={{
                                         endAdornment: (
                                             <InputAdornment position="end">
