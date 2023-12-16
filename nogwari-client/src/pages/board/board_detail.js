@@ -22,10 +22,9 @@ const BoardTitle = styled.h1`
     margin-left: 30px;
 `;
 
-const CategoryTitle = styled.button`
+const CategoryTitle = styled.div`
     border: none;
     border-radius: 5px;
-    padding: 5px;
     background-color: #e2e2e2;
     font-size: 25px;
 `;
