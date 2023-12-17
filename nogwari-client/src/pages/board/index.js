@@ -6,7 +6,6 @@ import { Link, useParams, useLocation } from 'react-router-dom';
 import React, { useEffect, useState } from 'react';
 import { Http } from '../../common';
 import Pagination from './pagination';
-import { updateLanguageServiceSourceFile } from 'typescript';
 import { FiImage } from 'react-icons/fi';
 import { AiOutlineSearch } from 'react-icons/ai';
 import FormControl from '@mui/material/FormControl';
@@ -14,8 +13,6 @@ import NativeSelect from '@mui/material/NativeSelect';
 import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
 import InputAdornment from '@mui/material/InputAdornment';
-
-const defaultImageSrc = FiImage;
 
 const List = styled.div`
     margin-top: 30px;
