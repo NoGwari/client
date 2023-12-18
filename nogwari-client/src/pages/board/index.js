@@ -19,7 +19,7 @@ const List = styled.div`
     font-size: 30px;
     font-weight: bold;
     position: relative;
-    margin-left: 10vh;
+    left: 200px;
 `;
 
 const BoardListContainer = styled.div`
@@ -297,7 +297,6 @@ function Board() {
     return (
         <div>
             <Layout></Layout>
-
             <List>{title}</List>
             <BoardListContainer>
                 {notice.map((item) => (
