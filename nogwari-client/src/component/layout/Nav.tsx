@@ -24,13 +24,10 @@ const NavContainer = styled.div`
 `;
 
 const GridBox = styled.div`
-    display: grid;
-    grid-template-columns: repeat(10, 1fr);
-    margin-left: 10px;
     display: flex;
-    align-contents: center;
     align-items: center;
     justify-contents: center;
+    margin: auto;
 `;
 
 const CategoryBox = styled.div`
