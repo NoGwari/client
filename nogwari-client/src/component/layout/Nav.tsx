@@ -26,8 +26,11 @@ const NavContainer = styled.div`
 const GridBox = styled.div`
     display: grid;
     grid-template-columns: repeat(10, 1fr);
-    gap: 16px;
     margin-left: 10px;
+    display: flex;
+    align-contents: center;
+    align-items: center;
+    justify-contents: center;
 `;
 
 const CategoryBox = styled.div`
