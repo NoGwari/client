@@ -19,7 +19,7 @@ const List = styled.div`
     font-size: 30px;
     font-weight: bold;
     position: relative;
-    left: 200px;
+    margin-left: 25%;
 `;
 
 const BoardListContainer = styled.div`
@@ -311,7 +311,7 @@ function Board() {
                                 padding: '4px',
                                 display: 'flex',
                                 flexDirection: 'row',
-                                textDecoration: 'none', // Link의 기본 텍스트 밑줄 제거
+                                textDecoration: 'none',
                             }}
                         >
                             <BoardContainer
