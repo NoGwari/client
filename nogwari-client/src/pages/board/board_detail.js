@@ -623,7 +623,7 @@ function BoardDetailPage() {
     return (
         <div>
             <Layout></Layout>
-            <Container>
+            <Container style={{ width: '70%', margin: 'auto' }}>
                 <BoardTitleContainer>
                     <CategoryTitle>{board.categoryName}</CategoryTitle>
 
