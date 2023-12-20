@@ -298,16 +298,20 @@ function Board() {
         <div>
             <Layout></Layout>
             <List>{title}</List>
-            <BoardListContainer>
-                {notice.map((item) => (
-                    <Link to={`/board/${item.id}`} key={item.id}>
+            <div>
+                <BoardListContainer>
+                    {notice.map((item) => (
                         <BoardItemContainer
+                            key={item.id}
+                            as={Link}
+                            to={`/board/${item.id}`}
                             style={{
                                 background: '#e0e0e0',
                                 border: '1px solid #ccc',
                                 padding: '4px',
                                 display: 'flex',
                                 flexDirection: 'row',
+                                textDecoration: 'none', // Link의 기본 텍스트 밑줄 제거
                             }}
                         >
                             <BoardContainer
@@ -355,13 +359,16 @@ function Board() {
                                 </BoardTitleContainer>
                             </BoardContainer>
                         </BoardItemContainer>
-                    </Link>
-                ))}
-                <br />
-                {popular &&
-                    popular.map((item) => (
-                        <Link to={`/board/${item.id}`} key={item.id}>
-                            <BoardItemContainer style={{ background: '#e0e0e0' }}>
+                    ))}
+                    <br />
+                    {popular &&
+                        popular.map((item) => (
+                            <BoardItemContainer
+                                key={item.id}
+                                as={Link}
+                                to={`/board/${item.id}`}
+                                style={{ background: '#e0e0e0' }}
+                            >
                                 <BoardImage>
                                     {item.thumbnail ? (
                                         <img
@@ -387,18 +394,16 @@ function Board() {
                                         <BoardTitle>{item.title}</BoardTitle>
                                     </BoardTitleContainer>
                                     <BoardContent>
-                                        {item.userNickname} &middot; {CreateTime(item.createdAt)}
-                                        &nbsp; <AiOutlineEye />
+                                        {item.userNickname} &middot; {CreateTime(item.createdAt)} &nbsp;
+                                        <AiOutlineEye />
                                         {item.views} &middot;&nbsp; <FiThumbsUp />
                                         {item.hits}
                                     </BoardContent>
                                 </BoardContainer>
                             </BoardItemContainer>
-                        </Link>
-                    ))}
-                {board.map((item) => (
-                    <Link to={`/board/${item.id}`} key={item.id}>
-                        <BoardItemContainer>
+                        ))}
+                    {board.map((item) => (
+                        <BoardItemContainer key={item.id} as={Link} to={`/board/${item.id}`}>
                             <BoardImage>
                                 {item.thumbnail ? (
                                     <img
@@ -416,16 +421,17 @@ function Board() {
                                     <BoardTitle>{item.title}</BoardTitle>
                                 </BoardTitleContainer>
                                 <BoardContent>
-                                    {item.userNickname} &middot; {CreateTime(item.createdAt)}
-                                    &nbsp; <AiOutlineEye />
+                                    {item.userNickname} &middot; {CreateTime(item.createdAt)} &nbsp;
+                                    <AiOutlineEye />
                                     {item.views} &middot;&nbsp; <FiThumbsUp />
                                     {item.hits}
                                 </BoardContent>
                             </BoardContainer>
                         </BoardItemContainer>
-                    </Link>
-                ))}
-            </BoardListContainer>
+                    ))}
+                </BoardListContainer>
+            </div>
+
             <br />
             <hr style={{ width: '80%' }} />
             <WriteContainer>
