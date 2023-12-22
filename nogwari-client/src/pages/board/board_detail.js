@@ -690,7 +690,12 @@ function BoardDetailPage() {
                                             style={{ cursor: 'pointer' }}
                                         />
                                         &nbsp;&nbsp;
-                                        <RiAlarmWarningFill />
+                                        <RiAlarmWarningFill
+                                            onClick={handleReport}
+                                            style={{
+                                                cursor: 'pointer',
+                                            }}
+                                        />
                                     </div>
                                 </CommentContent>
                                 {Object.values(replyComments)
@@ -714,7 +719,12 @@ function BoardDetailPage() {
                                                     style={{ cursor: 'pointer' }}
                                                 />
                                                 &nbsp;&nbsp;
-                                                <RiAlarmWarningFill />
+                                                <RiAlarmWarningFill
+                                                    onClick={handleReport}
+                                                    style={{
+                                                        cursor: 'pointer',
+                                                    }}
+                                                />
                                             </div>
                                         </ReplyContent>
                                     ))}
