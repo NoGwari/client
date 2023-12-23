@@ -41,35 +41,31 @@ const GoogleLoginButton = () => {
 };
 
 function App() {
-    const { currentUser } = useAuth();
-
     return (
         <BrowserRouter>
             <GlobalStyle />
-            <AuthProvider>
-                <Routes>
-                    <Route path="/nogwari" element={<Layout />} />
-                    <Route
-                        path="board/*"
-                        element={
-                            <Suspense fallback={<>로딩중입니다.</>}>
-                                <BoardPages />
-                            </Suspense>
-                        }
-                    />
-                    <Route path="/mypage" element={<Mypage />} />
-                    <Route path="/mypage/mypost" element={<Mypost />} />
-                    <Route path="/mypage/mycomment" element={<Mycomment />} />
-                    <Route path="/board/:itemId" element={<BoardDetailPage />} />
-                    <Route path="/updateBoard/:itemId" element={<UpdateBoard />} />
-                    <Route path="/createBoard" element={<CreateBoard />} />
-                    <Route path="/login" element={<LoginPage />} />
-                    <Route path="/signin" element={<SignIn />} />
-                    <Route path="/forgotpassword" element={<ForgotPassword />} />
-                    <Route path="/" element={<Board />} />
-                    <Route path="*" element={<Error />} />
-                </Routes>
-            </AuthProvider>
+            <Routes>
+                <Route path="/nogwari" element={<Layout />} />
+                <Route
+                    path="board/*"
+                    element={
+                        <Suspense fallback={<>로딩중입니다.</>}>
+                            <BoardPages />
+                        </Suspense>
+                    }
+                />
+                <Route path="/mypage" element={<Mypage />} />
+                <Route path="/mypage/mypost" element={<Mypost />} />
+                <Route path="/mypage/mycomment" element={<Mycomment />} />
+                <Route path="/board/:itemId" element={<BoardDetailPage />} />
+                <Route path="/updateBoard/:itemId" element={<UpdateBoard />} />
+                <Route path="/createBoard" element={<CreateBoard />} />
+                <Route path="/login" element={<LoginPage />} />
+                <Route path="/signin" element={<SignIn />} />
+                <Route path="/forgotpassword" element={<ForgotPassword />} />
+                <Route path="/" element={<Board />} />
+                <Route path="*" element={<Error />} />
+            </Routes>
         </BrowserRouter>
     );
 }

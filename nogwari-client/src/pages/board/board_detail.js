@@ -9,7 +9,6 @@ import { AiOutlineEye, AiFillDelete } from 'react-icons/ai';
 import { ImReply } from 'react-icons/im';
 import { RiAlarmWarningFill } from 'react-icons/ri';
 import { MdOutlineReportProblem } from 'react-icons/md';
-import { useAuth } from 'pages/auth/AuthContext';
 
 const Container = styled.div`
     margin: 0 100px;
@@ -215,9 +214,9 @@ function BoardDetailPage() {
     const [replyComments, setReplyComments] = useState([]);
     const [reply, setReply] = useState('');
     const [hiddenStatus, setHiddenStatus] = useState(0);
+    const [isAuthor, setIsAuthor] = useState(false);
     const navigate = useNavigate();
     const userToken = sessionStorage.getItem('token');
-    const { currentUser } = useAuth();
 
     useEffect(() => {
         const fetchData = async () => {
@@ -265,8 +264,6 @@ function BoardDetailPage() {
             console.error('Error fetching board data:', error);
         }
     };
-    const { userId } = board;
-    const isCurrentUserAuthor = currentUser.id === userId;
     const ishit = async () => {
         try {
             const response = await fetch(Http + `/board/ishit/${itemId}`, {
@@ -657,7 +654,7 @@ function BoardDetailPage() {
                     style={{ marginBottom: '130px', marginTop: '30px' }}
                 ></div>
                 <hr />
-                {isCurrentUserAuthor && (
+                {userToken && (
                     <ButtonContainer>
                         <UpdateButton onClick={() => handleUpdateClick()}>게시글 수정</UpdateButton>
                         <DeleteBoard />
