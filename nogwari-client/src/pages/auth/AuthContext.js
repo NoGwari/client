@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import React, { createContext, useState, useContext } from 'react';
 
 const AuthContext = createContext();
 
@@ -9,13 +9,5 @@ export const AuthProvider = ({ children }) => {
 };
 
 export const useAuth = () => {
-    const context = useContext(AuthContext);
-
-    if (!context) {
-        throw new Error('useAuth must be used within an AuthProvider');
-    }
-
-    const isUserLoggedIn = () => context.loggedInUser && context.loggedInUser.id;
-
-    return { ...context, isUserLoggedIn };
+    return useContext(AuthContext);
 };
