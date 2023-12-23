@@ -23,7 +23,6 @@ const DeleteButton = styled.button`
 function DeleteBoard() {
     const params = useParams().itemId;
     const navigate = useNavigate();
-    const userToken = sessionStorage.getItem('token');
 
     const deletePost = async () => {
         const url = Http + `/board/${params}`;
@@ -58,15 +57,12 @@ function DeleteBoard() {
             console.error('Error in handleSubmit:', error.message);
         }
     };
-    if (userToken) {
-        return (
-            <form onSubmit={handleSubmit}>
-                <DeleteButton>게시물 삭제</DeleteButton>
-            </form>
-        );
-    } else {
-        return null;
-    }
+
+    return (
+        <form onSubmit={handleSubmit}>
+            <DeleteButton>게시물 삭제</DeleteButton>
+        </form>
+    );
 }
 
 export default DeleteBoard;
