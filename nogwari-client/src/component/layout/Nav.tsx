@@ -106,11 +106,9 @@ const DeleteButton = styled.button`
 
 const Nav: React.FC = () => {
     const [categories, setCategories] = useState<Category[]>([]);
-    const { categoryId } = useParams<{ categoryId: string }>();
     const [newCategoryName, setNewCategoryName] = useState('');
     const [newId, setNewId] = useState<Number>(0);
     const [toggle, setToggle] = useState(false);
-    const { itemId } = useParams();
 
     const isAdmin = sessionStorage.getItem('role') == 'admin';
     useEffect(() => {
