@@ -18,6 +18,7 @@ import Mypage from 'pages/auth/mypage.js';
 import ForgotPassword from 'pages/auth/ForgotPassword.js';
 import Mycomment from 'pages/auth/mycomment.js';
 import Mypost from 'pages/auth/mypost.js';
+import { AuthProvider, useAuth } from 'pages/auth/AuthContext.js';
 
 const BoardPages = lazy(() => import('./pages/board'));
 
@@ -40,44 +41,35 @@ const GoogleLoginButton = () => {
 };
 
 function App() {
+    const { currentUser } = useAuth();
+
     return (
         <BrowserRouter>
             <GlobalStyle />
-            <Routes>
-                <Route path="/nogwari" element={<Layout />}></Route>
-                <Route
-                    path="board/*"
-                    element={
-                        <Suspense fallback={<> 로딩중입니다. </>}>
-                            <BoardPages />
-                        </Suspense>
-                    }
-                />
-                <Route path="/mypage" element={<Mypage />} />
-                <Route path="/mypage/mypost" element={<Mypost />} />
-                <Route path="/mypage/mycomment" element={<Mycomment />} />
-                <Route path="/board/:itemId" element={<BoardDetailPage />} />
-                <Route path="/updateBoard/:itemId" element={<UpdateBoard />} />
-                <Route path="/createBoard" element={<CreateBoard />} />
-                <Route path="/login" element={<LoginPage />} />
-                <Route path="/signin" element={<SignIn />} />
-                <Route path="/forgotpassword" element={<ForgotPassword />} />
-                <Route path="/" element={<Board />} />
-                <Route path="*" element={<Error />} />
-            </Routes>
-            {/*<header>*/}
-            {/*    {board && board.map(x =>*/}
-            {/*        <BoardTest>*/}
-            {/*            {x.content}*/}
-            {/*        </BoardTest>*/}
-            {/*    )*/}
-            {/*    }*/}
-            {/*    <p>*/}
-            {/*        노과리 프로젝트 배포*/}
-            {/*        저는 재현이에요*/}
-            {/*    </p>*/}
-            {/*    <GoogleLoginButton />*/}
-            {/*</header>*/}
+            <AuthProvider>
+                <Routes>
+                    <Route path="/nogwari" element={<Layout />} />
+                    <Route
+                        path="board/*"
+                        element={
+                            <Suspense fallback={<>로딩중입니다.</>}>
+                                <BoardPages />
+                            </Suspense>
+                        }
+                    />
+                    <Route path="/mypage" element={<Mypage />} />
+                    <Route path="/mypage/mypost" element={<Mypost />} />
+                    <Route path="/mypage/mycomment" element={<Mycomment />} />
+                    <Route path="/board/:itemId" element={<BoardDetailPage />} />
+                    <Route path="/updateBoard/:itemId" element={<UpdateBoard />} />
+                    <Route path="/createBoard" element={<CreateBoard />} />
+                    <Route path="/login" element={<LoginPage />} />
+                    <Route path="/signin" element={<SignIn />} />
+                    <Route path="/forgotpassword" element={<ForgotPassword />} />
+                    <Route path="/" element={<Board />} />
+                    <Route path="*" element={<Error />} />
+                </Routes>
+            </AuthProvider>
         </BrowserRouter>
     );
 }
