@@ -215,6 +215,7 @@ function BoardDetailPage() {
     const [reply, setReply] = useState('');
     const [hiddenStatus, setHiddenStatus] = useState(0);
     const navigate = useNavigate();
+    const userToken = sessionStorage.getItem('token');
 
     useEffect(() => {
         const fetchData = async () => {
@@ -653,10 +654,12 @@ function BoardDetailPage() {
                     style={{ marginBottom: '130px', marginTop: '30px' }}
                 ></div>
                 <hr />
-                <ButtonContainer>
-                    <UpdateButton onClick={() => handleUpdateClick()}>게시글 수정</UpdateButton>
-                    <DeleteBoard />
-                </ButtonContainer>
+                {userToken && (
+                    <ButtonContainer>
+                        <UpdateButton onClick={() => handleUpdateClick()}>게시글 수정</UpdateButton>
+                        <DeleteBoard />
+                    </ButtonContainer>
+                )}
                 <br />
                 <CommentContainer>
                     {comments.map((comment) => {

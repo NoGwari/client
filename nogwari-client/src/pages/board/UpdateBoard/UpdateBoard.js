@@ -30,6 +30,7 @@ function UpdateBoard() {
     const QuillRef = useRef();
     const navigate = useNavigate();
     const isAdmin = sessionStorage.getItem('role') == 'admin';
+    const userToken = sessionStorage.getItem('token');
 
     useEffect(() => {
         const fetchCategories = async () => {
