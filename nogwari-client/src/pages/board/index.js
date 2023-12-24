@@ -191,7 +191,6 @@ function Board() {
                 console.error('에러 발생', error);
             }
         };
-
         const noticeData = async () => {
             try {
                 const response = await fetch(Http + `/board?page=${page}&list_num=${limit}&category=100`, {
