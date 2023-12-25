@@ -246,9 +246,14 @@ function BoardDetailPage() {
         }
         const initialHitStatus = localStorage.getItem('hitStatus');
         if (initialHitStatus) {
-            setHiddenStatus(parseInt(initialHitStatus));
+            setHitStatus(parseInt(initialHitStatus));
         }
     }, [itemId]);
+
+    const updateHitStatusInLocalStorage = (newStatus) => {
+        localStorage.setItem('hitStatus', newStatus.toString());
+        setHitStatus(newStatus);
+    };
 
     const boardData = async () => {
         try {
@@ -292,6 +297,7 @@ function BoardDetailPage() {
                         });
                         if (hitResponse.ok) {
                             setHits(hits + 1);
+                            updateHitStatusInLocalStorage(1);
                         }
                     } catch (error) {
                         console.error('좋아요 누르기 실패:', error);
@@ -308,6 +314,7 @@ function BoardDetailPage() {
                         });
                         if (unhitResponse.ok) {
                             setHits(hits - 1);
+                            updateHitStatusInLocalStorage(0);
                         }
                     } catch (error) {
                         console.error('좋아요 취소 실패:', error);
@@ -642,6 +649,7 @@ function BoardDetailPage() {
                         onClick={ishit}
                         style={{
                             cursor: 'pointer',
+                            color: hitStatus === 1 ? 'blue' : 'black',
                         }}
                     />
                     {board.hits}
