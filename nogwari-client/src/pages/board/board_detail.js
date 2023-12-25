@@ -214,7 +214,7 @@ function BoardDetailPage() {
     const [replyComments, setReplyComments] = useState([]);
     const [reply, setReply] = useState('');
     const [hiddenStatus, setHiddenStatus] = useState(0);
-    const [isAuthor, setIsAuthor] = useState(false);
+    const [hitStatus, setHitStatus] = useState(0);
     const navigate = useNavigate();
     const userToken = sessionStorage.getItem('token');
 
@@ -243,6 +243,10 @@ function BoardDetailPage() {
         const initialHiddenStatus = localStorage.getItem('hiddenStatus');
         if (initialHiddenStatus) {
             setHiddenStatus(parseInt(initialHiddenStatus));
+        }
+        const initialHitStatus = localStorage.getItem('hitStatus');
+        if (initialHitStatus) {
+            setHiddenStatus(parseInt(initialHitStatus));
         }
     }, [itemId]);
 
