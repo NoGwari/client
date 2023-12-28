@@ -263,7 +263,7 @@ function BoardDetailPage() {
     };
     const ishit = async () => {
         console.log(boardHitStatus);
-        if (boardHitStatus == false) {
+        if (boardHitStatus === false) {
             try {
                 const hitResponse = await fetch(Http + `/board/hits/${itemId}`, {
                     method: 'POST',
@@ -275,6 +275,7 @@ function BoardDetailPage() {
                 });
                 if (hitResponse.ok) {
                     setHits(hits + 1);
+                    setBoardHitStatus(true);
                 }
             } catch (error) {
                 console.error('좋아요 누르기 실패:', error);
@@ -291,6 +292,7 @@ function BoardDetailPage() {
                 });
                 if (unhitResponse.ok) {
                     setHits(hits - 1);
+                    setBoardHitStatus(false);
                 }
             } catch (error) {
                 console.error('좋아요 취소 실패:', error);
