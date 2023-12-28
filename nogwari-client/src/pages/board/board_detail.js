@@ -214,33 +214,11 @@ function BoardDetailPage() {
     const [replyComments, setReplyComments] = useState([]);
     const [reply, setReply] = useState('');
     const [hiddenStatus, setHiddenStatus] = useState(0);
-    const [boardHitStatus, setBoardHitStatus] = useState(0);
+    const [boardHitStatus, setBoardHitStatus] = useState(false);
     const navigate = useNavigate();
     const userToken = sessionStorage.getItem('token');
-
     useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const res = await fetch(Http + `/board/${itemId}`, {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    credentials: 'include',
-                });
-                if (!res.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                const result = await res.json();
-                setBoard(result);
-                console.log(result);
-                const storedHitStatus = localStorage.getItem(`boardHitStatus_${itemId}`);
-                setBoardHitStatus(storedHitStatus);
-            } catch (error) {
-                console.error('Error fetching board data:', error);
-            }
-        };
-        fetchData();
+        boardData();
         fetchComments();
 
         const initialHiddenStatus = localStorage.getItem('hiddenStatus');
@@ -263,12 +241,6 @@ function BoardDetailPage() {
             }
             const result = await res.json();
             setBoard(result);
-        } catch (error) {
-            console.error('Error fetching board data:', error);
-        }
-    };
-    const ishit = async () => {
-        try {
             const response = await fetch(Http + `/board/ishit/${itemId}`, {
                 method: 'GET',
                 headers: {
@@ -277,53 +249,56 @@ function BoardDetailPage() {
                 },
                 credentials: 'include',
             });
-            const data = await response.json();
-            if (response.ok) {
-                if (data === false) {
-                    try {
-                        const hitResponse = await fetch(Http + `/board/hits/${itemId}`, {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                                Authorization: `Bearer ${sessionStorage.getItem('token')}`,
-                            },
-                            credentials: 'include',
-                        });
-                        if (hitResponse.ok) {
-                            setHits(hits + 1);
-                            setBoardHitStatus(1);
-                            localStorage.setItem(`boardHitStatus_${itemId}`, '1'); //좋아요 클릭
-                        }
-                    } catch (error) {
-                        console.error('좋아요 누르기 실패:', error);
-                    }
-                } else if (data === true) {
-                    try {
-                        const unhitResponse = await fetch(Http + `/board/unhits/${itemId}`, {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                                Authorization: `Bearer ${sessionStorage.getItem('token')}`,
-                            },
-                            credentials: 'include',
-                        });
-                        if (unhitResponse.ok) {
-                            setHits(hits - 1);
-                            setBoardHitStatus(0);
-                            localStorage.setItem(`boardHitStatus_${itemId}`, '0'); //좋아요 취소
-                        }
-                    } catch (error) {
-                        console.error('좋아요 취소 실패:', error);
-                    }
+            if (response.status === 200) {
+                console.log(response);
+                if (response.ok == true) {
+                    setBoardHitStatus(true);
+                } else {
+                    setBoardHitStatus(false);
                 }
-            } else {
-                throw new Error('Network response was not ok');
             }
         } catch (error) {
-            console.error('확인 에러: ', error);
+            console.error('Error fetching board data:', error);
+        }
+    };
+    const ishit = async () => {
+        console.log(boardHitStatus);
+        if (boardHitStatus == false) {
+            try {
+                const hitResponse = await fetch(Http + `/board/hits/${itemId}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Authorization: `Bearer ${sessionStorage.getItem('token')}`,
+                    },
+                    credentials: 'include',
+                });
+                if (hitResponse.ok) {
+                    setHits(hits + 1);
+                }
+            } catch (error) {
+                console.error('좋아요 누르기 실패:', error);
+            }
+        } else {
+            try {
+                const unhitResponse = await fetch(Http + `/board/unhits/${itemId}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Authorization: `Bearer ${sessionStorage.getItem('token')}`,
+                    },
+                    credentials: 'include',
+                });
+                if (unhitResponse.ok) {
+                    setHits(hits - 1);
+                }
+            } catch (error) {
+                console.error('좋아요 취소 실패:', error);
+            }
         }
         boardData();
     };
+
     const fetchComments = async () => {
         try {
             const response = await fetch(Http + `/comment/${itemId}`, {
@@ -521,7 +496,7 @@ function BoardDetailPage() {
                         });
                         if (hitResponse.ok) {
                             setReplyHits(replyHits + 1);
-                            if (commentId == reply.id) {
+                            if (commentId === reply.id) {
                             }
                         }
                     } catch (error) {
@@ -539,7 +514,7 @@ function BoardDetailPage() {
                         });
                         if (unhitResponse.ok) {
                             setReplyHits(replyHits - 1);
-                            if (commentId == reply.id) {
+                            if (commentId === reply.id) {
                             }
                         }
                     } catch (error) {
@@ -644,7 +619,7 @@ function BoardDetailPage() {
                         onClick={ishit}
                         style={{
                             cursor: 'pointer',
-                            color: boardHitStatus === 1 ? 'blue' : 'black',
+                            color: boardHitStatus === true ? 'blue' : 'black',
                         }}
                     />
                     {board.hits}
