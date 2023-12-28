@@ -214,7 +214,7 @@ function BoardDetailPage() {
     const [replyComments, setReplyComments] = useState([]);
     const [reply, setReply] = useState('');
     const [hiddenStatus, setHiddenStatus] = useState(0);
-    const [hitStatus, setHitStatus] = useState(0);
+    const [boardHitStatus, setBoardHitStatus] = useState(0);
     const navigate = useNavigate();
     const userToken = sessionStorage.getItem('token');
 
@@ -233,6 +233,9 @@ function BoardDetailPage() {
                 }
                 const result = await res.json();
                 setBoard(result);
+                console.log(result);
+                const storedHitStatus = localStorage.getItem(`boardHitStatus_${itemId}`);
+                setBoardHitStatus(storedHitStatus);
             } catch (error) {
                 console.error('Error fetching board data:', error);
             }
@@ -244,16 +247,7 @@ function BoardDetailPage() {
         if (initialHiddenStatus) {
             setHiddenStatus(parseInt(initialHiddenStatus));
         }
-        const initialHitStatus = localStorage.getItem('hitStatus');
-        if (initialHitStatus) {
-            setHitStatus(parseInt(initialHitStatus));
-        }
     }, [itemId]);
-
-    const updateHitStatusInLocalStorage = (newStatus) => {
-        localStorage.setItem('hitStatus', newStatus.toString());
-        setHitStatus(newStatus);
-    };
 
     const boardData = async () => {
         try {
@@ -297,7 +291,8 @@ function BoardDetailPage() {
                         });
                         if (hitResponse.ok) {
                             setHits(hits + 1);
-                            updateHitStatusInLocalStorage(1);
+                            setBoardHitStatus(1);
+                            localStorage.setItem(`boardHitStatus_${itemId}`, '1'); //좋아요 클릭
                         }
                     } catch (error) {
                         console.error('좋아요 누르기 실패:', error);
@@ -314,7 +309,8 @@ function BoardDetailPage() {
                         });
                         if (unhitResponse.ok) {
                             setHits(hits - 1);
-                            updateHitStatusInLocalStorage(0);
+                            setBoardHitStatus(0);
+                            localStorage.setItem(`boardHitStatus_${itemId}`, '0'); //좋아요 취소
                         }
                     } catch (error) {
                         console.error('좋아요 취소 실패:', error);
@@ -328,7 +324,6 @@ function BoardDetailPage() {
         }
         boardData();
     };
-
     const fetchComments = async () => {
         try {
             const response = await fetch(Http + `/comment/${itemId}`, {
@@ -649,7 +644,7 @@ function BoardDetailPage() {
                         onClick={ishit}
                         style={{
                             cursor: 'pointer',
-                            color: hitStatus === 1 ? 'blue' : 'black',
+                            color: boardHitStatus === 1 ? 'blue' : 'black',
                         }}
                     />
                     {board.hits}
