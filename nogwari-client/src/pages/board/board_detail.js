@@ -218,7 +218,7 @@ function BoardDetailPage() {
     const navigate = useNavigate();
     const userToken = sessionStorage.getItem('token');
     useEffect(() => {
-        boardData();
+        fetchData();
         fetchComments();
 
         const initialHiddenStatus = localStorage.getItem('hiddenStatus');
@@ -227,7 +227,7 @@ function BoardDetailPage() {
         }
     }, [itemId]);
 
-    const boardData = async () => {
+    const fetchData = async () => {
         try {
             const res = await fetch(Http + `/board/${itemId}`, {
                 method: 'GET',
@@ -250,12 +250,8 @@ function BoardDetailPage() {
                 credentials: 'include',
             });
             if (response.status === 200) {
-                console.log(response);
-                if (response.ok == true) {
-                    setBoardHitStatus(true);
-                } else {
-                    setBoardHitStatus(false);
-                }
+                const hitted = await response.json();
+                setBoardHitStatus(hitted);
             }
         } catch (error) {
             console.error('Error fetching board data:', error);
@@ -298,7 +294,7 @@ function BoardDetailPage() {
                 console.error('좋아요 취소 실패:', error);
             }
         }
-        boardData();
+        fetchData();
     };
 
     const fetchComments = async () => {
