@@ -153,6 +153,7 @@ function CreateTime(timestamp) {
 
 function Board() {
     const [board, setBoard] = useState([]);
+    const [boardHit, setBoardHit] = useState([]);
     const [notice, setNotice] = useState([]);
     const [popular, setPopular] = useState([]);
     const [limit, setLimit] = useState(10);
@@ -182,6 +183,27 @@ function Board() {
                         const filteredData = result.data.filter((item) => item.categoryId !== 100);
 
                         setBoard(filteredData);
+                        const boardHitted = await Promise.all(
+                            filteredData.map(async (item) => {
+                                const response = await fetch(Http + `/board/ishit/${item.id}`, {
+                                    method: 'GET',
+                                    headers: {
+                                        'Content-Type': 'application/json',
+                                        Authorization: `Bearer ${sessionStorage.getItem('token')}`,
+                                    },
+                                    credentials: 'include',
+                                });
+                                if (response.status === 200) {
+                                    console.log(`boardHIt ${item.id}`);
+                                    return await response.json();
+                                } else {
+                                    return 0;
+                                }
+                            })
+                        );
+
+                        console.log(boardHitted);
+                        setBoardHit();
                         setTotalPages(Math.ceil(filteredData.length));
                     } else {
                         console.error('불러오기 실패');
