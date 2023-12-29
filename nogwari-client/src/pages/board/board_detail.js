@@ -220,11 +220,6 @@ function BoardDetailPage() {
     useEffect(() => {
         fetchData();
         fetchComments();
-
-        const initialHiddenStatus = localStorage.getItem('hiddenStatus');
-        if (initialHiddenStatus) {
-            setHiddenStatus(parseInt(initialHiddenStatus));
-        }
     }, [itemId]);
 
     const fetchData = async () => {
@@ -241,6 +236,7 @@ function BoardDetailPage() {
             }
             const result = await res.json();
             setBoard(result);
+            setHiddenStatus(parseInt(result.hidden));
             const response = await fetch(Http + `/board/ishit/${itemId}`, {
                 method: 'GET',
                 headers: {
@@ -557,8 +553,7 @@ function BoardDetailPage() {
                 const data = await response.json();
                 const userConfirmed = window.confirm('게시물 숨김처리 ON/OFF');
                 if (userConfirmed) {
-                    setHiddenStatus(data.hidden);
-                    localStorage.setItem('hiddenStatus', data.hidden.toString());
+                    setHiddenStatus(parseInt(data.hidden));
                 }
             }
         } catch (error) {
