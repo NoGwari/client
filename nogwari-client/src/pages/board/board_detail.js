@@ -215,6 +215,8 @@ function BoardDetailPage() {
     const [reply, setReply] = useState('');
     const [hiddenStatus, setHiddenStatus] = useState(0);
     const [boardHitStatus, setBoardHitStatus] = useState(false);
+    const [commentHitStatus, setCommentHitStatus] = useState(false);
+    const [replyHitStatus, setReplyHitStatus] = useState(false);
     const navigate = useNavigate();
     const userToken = sessionStorage.getItem('token');
     useEffect(() => {
@@ -254,7 +256,6 @@ function BoardDetailPage() {
         }
     };
     const ishit = async () => {
-        console.log(boardHitStatus);
         if (boardHitStatus === false) {
             try {
                 const hitResponse = await fetch(Http + `/board/hits/${itemId}`, {
@@ -339,6 +340,7 @@ function BoardDetailPage() {
                         });
                         if (hitResponse.ok) {
                             setCommentHits(commentHits + 1);
+                            setCommentHitStatus(true);
                         }
                     } catch (error) {
                         console.error('좋아요 누르기 실패:', error);
@@ -355,6 +357,7 @@ function BoardDetailPage() {
                         });
                         if (unhitResponse.ok) {
                             setCommentHits(commentHits - 1);
+                            setCommentHitStatus(false);
                         }
                     } catch (error) {
                         console.error('좋아요 취소 실패:', error);
@@ -490,8 +493,7 @@ function BoardDetailPage() {
                         });
                         if (hitResponse.ok) {
                             setReplyHits(replyHits + 1);
-                            if (commentId === reply.id) {
-                            }
+                            setReplyHitStatus(true);
                         }
                     } catch (error) {
                         console.error('좋아요 누르기 실패:', error);
@@ -508,8 +510,7 @@ function BoardDetailPage() {
                         });
                         if (unhitResponse.ok) {
                             setReplyHits(replyHits - 1);
-                            if (commentId === reply.id) {
-                            }
+                            setReplyHitStatus(false);
                         }
                     } catch (error) {
                         console.error('좋아요 취소 실패:', error);
@@ -659,7 +660,10 @@ function BoardDetailPage() {
                                     <div>
                                         <FiThumbsUp
                                             onClick={() => ishitComment(comment.id)}
-                                            style={{ cursor: 'pointer' }}
+                                            style={{
+                                                cursor: 'pointer',
+                                                color: commentHitStatus === true ? 'blue' : 'black',
+                                            }}
                                         />
                                         {comment.hits}
                                         &nbsp;&nbsp; &nbsp;&nbsp;
@@ -688,6 +692,7 @@ function BoardDetailPage() {
                                                     onClick={() => ishitReply(reply.id)}
                                                     style={{
                                                         cursor: 'pointer',
+                                                        color: replyHitStatus === true ? 'blue' : 'black',
                                                     }}
                                                 />
                                                 {reply.hits}
