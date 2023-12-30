@@ -306,6 +306,7 @@ function BoardDetailPage() {
 
             if (response.ok) {
                 const data = await response.json();
+                console.log(data);
                 setComments(data.comment);
                 setReplyComments(data.reply);
             } else {
