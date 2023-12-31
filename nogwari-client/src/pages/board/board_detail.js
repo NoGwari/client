@@ -644,7 +644,8 @@ function BoardDetailPage() {
                             <Comment key={comment.id}>
                                 <CommentContent>
                                     <div>
-                                        {comment.userNickname} : {comment.content}
+                                        <span style={{ fontWeight: 'bold' }}>{comment.userNickname}</span> :{' '}
+                                        {comment.content}
                                         &nbsp;&nbsp;&nbsp;
                                         <ReplyButton onClick={() => toggleReply(comment.id)}>답글 달기</ReplyButton>
                                         {isReplying && replyCommentId === comment.id && (
@@ -684,31 +685,42 @@ function BoardDetailPage() {
                                 {Object.values(replyComments)
                                     .filter((element) => parseInt(element.parentCommentsId) === parseInt(comment.id))
                                     .map((reply) => (
-                                        <ReplyContent key={reply.id}>
-                                            <div>
-                                                {reply.userNickname} : {reply.content} <ImReply />
+                                        <ReplyContent
+                                            key={reply.id}
+                                            style={{
+                                                margin: '10px 0',
+                                                paddingLeft: '20px',
+                                                borderLeft: '2px solid #3498db',
+                                            }}
+                                        >
+                                            <div style={{ marginBottom: '5px' }}>
+                                                <span style={{ fontWeight: 'bold', marginRight: '5px' }}>
+                                                    {reply.userNickname}
+                                                </span>
+                                                :<span style={{ marginLeft: '5px' }}>{reply.content}</span>
                                             </div>
-                                            <div>
+                                            <div style={{ display: 'flex', alignItems: 'center' }}>
                                                 <FiThumbsUp
                                                     onClick={() => ishitReply(reply.id)}
                                                     style={{
                                                         cursor: 'pointer',
                                                         color: replyHitStatus === true ? 'blue' : 'black',
+                                                        marginRight: '5px',
                                                     }}
                                                 />
-                                                {reply.hits}
-                                                &nbsp;&nbsp; &nbsp;&nbsp;
-                                                <AiFillDelete
-                                                    onClick={() => deleteComment(reply.id)}
-                                                    style={{ cursor: 'pointer' }}
-                                                />
-                                                &nbsp;&nbsp;
-                                                <RiAlarmWarningFill
-                                                    onClick={handleReport}
-                                                    style={{
-                                                        cursor: 'pointer',
-                                                    }}
-                                                />
+                                                <span>{reply.hits}</span>
+                                                <span style={{ marginLeft: '10px' }}>
+                                                    <AiFillDelete
+                                                        onClick={() => deleteComment(reply.id)}
+                                                        style={{ cursor: 'pointer' }}
+                                                    />
+                                                </span>
+                                                <span style={{ marginLeft: '10px' }}>
+                                                    <RiAlarmWarningFill
+                                                        onClick={handleReport}
+                                                        style={{ cursor: 'pointer' }}
+                                                    />
+                                                </span>
                                             </div>
                                         </ReplyContent>
                                     ))}
