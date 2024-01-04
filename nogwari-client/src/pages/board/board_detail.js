@@ -296,21 +296,31 @@ function BoardDetailPage() {
 
     const fetchComments = async () => {
         try {
-            const response = await fetch(Http + `/comment/${itemId}`, {
+            const res = await fetch(Http + `/comment/${itemId}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 credentials: 'include',
             });
-
-            if (response.ok) {
-                const data = await response.json();
-                console.log(data);
-                setComments(data.comment);
-                setReplyComments(data.reply);
-            } else {
-                console.error('댓글 가져오기 실패');
+            if (!res.ok) {
+                throw new Error('Network response was not ok');
+            }
+            const result = await res.json();
+            console.log(result);
+            setComments(result.comment);
+            setReplyComments(result.reply);
+            const response = await fetch(Http + `/comment/ishit/${result.id}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${sessionStorage.getItem('token')}`,
+                },
+                credentials: 'include',
+            });
+            if (response.status === 200) {
+                const hitted = await response.json();
+                setCommentHitStatus(hitted);
             }
         } catch (error) {
             console.error('오류 발생:', error);
