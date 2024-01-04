@@ -304,10 +304,16 @@ function BoardDetailPage() {
                 credentials: 'include',
             });
             if (!res.ok) {
-                throw new Error('Network response was not ok');
+                throw new Error('네트워크 응답이 올바르지 않았습니다');
             }
             const result = await res.json();
             console.log(result);
+            const commentIds = result.comment.map((comment) => comment.id);
+            const replyIds = result.reply.map((reply) => reply.id);
+
+            console.log('Comment IDs:', commentIds);
+            console.log('Reply IDs:', replyIds);
+
             setComments(result.comment);
             setReplyComments(result.reply);
             const response = await fetch(Http + `/comment/ishit/${result.id}`, {
@@ -327,7 +333,8 @@ function BoardDetailPage() {
         }
     };
 
-    const ishitComment = async (commentId) => {
+    const ishitComment = async () => {
+        const commentId = await fetchComments();
         if (commentHitStatus === false) {
             try {
                 const hitResponse = await fetch(Http + `/comment/hits/${commentId}`, {
@@ -363,7 +370,6 @@ function BoardDetailPage() {
                 console.error('좋아요 취소 실패:', error);
             }
         }
-        fetchComments();
     };
 
     const deleteComment = async (id) => {
