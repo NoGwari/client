@@ -653,6 +653,12 @@ function BoardDetailPage() {
                                                     placeholder="답글 내용을 입력하세요"
                                                     value={reply}
                                                     onChange={(e) => setReply(e.target.value)}
+                                                    onKeyDown={(e) => {
+                                                        if (e.key === 'Enter') {
+                                                            e.preventDefault();
+                                                            ReplyComment(reply);
+                                                        }
+                                                    }}
                                                 />
                                                 <ReplyButton2 onClick={() => ReplyComment(reply)}>전송</ReplyButton2>
                                             </ReplyContainer>
@@ -731,6 +737,12 @@ function BoardDetailPage() {
                             placeholder="댓글을 입력하세요"
                             value={content}
                             onChange={handleContentChange}
+                            onKeyDown={(e) => {
+                                if (e.key === 'Enter') {
+                                    e.preventDefault();
+                                    handleSubmit();
+                                }
+                            }}
                         />
                         <CommentSubmit onClick={handleSubmit}>댓글 작성</CommentSubmit>
                     </CommentForm>
