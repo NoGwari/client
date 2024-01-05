@@ -71,13 +71,13 @@ const CategoryButton = styled.div`
     flex-grow: 1;
 
     input[type='text'] {
-        height: 30px;
+        height: 25px;
+        padding: 2px;
         border: 1px solid #ccc;
-        padding: 5px;
         box-sizing: border-box;
     }
     button {
-        padding: 6px 10px;
+        height: 25px;
         border: 1px solid #ccc;
         border-radius: 5px;
         background-color: black;
