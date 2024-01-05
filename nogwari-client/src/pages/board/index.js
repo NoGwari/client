@@ -162,6 +162,7 @@ function Board() {
     const [totalPages, setTotalPages] = useState(1);
     const [searchvalue, setSearchvalue] = useState('');
     const [selectOption, setSelectOption] = useState('title');
+    const [loading, setLoading] = useState(false);
     const location = useLocation();
     const queryParams = new URLSearchParams(location.search);
     const categoryId = queryParams.get('category');
@@ -280,9 +281,9 @@ function Board() {
     };
 
     const search = async () => {
+        setLoading(true);
         try {
             const encodedValue = encodeURIComponent(searchvalue);
-            console.log(encodedValue);
             const response = await fetch(Http + `/board/search?searchType=${selectOption}&keyword=${encodedValue}`, {
                 method: 'GET',
                 headers: {
@@ -301,6 +302,7 @@ function Board() {
         } catch (error) {
             console.error('에러 발생', error);
         }
+        setLoading(false);
     };
 
     const title = (() => {
@@ -319,6 +321,7 @@ function Board() {
     return (
         <div>
             <Layout></Layout>
+            {loading && <FadeLoader />}
             <List>{title}</List>
             <div>
                 <BoardListContainer>
