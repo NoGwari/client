@@ -19,6 +19,7 @@ import ForgotPassword from 'pages/auth/ForgotPassword.js';
 import Mycomment from 'pages/auth/mycomment.js';
 import Mypost from 'pages/auth/mypost.js';
 import { AuthProvider, useAuth } from 'pages/auth/AuthContext.js';
+import { FadeLoader } from 'react-spinners';
 
 const BoardPages = lazy(() => import('./pages/board'));
 
@@ -49,7 +50,18 @@ function App() {
                 <Route
                     path="board/*"
                     element={
-                        <Suspense fallback={<>로딩중입니다.</>}>
+                        <Suspense
+                            fallback={
+                                <FadeLoader
+                                    style={{
+                                        position: 'absolute',
+                                        top: '50%',
+                                        left: '50%',
+                                        transform: 'translate(-50%, -50%)',
+                                    }}
+                                />
+                            }
+                        >
                             <BoardPages />
                         </Suspense>
                     }
