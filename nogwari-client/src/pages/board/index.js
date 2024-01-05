@@ -319,9 +319,13 @@ function Board() {
     })();
 
     return (
-        <div>
+        <div style={{ postion: 'realative' }}>
             <Layout></Layout>
-            {loading && <FadeLoader />}
+            {loading && (
+                <FadeLoader
+                    style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)' }}
+                />
+            )}
             <List>{title}</List>
             <div>
                 <BoardListContainer>
