@@ -155,6 +155,7 @@ function CreateTime(timestamp) {
 function Board() {
     const [board, setBoard] = useState([]);
     const [boardHit, setBoardHit] = useState([]);
+    const [postLiked, setPostLiked] = useState([]);
     const [notice, setNotice] = useState([]);
     const [popular, setPopular] = useState([]);
     const [limit, setLimit] = useState(10);
@@ -185,6 +186,7 @@ function Board() {
                         const filteredData = result.data.filter((item) => item.categoryId !== 100);
 
                         setBoard(filteredData);
+
                         const boardHitted = await Promise.all(
                             filteredData.map(async (item) => {
                                 const response = await fetch(Http + `/board/ishit/${item.id}`, {
@@ -195,8 +197,9 @@ function Board() {
                                     },
                                     credentials: 'include',
                                 });
+
                                 if (response.status === 200) {
-                                    console.log(`boardHIt ${item.id}`);
+                                    console.log(`boardHit ${item.id}`);
                                     return await response.json();
                                 } else {
                                     return 0;
@@ -205,6 +208,16 @@ function Board() {
                         );
 
                         console.log(boardHitted);
+
+                        const likedPosts = filteredData.map((item, index) => {
+                            if (boardHitted[index]) {
+                                return item.id;
+                            } else {
+                                return 0;
+                            }
+                        });
+
+                        setPostLiked(likedPosts);
                         setBoardHit();
                         setTotalPages(Math.ceil(filteredData.length));
                     } else {
@@ -452,7 +465,8 @@ function Board() {
                                 <BoardContent>
                                     {item.userNickname} &middot; {CreateTime(item.createdAt)} &nbsp;
                                     <AiOutlineEye />
-                                    {item.views} &middot;&nbsp; <FiThumbsUp />
+                                    {item.views} &middot;&nbsp;
+                                    <FiThumbsUp style={{ color: postLiked.includes(item.id) ? 'blue' : 'black' }} />
                                     {item.hits}
                                 </BoardContent>
                             </BoardContainer>

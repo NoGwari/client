@@ -81,5 +81,4 @@ function App() {
         </BrowserRouter>
     );
 }
-//git pull
 export default App;
