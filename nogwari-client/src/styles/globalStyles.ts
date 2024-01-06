@@ -1,6 +1,6 @@
-import { createGlobalStyle } from "styled-components";
-import { ResetStyle } from "./reset";
-import { Theme } from "./theme";
+import { createGlobalStyle } from 'styled-components';
+import { ResetStyle } from './reset';
+import { Theme } from './theme';
 
 export const GlobalStyle = createGlobalStyle<{ theme: Theme }>`
 ${ResetStyle};
@@ -18,5 +18,13 @@ body {
 
 .wrapper {
   height: 100%;
+}
+
+body {
+  overflow: -moz-scrollbars-none;
+}
+
+body::-webkit-scrollbar {
+  display: none;
 }
 `;
