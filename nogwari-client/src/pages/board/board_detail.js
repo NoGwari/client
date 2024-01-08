@@ -321,8 +321,8 @@ function BoardDetailPage() {
             setReplyComments(result.reply);
 
             const commentHitted = await Promise.all(
-                result.id.map(async (item) => {
-                    const response = await fetch(Http + `/comment/ishit/${item.id}`, {
+                result.comment.map(async (comment) => {
+                    const response = await fetch(Http + `/comment/ishit/${comment.id}`, {
                         method: 'GET',
                         headers: {
                             'Content-Type': 'application/json',
@@ -340,7 +340,7 @@ function BoardDetailPage() {
                 })
             );
 
-            const likedComments = result.id.map((item, index) => (commentHitted[index] ? item.id : 0));
+            const likedComments = result.comment.map((comment, index) => (commentHitted[index] ? comment.id : 0));
 
             setCommentHitStatus(likedComments);
         } catch (error) {
@@ -349,9 +349,11 @@ function BoardDetailPage() {
     };
 
     const ishitComment = async () => {
-        const commentId = await fetchComments();
-        if (commentHitStatus === false) {
-            try {
+        try {
+            await fetchComments();
+
+            const commentId = commentId;
+            if (commentHitStatus[commentId] === false) {
                 const hitResponse = await fetch(Http + `/comment/hits/${commentId}`, {
                     method: 'POST',
                     headers: {
@@ -360,15 +362,12 @@ function BoardDetailPage() {
                     },
                     credentials: 'include',
                 });
+
                 if (hitResponse.ok) {
                     setCommentHits(commentHits + 1);
-                    setCommentHitStatus(true);
+                    setCommentHitStatus({ ...commentHitStatus, [commentId]: true });
                 }
-            } catch (error) {
-                console.error('좋아요 누르기 실패:', error);
-            }
-        } else {
-            try {
+            } else {
                 const unhitResponse = await fetch(Http + `/comment/unhits/${commentId}`, {
                     method: 'POST',
                     headers: {
@@ -377,13 +376,14 @@ function BoardDetailPage() {
                     },
                     credentials: 'include',
                 });
+
                 if (unhitResponse.ok) {
                     setCommentHits(commentHits - 1);
-                    setCommentHitStatus(false);
+                    setCommentHitStatus({ ...commentHitStatus, [commentId]: false });
                 }
-            } catch (error) {
-                console.error('좋아요 취소 실패:', error);
             }
+        } catch (error) {
+            console.error('좋아요 처리 실패:', error);
         }
     };
 
