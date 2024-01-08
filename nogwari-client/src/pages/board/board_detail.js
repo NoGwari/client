@@ -303,11 +303,14 @@ function BoardDetailPage() {
                 },
                 credentials: 'include',
             });
+
             if (!res.ok) {
                 throw new Error('네트워크 응답이 올바르지 않았습니다');
             }
+
             const result = await res.json();
             console.log(result);
+
             const commentIds = result.comment.map((comment) => comment.id);
             const replyIds = result.reply.map((reply) => reply.id);
 
@@ -316,18 +319,30 @@ function BoardDetailPage() {
 
             setComments(result.comment);
             setReplyComments(result.reply);
-            const response = await fetch(Http + `/comment/ishit/${result.id}`, {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                    Authorization: `Bearer ${sessionStorage.getItem('token')}`,
-                },
-                credentials: 'include',
-            });
-            if (response.status === 200) {
-                const hitted = await response.json();
-                setCommentHitStatus(hitted);
-            }
+
+            const commentHitted = await Promise.all(
+                result.id.map(async (item) => {
+                    const response = await fetch(Http + `/comment/ishit/${item.id}`, {
+                        method: 'GET',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            Authorization: `Bearer ${sessionStorage.getItem('token')}`,
+                        },
+                        credentials: 'include',
+                    });
+
+                    if (response.status === 200) {
+                        const hitted = await response.json();
+                        return hitted;
+                    }
+
+                    return false;
+                })
+            );
+
+            const likedComments = result.id.map((item, index) => (commentHitted[index] ? item.id : 0));
+
+            setCommentHitStatus(likedComments);
         } catch (error) {
             console.error('오류 발생:', error);
         }
