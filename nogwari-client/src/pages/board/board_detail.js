@@ -206,15 +206,8 @@ const ReplyButton2 = styled.button`
 function BoardDetailPage() {
     const [board, setBoard] = useState({});
     const { itemId } = useParams();
-    const [comments, setComments] = useState([]);
-    const [content, setContent] = useState('');
-    const [reply, setReply] = useState('');
-    const [hits, setHits] = useState(0);
-    const [commentHits, setCommentHits] = useState(0);
     const [hiddenStatus, setHiddenStatus] = useState(0);
     const [boardHitStatus, setBoardHitStatus] = useState(false);
-    const [commentHitStatus, setCommentHitStatus] = useState(false);
-    const [isReplying, setIsReplying] = useState(false);
     const navigate = useNavigate();
     const userToken = sessionStorage.getItem('token');
     useEffect(() => {
@@ -291,10 +284,6 @@ function BoardDetailPage() {
         }
         fetchData();
     };
-
-    const fetchComments = async () => {};
-
-    const ishitComment = async () => {};
 
     const deleteComment = async (id) => {
         const shouldDelete = window.confirm('삭제하시겠습니까?');
