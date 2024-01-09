@@ -9,6 +9,8 @@ import { AiOutlineEye, AiFillDelete } from 'react-icons/ai';
 import { ImReply } from 'react-icons/im';
 import { RiAlarmWarningFill } from 'react-icons/ri';
 import { MdOutlineReportProblem } from 'react-icons/md';
+import { FadeLoader } from 'react-spinners';
+import { Fade } from '@mui/material';
 
 const Container = styled.div`
     margin: 0 100px;
@@ -424,7 +426,9 @@ function BoardDetailPage() {
     };
 
     if (!board.title || comments === null) {
-        return ;
+        return (
+            <FadeLoader style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)' }} />
+        );
     }
 
     return (
