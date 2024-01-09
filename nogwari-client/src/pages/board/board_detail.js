@@ -214,6 +214,7 @@ function BoardDetailPage() {
     const [hiddenStatus, setHiddenStatus] = useState(0);
     const [boardHitStatus, setBoardHitStatus] = useState(false);
     const [commentHitStatus, setCommentHitStatus] = useState(false);
+    const [isReplying, setIsReplying] = useState(false);
     const navigate = useNavigate();
     const userToken = sessionStorage.getItem('token');
     useEffect(() => {
@@ -323,7 +324,6 @@ function BoardDetailPage() {
 
     const toggleReply = (commentId) => {
         setIsReplying(!isReplying);
-        setReplyCommentId(commentId);
     };
 
     const handleSubmit = async () => {
