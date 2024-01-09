@@ -208,15 +208,9 @@ function BoardDetailPage() {
     const [content, setContent] = useState('');
     const [hits, setHits] = useState(0);
     const [commentHits, setCommentHits] = useState(0);
-    const [replyHits, setReplyHits] = useState(0);
-    const [isReplying, setIsReplying] = useState(false);
-    const [replyCommentId, setReplyCommentId] = useState(null);
-    const [replyComments, setReplyComments] = useState([]);
-    const [reply, setReply] = useState('');
     const [hiddenStatus, setHiddenStatus] = useState(0);
     const [boardHitStatus, setBoardHitStatus] = useState(false);
     const [commentHitStatus, setCommentHitStatus] = useState(false);
-    const [replyHitStatus, setReplyHitStatus] = useState(false);
     const navigate = useNavigate();
     const userToken = sessionStorage.getItem('token');
     useEffect(() => {
@@ -523,7 +517,7 @@ function BoardDetailPage() {
                                         />
                                     </div>
                                 </CommentContent>
-                                {Object.values(replyComments)
+                                {Object.values(comment)
                                     .filter((element) => parseInt(element.parentCommentsId) === parseInt(comment.id))
                                     .map((reply) => (
                                         <ReplyContent
@@ -545,7 +539,7 @@ function BoardDetailPage() {
                                                     onClick={() => ishitComment(reply.id)}
                                                     style={{
                                                         cursor: 'pointer',
-                                                        color: replyHitStatus === true ? 'blue' : 'black',
+                                                        color: commentHitStatus === true ? 'blue' : 'black',
                                                         marginRight: '5px',
                                                     }}
                                                 />
