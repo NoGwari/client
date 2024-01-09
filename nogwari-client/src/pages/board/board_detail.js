@@ -294,98 +294,9 @@ function BoardDetailPage() {
         fetchData();
     };
 
-    const fetchComments = async () => {
-        try {
-            const res = await fetch(Http + `/comment/${itemId}`, {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                credentials: 'include',
-            });
+    const fetchComments = async () => {};
 
-            if (!res.ok) {
-                throw new Error('네트워크 응답이 올바르지 않았습니다');
-            }
-
-            const result = await res.json();
-            console.log(result);
-
-            const commentIds = result.comment.map((comment) => comment.id);
-            const replyIds = result.reply.map((reply) => reply.id);
-
-            console.log('Comment IDs:', commentIds);
-            console.log('Reply IDs:', replyIds);
-
-            setComments(result.comment);
-            setReplyComments(result.reply);
-
-            const commentHitted = await Promise.all(
-                result.comment.map(async (comment) => {
-                    const response = await fetch(Http + `/comment/ishit/${comment.id}`, {
-                        method: 'GET',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            Authorization: `Bearer ${sessionStorage.getItem('token')}`,
-                        },
-                        credentials: 'include',
-                    });
-
-                    if (response.status === 200) {
-                        const hitted = await response.json();
-                        return hitted;
-                    }
-
-                    return false;
-                })
-            );
-
-            const likedComments = result.comment.map((comment, index) => (commentHitted[index] ? comment.id : 0));
-
-            setCommentHitStatus(likedComments);
-        } catch (error) {
-            console.error('오류 발생:', error);
-        }
-    };
-
-    const ishitComment = async () => {
-        try {
-            await fetchComments();
-
-            const commentId = commentId;
-            if (commentHitStatus[commentId] === false) {
-                const hitResponse = await fetch(Http + `/comment/hits/${commentId}`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        Authorization: `Bearer ${sessionStorage.getItem('token')}`,
-                    },
-                    credentials: 'include',
-                });
-
-                if (hitResponse.ok) {
-                    setCommentHits(commentHits + 1);
-                    setCommentHitStatus({ ...commentHitStatus, [commentId]: true });
-                }
-            } else {
-                const unhitResponse = await fetch(Http + `/comment/unhits/${commentId}`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        Authorization: `Bearer ${sessionStorage.getItem('token')}`,
-                    },
-                    credentials: 'include',
-                });
-
-                if (unhitResponse.ok) {
-                    setCommentHits(commentHits - 1);
-                    setCommentHitStatus({ ...commentHitStatus, [commentId]: false });
-                }
-            }
-        } catch (error) {
-            console.error('좋아요 처리 실패:', error);
-        }
-    };
+    const ishitComment = async () => {};
 
     const deleteComment = async (id) => {
         const shouldDelete = window.confirm('삭제하시겠습니까?');
@@ -448,97 +359,7 @@ function BoardDetailPage() {
             }
         }
     };
-    const ReplyComment = async () => {
-        if (reply) {
-            const newReply = {
-                reply,
-            };
-            try {
-                const response = await fetch(Http + `/comment/reply/${itemId}`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        Authorization: `Bearer ${sessionStorage.getItem('token')}`,
-                    },
-                    body: JSON.stringify({
-                        content: reply,
-                        parentCommentId: replyCommentId,
-                    }),
-                    credentials: 'include',
-                });
-
-                if (response.ok) {
-                    setReply('');
-                    setReplyComments(newReply);
-                    setIsReplying(false);
-                    fetchComments();
-                    console.log('답글 작성 성공');
-                    console.log(newReply);
-                    console.log(replyCommentId);
-                } else {
-                    console.error('답글 작성 실패');
-                }
-            } catch (error) {
-                console.error('오류 발생:', error);
-            }
-        }
-    };
-
-    const ishitReply = async (commentId) => {
-        try {
-            const response = await fetch(Http + `/comment/ishit/${commentId}`, {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                    Authorization: `Bearer ${sessionStorage.getItem('token')}`,
-                },
-                credentials: 'include',
-            });
-            const data = await response.json();
-            if (response.ok) {
-                if (data === false) {
-                    try {
-                        const hitResponse = await fetch(Http + `/comment/hits/${commentId}`, {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                                Authorization: `Bearer ${sessionStorage.getItem('token')}`,
-                            },
-                            credentials: 'include',
-                        });
-                        if (hitResponse.ok) {
-                            setReplyHits(replyHits + 1);
-                            setReplyHitStatus(true);
-                        }
-                    } catch (error) {
-                        console.error('좋아요 누르기 실패:', error);
-                    }
-                } else if (data === true) {
-                    try {
-                        const unhitResponse = await fetch(Http + `/comment/unhits/${commentId}`, {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                                Authorization: `Bearer ${sessionStorage.getItem('token')}`,
-                            },
-                            credentials: 'include',
-                        });
-                        if (unhitResponse.ok) {
-                            setReplyHits(replyHits - 1);
-                            setReplyHitStatus(false);
-                        }
-                    } catch (error) {
-                        console.error('좋아요 취소 실패:', error);
-                    }
-                }
-            } else {
-                throw new Error('Network response was not ok');
-            }
-        } catch (error) {
-            console.error('확인 에러: ', error);
-        }
-        fetchComments();
-    };
+    const ReplyComment = async () => {};
 
     const handleUpdateClick = () => {
         navigate(`/updateBoard/${itemId}`, {
@@ -721,7 +542,7 @@ function BoardDetailPage() {
                                             </div>
                                             <div style={{ display: 'flex', alignItems: 'center' }}>
                                                 <FiThumbsUp
-                                                    onClick={() => ishitReply(reply.id)}
+                                                    onClick={() => ishitComment(reply.id)}
                                                     style={{
                                                         cursor: 'pointer',
                                                         color: replyHitStatus === true ? 'blue' : 'black',
