@@ -206,6 +206,7 @@ function BoardDetailPage() {
     const { itemId } = useParams();
     const [comments, setComments] = useState([]);
     const [content, setContent] = useState('');
+    const [reply, setReply] = useState('');
     const [hits, setHits] = useState(0);
     const [commentHits, setCommentHits] = useState(0);
     const [hiddenStatus, setHiddenStatus] = useState(0);
@@ -423,7 +424,7 @@ function BoardDetailPage() {
     };
 
     if (!board.title || comments === null) {
-        return <div>Loading...</div>;
+        return ;
     }
 
     return (
@@ -477,22 +478,20 @@ function BoardDetailPage() {
                                         {comment.content}
                                         &nbsp;&nbsp;&nbsp;
                                         <ReplyButton onClick={() => toggleReply(comment.id)}>답글 달기</ReplyButton>
-                                        {isReplying && replyCommentId === comment.id && (
-                                            <ReplyContainer>
-                                                <ReplyInput
-                                                    placeholder="답글 내용을 입력하세요"
-                                                    value={reply}
-                                                    onChange={(e) => setReply(e.target.value)}
-                                                    onKeyDown={(e) => {
-                                                        if (e.key === 'Enter') {
-                                                            e.preventDefault();
-                                                            ReplyComment(reply);
-                                                        }
-                                                    }}
-                                                />
-                                                <ReplyButton2 onClick={() => ReplyComment(reply)}>전송</ReplyButton2>
-                                            </ReplyContainer>
-                                        )}
+                                        <ReplyContainer>
+                                            <ReplyInput
+                                                placeholder="답글 내용을 입력하세요"
+                                                value={reply}
+                                                onChange={(e) => setReply(e.target.value)}
+                                                onKeyDown={(e) => {
+                                                    if (e.key === 'Enter') {
+                                                        e.preventDefault();
+                                                        ReplyComment(reply);
+                                                    }
+                                                }}
+                                            />
+                                            <ReplyButton2 onClick={() => ReplyComment(reply)}>전송</ReplyButton2>
+                                        </ReplyContainer>
                                     </div>
                                     <div>
                                         <FiThumbsUp
