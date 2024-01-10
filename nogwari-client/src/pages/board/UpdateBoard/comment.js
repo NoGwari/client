@@ -48,6 +48,67 @@ function BoardComment() {
         const likedComments = result.comment.map((comment, index) => (commentHitted[index] ? comment.id : 0));
         setCommentHitStatus(likedComments);
     };
+
+    const ishitComment = async () => {
+        try {
+            await fetchComments();
+
+            const commentId = commentId;
+            if (commentHitStatus[commentId] === false) {
+                const hitResponse = await fetch(Http + `/comment/hits/${commentId}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Authorization: `Bearer ${sessionStorage.getItem('token')}`,
+                    },
+                    credentials: 'include',
+                });
+
+                if (hitResponse.ok) {
+                    setCommentHits(commentHits + 1);
+                    setCommentHitStatus({ ...commentHitStatus, [commentId]: true });
+                }
+            } else {
+                const unhitResponse = await fetch(Http + `/comment/unhits/${commentId}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Authorization: `Bearer ${sessionStorage.getItem('token')}`,
+                    },
+                    credentials: 'include',
+                });
+
+                if (unhitResponse.ok) {
+                    setCommentHits(commentHits - 1);
+                    setCommentHitStatus({ ...commentHitStatus, [commentId]: false });
+                }
+            }
+        } catch (error) {
+            console.error('좋아요 처리 실패:', error);
+        }
+    };
+    
+    const deleteComment = async (id) => {
+        const shouldDelete = window.confirm('삭제하시겠습니까?');
+        if (shouldDelete) {
+            try {
+                const response = await fetch(Http + `/comment/${id}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Authorization: `Bearer ${sessionStorage.getItem('token')}`,
+                    },
+                    credentials: 'include',
+                });
+                if (response.ok) {
+                    console.log('댓글 삭제 완료');
+                    fetchComments();
+                }
+            } catch (error) {
+                console.error('에러', error);
+            }
+        }
+    };
 }
 
 // const ishitComment = async () => {
