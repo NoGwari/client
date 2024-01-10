@@ -206,13 +206,14 @@ const ReplyButton2 = styled.button`
 function BoardDetailPage() {
     const [board, setBoard] = useState({});
     const { itemId } = useParams();
+    const [hits, setHits] = useState(0);
     const [hiddenStatus, setHiddenStatus] = useState(0);
     const [boardHitStatus, setBoardHitStatus] = useState(false);
     const navigate = useNavigate();
     const userToken = sessionStorage.getItem('token');
     useEffect(() => {
         fetchData();
-        fetchComments();
+        //fetchComments();
     }, [itemId]);
 
     const fetchData = async () => {
@@ -299,7 +300,7 @@ function BoardDetailPage() {
                 });
                 if (response.ok) {
                     console.log('댓글 삭제 완료');
-                    fetchComments();
+                    //fetchComments();
                 }
             } catch (error) {
                 console.error('에러', error);
@@ -307,44 +308,44 @@ function BoardDetailPage() {
         }
     };
 
-    const handleContentChange = (e) => {
-        setContent(e.target.value);
-    };
+    // const handleContentChange = (e) => {
+    //     setContent(e.target.value);
+    // };
 
-    const toggleReply = (commentId) => {
-        setIsReplying(!isReplying);
-    };
+    // const toggleReply = (commentId) => {
+    //     setIsReplying(!isReplying);
+    // };
 
-    const handleSubmit = async () => {
-        if (content) {
-            const newComment = {
-                content,
-            };
+    // const handleSubmit = async () => {
+    //     if (content) {
+    //         const newComment = {
+    //             content,
+    //         };
 
-            try {
-                const response = await fetch(Http + `/comment/${itemId}`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        Authorization: `Bearer ${sessionStorage.getItem('token')}`,
-                    },
-                    body: JSON.stringify(newComment),
-                    credentials: 'include',
-                });
+    //         try {
+    //             const response = await fetch(Http + `/comment/${itemId}`, {
+    //                 method: 'POST',
+    //                 headers: {
+    //                     'Content-Type': 'application/json',
+    //                     Authorization: `Bearer ${sessionStorage.getItem('token')}`,
+    //                 },
+    //                 body: JSON.stringify(newComment),
+    //                 credentials: 'include',
+    //             });
 
-                if (response.ok) {
-                    setContent('');
-                    setComments([...comments, newComment]);
-                    fetchComments();
-                    console.log('댓글 작성 성공');
-                } else {
-                    console.error('댓글 작성 실패');
-                }
-            } catch (error) {
-                console.error('오류 발생:', error);
-            }
-        }
-    };
+    //             if (response.ok) {
+    //                 setContent('');
+    //                 setComments([...comments, newComment]);
+    //                 fetchComments();
+    //                 console.log('댓글 작성 성공');
+    //             } else {
+    //                 console.error('댓글 작성 실패');
+    //             }
+    //         } catch (error) {
+    //             console.error('오류 발생:', error);
+    //         }
+    //     }
+    // };
     const ReplyComment = async () => {};
 
     const handleUpdateClick = () => {
@@ -414,11 +415,11 @@ function BoardDetailPage() {
         }
     };
 
-    if (!board.title || comments === null) {
-        return (
-            <FadeLoader style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)' }} />
-        );
-    }
+    // if (!board.title || comments === null) {
+    //     return (
+    //         <FadeLoader style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)' }} />
+    //     );
+    // }
 
     return (
         <div>
@@ -461,7 +462,7 @@ function BoardDetailPage() {
                     </ButtonContainer>
                 )}
                 <br />
-                <CommentContainer>
+                {/* <CommentContainer>
                     {comments.map((comment) => {
                         return (
                             <Comment key={comment.id}>
@@ -568,7 +569,7 @@ function BoardDetailPage() {
                         />
                         <CommentSubmit onClick={handleSubmit}>댓글 작성</CommentSubmit>
                     </CommentForm>
-                </CommentContainer>
+                </CommentContainer> */}
             </Container>
         </div>
     );
