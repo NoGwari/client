@@ -11,6 +11,8 @@ import { RiAlarmWarningFill } from 'react-icons/ri';
 import { MdOutlineReportProblem } from 'react-icons/md';
 import { FadeLoader } from 'react-spinners';
 import { Fade } from '@mui/material';
+import BoardComment from './UpdateBoard/comment';
+import Board from '.';
 
 const Container = styled.div`
     margin: 0 100px;
@@ -307,45 +309,7 @@ function BoardDetailPage() {
             }
         }
     };
-
-    // const handleContentChange = (e) => {
-    //     setContent(e.target.value);
-    // };
-
-    // const toggleReply = (commentId) => {
-    //     setIsReplying(!isReplying);
-    // };
-
-    // const handleSubmit = async () => {
-    //     if (content) {
-    //         const newComment = {
-    //             content,
-    //         };
-
-    //         try {
-    //             const response = await fetch(Http + `/comment/${itemId}`, {
-    //                 method: 'POST',
-    //                 headers: {
-    //                     'Content-Type': 'application/json',
-    //                     Authorization: `Bearer ${sessionStorage.getItem('token')}`,
-    //                 },
-    //                 body: JSON.stringify(newComment),
-    //                 credentials: 'include',
-    //             });
-
-    //             if (response.ok) {
-    //                 setContent('');
-    //                 setComments([...comments, newComment]);
-    //                 fetchComments();
-    //                 console.log('댓글 작성 성공');
-    //             } else {
-    //                 console.error('댓글 작성 실패');
-    //             }
-    //         } catch (error) {
-    //             console.error('오류 발생:', error);
-    //         }
-    //     }
-    // };
+    <BoardComment />;
     const ReplyComment = async () => {};
 
     const handleUpdateClick = () => {
@@ -462,6 +426,7 @@ function BoardDetailPage() {
                     </ButtonContainer>
                 )}
                 <br />
+
                 {/* <CommentContainer>
                     {comments.map((comment) => {
                         return (
